@@ -1857,18 +1857,9 @@ body.theme-robotics .arcade-card {
   border-radius: 8px;
 }
 body.theme-robotics .arcade-card:hover {
-  border-color: #00f2fe;
-  box-shadow: 0 6px 0 #0f141e, 0 0 15px rgba(0,242,254,0.3);
+  border-color: rgba(0, 242, 254, 0.5);
+  box-shadow: 0 6px 0 #0f141e, 0 0 15px rgba(0,242,254,0.25);
 }
-body.theme-robotics .arcade-card.active {
-  background: #00f2fe;
-  color: #0a0e17;
-  border-color: #00f2fe;
-  box-shadow: 0 4px 0 #00b0ba, 0 0 20px rgba(0,242,254,0.5);
-}
-body.theme-robotics .arcade-card.active .card-pill { background: #00b0ba; color: #fff; }
-body.theme-robotics .arcade-card.active .card-name { color: #0a0e17; }
-body.theme-robotics .arcade-card.active .card-tagline { color: #1d283a; }
 
 body.theme-robotics .game-logo-3d span {
   color: #00f2fe;
@@ -2168,24 +2159,48 @@ body.theme-robotics .time-chip.active .time-chip-label {
   text-shadow: 0 0 6px rgba(0, 255, 136, 0.4) !important;
 }
 
-/* Inactive Adventure Cards: Remove kids colors, use muted cyan theme */
-body.theme-robotics .arcade-card .card-name {
-  color: rgba(0, 242, 254, 0.6) !important;
+/* Inactive Adventure Cards under Robotics */
+body.theme-robotics .arcade-card:not(.active) .card-name {
+  color: rgba(0, 242, 254, 0.7) !important;
   text-shadow: none !important;
 }
-body.theme-robotics .arcade-card .card-tagline {
+body.theme-robotics .arcade-card:not(.active) .card-tagline {
   color: rgba(0, 242, 254, 0.4) !important;
 }
-body.theme-robotics .arcade-card .card-pill {
+body.theme-robotics .arcade-card:not(.active) .card-pill {
   background: rgba(0, 242, 254, 0.08) !important;
   color: rgba(0, 242, 254, 0.7) !important;
   border: 1px solid rgba(0, 242, 254, 0.2) !important;
 }
 
-/* Selected active card pill should look clean */
-body.theme-robotics .arcade-card.active .card-name {
+/* Active Selected Adventure Card under Robotics */
+body.theme-robotics .arcade-card.active {
+  background: #121826 !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 4px 0 #005577, 0 0 22px rgba(0, 242, 254, 0.45) !important;
+}
+body.theme-robotics .arcade-card.active .card-pill {
+  background: #00f2fe !important;
   color: #0a0e17 !important;
-  text-shadow: none !important;
+  border: 1px solid #00f2fe !important;
+  font-weight: 900 !important;
+}
+body.theme-robotics .arcade-card.active .card-name {
+  color: #00f2fe !important;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.7) !important;
+}
+body.theme-robotics .arcade-card.active .card-tagline {
+  color: #00ff88 !important;
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.4) !important;
+}
+body.theme-robotics .arcade-card.active .card-glyph {
+  color: #00f2fe !important;
+  filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.8)) !important;
+}
+body.theme-robotics .arcade-card.active .card-check-tag {
+  background: #00ff88 !important;
+  color: #0a0e17 !important;
+  box-shadow: 0 2px 0 #00cc6a, 0 0 10px rgba(0, 255, 136, 0.5) !important;
 }
 
 /* Fix for Streak Card (ID selector specificity fix) */

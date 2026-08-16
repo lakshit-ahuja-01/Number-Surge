@@ -267,16 +267,16 @@ html, body {
   background: #ffffff;
   border: 3.5px solid #e2e8f0;
   border-radius: 24px;
-  padding: 14px 8px 12px 8px;
+  padding: 10px 4px 8px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   cursor: pointer;
   transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
   box-shadow: 0 8px 0 #cbd5e1, 0 12px 24px rgba(0, 0, 0, 0.08);
-  min-height: 145px;
+  min-height: 110px;
   justify-content: space-between;
   overflow: hidden;
 }
@@ -294,7 +294,7 @@ html, body {
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.5px;
-  padding: 3px 10px;
+  padding: 2px 6px;
   border-radius: 12px;
   background: #f1f5f9;
   color: #64748b;
@@ -302,7 +302,7 @@ html, body {
 }
 
 .card-glyph {
-  font-size: 38px;
+  font-size: 28px;
   line-height: 1;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
@@ -317,14 +317,14 @@ html, body {
 
 .card-name {
   font-family: var(--font-hud);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.5px;
   color: #2d3436;
 }
 
 .card-tagline {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   color: #94a3b8;
   white-space: nowrap;
@@ -335,7 +335,7 @@ html, body {
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.5px;
-  padding: 3px 10px;
+  padding: 2px 6px;
   border-radius: 10px;
   opacity: 0;
   transform: translateY(6px);
@@ -495,8 +495,8 @@ html, body {
 .time-chip {
   background: #ffffff;
   border: 3px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 12px 6px;
+  border-radius: 16px;
+  padding: 8px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -530,14 +530,14 @@ html, body {
 }
 
 .time-chip-icon { 
-  font-size: 20px; 
+  font-size: 16px; 
   line-height: 1; 
   animation: clockWiggle 3s infinite ease-in-out;
 }
 
 .time-chip-val { 
   font-family: var(--font-hud); 
-  font-size: 17px; 
+  font-size: 14px; 
   font-weight: 900; 
   letter-spacing: 0.5px; 
   color: #2d3436; 
@@ -567,7 +567,7 @@ html, body {
   position: relative;
   width: 100%;
   max-width: 380px;
-  height: 62px;
+  height: 52px;
   background: linear-gradient(180deg, #ffb347 0%, #ff9f43 50%, #e67e22 100%);
   border: none;
   border-radius: 20px;

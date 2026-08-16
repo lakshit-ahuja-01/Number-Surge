@@ -119,6 +119,7 @@ const gameState = {
   questionStartMs: 0,
   bestSpeedBonus:  0,
   highScore:       0,
+  isPaused:        false,
 };
 
 // ─── 4. DOM ELEMENT CACHE ────────────────────────────────────
@@ -153,6 +154,12 @@ const dom = {
   river:           document.getElementById('river'),
 
   startHighScore:  document.getElementById('start-highscore'),
+  levelIndicator:  document.getElementById('level-indicator'),
+  pauseBtn:        document.getElementById('pause-btn'),
+  resumeBtn:       document.getElementById('resume-btn'),
+  pauseMenuBtn:    document.getElementById('pause-menu-btn'),
+  pauseModal:      document.getElementById('pause-modal'),
+
   finalScore:      document.getElementById('final-score'),
   finalSolved:     document.getElementById('final-solved'),
   finalAccuracy:   document.getElementById('final-accuracy'),
@@ -534,9 +541,18 @@ function showSpeedToast(val) {
 
 // ─── 13. HUD & SCREEN FX ─────────────────────────────────────
 function updateHUD() {
-  dom.scoreDisplay.textContent = gameState.score;
-  dom.timerDisplay.textContent = gameState.timeLeft;
-  dom.comboNum.textContent = `x${gameState.combo}`;
+  if (dom.scoreDisplay) {
+    dom.scoreDisplay.textContent = String(gameState.score).padStart(6, '0');
+  }
+  if (dom.levelIndicator) {
+    dom.levelIndicator.textContent = `LVL ${gameState.difficultyLevel + 1}`;
+  }
+  if (dom.timerDisplay) {
+    dom.timerDisplay.textContent = gameState.timeLeft;
+  }
+  if (dom.comboNum) {
+    dom.comboNum.textContent = `x${gameState.combo}`;
+  }
 
   if (gameState.combo >= 3) {
     dom.hudComboBox.classList.add('combo-fire');
@@ -617,6 +633,7 @@ function startTimer() {
   updateHUD();
 
   gameState.timerIntervalId = setInterval(() => {
+    if (gameState.isPaused) return;
     gameState.timeLeft--;
     updateHUD();
 
@@ -639,6 +656,12 @@ function stopTimer() {
 // ─── 15. MAIN PHYSICS GAME LOOP (rAF) ────────────────────────
 function gameLoop(timestamp) {
   if (gameState.phase !== 'playing') return;
+
+  if (gameState.isPaused) {
+    gameState.lastFrameTime = timestamp;
+    gameState.animFrameId = requestAnimationFrame(gameLoop);
+    return;
+  }
 
   if (!gameState.lastFrameTime) gameState.lastFrameTime = timestamp;
   const dt = Math.min((timestamp - gameState.lastFrameTime) / 16.67, 3);
@@ -838,7 +861,32 @@ function resetState() {
   gameState.bestSpeedBonus  = 0;
 }
 
+function togglePause() {
+  if (gameState.phase !== 'playing') return;
+  gameState.isPaused = !gameState.isPaused;
+  if (gameState.isPaused) {
+    if (dom.pauseModal) dom.pauseModal.classList.add('active');
+    playArcadeSound('click');
+  } else {
+    if (dom.pauseModal) dom.pauseModal.classList.remove('active');
+    playArcadeSound('select');
+  }
+}
+
 // ─── 19. EVENT LISTENERS ─────────────────────────────────────
+// Pause Controls
+if (dom.pauseBtn) dom.pauseBtn.addEventListener('click', togglePause);
+if (dom.resumeBtn) dom.resumeBtn.addEventListener('click', togglePause);
+if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
+  if (dom.pauseModal) dom.pauseModal.classList.remove('active');
+  gameState.isPaused = false;
+  resetState();
+  loadHighScore();
+  dom.river.innerHTML = '<div class="river-stream-overlay"></div>';
+  cancelAnimationFrame(speedMeterLoopId);
+  showScreen('start');
+});
+
 // Mode Cartridges
 dom.modeGrid.addEventListener('click', e => {
   const card = e.target.closest('.arcade-cartridge, .mode-card');
@@ -870,9 +918,14 @@ dom.soundToggle.addEventListener('click', () => {
   dom.soundToggle.setAttribute('aria-label', gameState.isMuted ? 'Unmute sound' : 'Mute sound');
 });
 
-// Spacebar / Enter hotkeys
+// Keyboard Hotkeys
 document.addEventListener('keydown', e => {
-  if (e.code === 'Space' || e.code === 'Enter') {
+  if (e.code === 'KeyP' || e.code === 'Escape') {
+    if (gameState.phase === 'playing') {
+      e.preventDefault();
+      togglePause();
+    }
+  } else if (e.code === 'Space' || e.code === 'Enter') {
     if (gameState.phase === 'menu') {
       e.preventDefault();
       startGame();

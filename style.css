@@ -1,19 +1,19 @@
 /* ========================================================
-   Number Surge — Authentic Arcade Master Theme
-   Crafted with video game UI aesthetics: 3D extruded typography,
-   tactile cartridge selectors, physical press-down buttons, and warm obsidian/amber accents.
+   Number Surge — Master Arcade Game Theme
+   High-energy in-game cockpit HUD, mechanical equation console,
+   tactile floating energy orbs, and rich non-blue arcade aesthetics.
    ======================================================== */
 
 /* ─── Design Tokens ─────────────────────────────────────── */
 :root {
-  /* Rich Dark Obsidian Backdrops */
-  --bg-deep:        #090c12;
-  --bg-surface:     #111620;
-  --bg-panel:       rgba(18, 23, 32, 0.94);
+  /* Rich Dark Obsidian & Deep Carbon Backdrops (Zero Blue) */
+  --bg-deep:        #080b10;
+  --bg-surface:     #0f141d;
+  --bg-panel:       rgba(18, 24, 34, 0.94);
   --border-subtle:  rgba(255, 255, 255, 0.08);
   --border-accent:  #f59e0b;
 
-  /* Arcade Palette */
+  /* Arcade Colors */
   --amber-light:    #fde047;
   --amber-bright:   #fbbf24;
   --amber-main:     #f59e0b;
@@ -21,7 +21,9 @@
   --amber-shadow:   #78350f;
 
   --emerald-main:   #10b981;
+  --emerald-bright: #34d399;
   --emerald-dark:   #047857;
+  
   --violet-main:    #8b5cf6;
   --coral-main:     #f43f5e;
   
@@ -36,9 +38,9 @@
   --font-body:      'Outfit', system-ui, sans-serif;
 
   /* Sizing */
-  --orb-size:       62px;
-  --dock-height:    74px;
-  --hud-height:     60px;
+  --orb-size:       64px;
+  --dock-height:    82px;
+  --hud-height:     68px;
 }
 
 /* ─── Global Reset & Body ──────────────────────────────── */
@@ -69,7 +71,7 @@ html, body {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 #game-wrapper {
@@ -93,7 +95,7 @@ html, body {
 
 .screen.active {
   display: flex;
-  animation: screenFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: screenFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes screenFadeIn {
@@ -113,7 +115,6 @@ html, body {
     var(--bg-deep);
 }
 
-/* Top Bar: High Score Trophy Pill */
 .title-top-bar {
   width: 100%;
   max-width: 680px;
@@ -140,7 +141,6 @@ html, body {
 .hs-txt { color: var(--text-dim); letter-spacing: 1px; }
 .hs-num { color: var(--amber-bright); font-weight: 900; }
 
-/* ─── Main Arcade Title Stage ──────────────────────────── */
 .arcade-title-stage {
   width: 100%;
   max-width: 680px;
@@ -151,7 +151,6 @@ html, body {
   z-index: 5;
 }
 
-/* 3D Extruded Game Logo */
 .title-logo-block {
   text-align: center;
   position: relative;
@@ -206,7 +205,7 @@ html, body {
   margin-top: 8px;
 }
 
-/* ─── Arcade Cartridge Mode Selector ───────────────────── */
+/* Mode Selector */
 .arcade-mode-panel {
   width: 100%;
 }
@@ -283,7 +282,7 @@ html, body {
   .cart-surge-mix { grid-column: span 1; flex-direction: column; padding: 12px 6px; }
 }
 
-/* ─── Massive 3D Physical Play Button ──────────────────── */
+/* Massive 3D Play Button */
 .arcade-cta-box {
   display: flex;
   flex-direction: column;
@@ -371,7 +370,6 @@ html, body {
   to   { opacity: 1; }
 }
 
-/* Bottom Feature Chips */
 .title-footer-perks {
   display: flex;
   flex-wrap: wrap;
@@ -397,88 +395,116 @@ html, body {
 .p-icon { font-size: 13px; }
 
 /* ========================================================
-   GAMEPLAY SCREEN HUD & INTERACTIVE EQUATION DOCK
+   UPGRADED IN-GAME COCKPIT HUD (HIGH-OCTANE ACTION)
    ======================================================== */
 #game-screen {
   justify-content: flex-start;
 }
 
-/* ─── Top HUD ──────────────────────────────────────────── */
 #arcade-hud {
   width: 100%;
   height: var(--hud-height);
-  background: rgba(12, 15, 20, 0.96);
-  border-bottom: 1.5px solid var(--border-subtle);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: linear-gradient(180deg, #131822 0%, #0c1017 100%);
+  border-bottom: 2px solid rgba(245, 158, 11, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 18px;
+  padding: 0 16px;
   z-index: 20;
 }
 
-.hud-box {
+/* Dashboard Box */
+.hud-dashboard-box {
+  background: #151b26;
+  border: 1.5px solid #232c3d;
+  border-radius: 12px;
+  padding: 6px 14px;
   display: flex;
   flex-direction: column;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  min-width: 110px;
+}
+
+.hud-subhead {
+  display: flex;
   align-items: center;
-  min-width: 75px;
+  justify-content: space-between;
+  gap: 6px;
 }
 
 .hud-tag {
   font-family: var(--font-hud);
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 9px;
+  font-weight: 800;
   letter-spacing: 1.5px;
   color: var(--text-muted);
 }
 
-.hud-number {
+.hud-level-tag {
   font-family: var(--font-hud);
-  font-size: 22px;
-  font-weight: 900;
-  color: var(--text-pure);
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--emerald-bright);
+  background: rgba(16, 185, 129, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
 }
 
-#hud-score-box.score-pop .hud-number {
+.hud-number-digital {
+  font-family: var(--font-hud);
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+#hud-score-box.score-pop .hud-number-digital {
   animation: scoreBounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--emerald-main);
+  color: var(--emerald-bright);
 }
 
 @keyframes scoreBounce {
   0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
+  50% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
 
-/* Center Timer Badge */
-.hud-center-cluster {
+/* Center Console: Round Timer & Speed Gauge */
+.hud-center-console {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 
-.timer-badge {
+.timer-orb-badge {
   display: flex;
   align-items: center;
-  gap: 4px;
-  background: rgba(25, 31, 42, 0.85);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  padding: 2px 12px;
+  gap: 5px;
+  background: #171e2b;
+  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  border-radius: 12px;
+  padding: 3px 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .timer-number {
   font-family: var(--font-hud);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   color: var(--text-pure);
-  min-width: 26px;
+  min-width: 28px;
   text-align: center;
 }
 
-.timer-sec { font-size: 11px; color: var(--text-muted); }
+.timer-unit {
+  font-family: var(--font-hud);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-muted);
+}
 
 .timer-low .timer-number {
   color: var(--coral-main) !important;
@@ -486,29 +512,50 @@ html, body {
 }
 
 @keyframes timerPanic {
-  from { transform: scale(1); }
-  to   { transform: scale(1.15); }
+  from { transform: scale(1); filter: drop-shadow(0 0 8px var(--coral-main)); }
+  to   { transform: scale(1.15); filter: drop-shadow(0 0 16px var(--coral-main)); }
 }
 
-/* Speed Meter Gauge */
-#speed-meter-wrap {
-  width: 95px;
-  height: 4px;
+.speed-surge-meter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.speed-meter-track {
+  width: 110px;
+  height: 5px;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 #speed-meter-bar {
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, var(--emerald-main) 0%, var(--amber-main) 60%, var(--coral-main) 100%);
-  border-radius: 8px;
+  background: linear-gradient(90deg, var(--emerald-bright) 0%, var(--amber-bright) 60%, var(--coral-main) 100%);
+  border-radius: 6px;
   transform-origin: left;
   transition: width 0.1s linear;
 }
 
-/* Combo Flame Indicator */
+.speed-meter-label {
+  font-family: var(--font-hud);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+/* Right Cluster: Combo & Controls */
+.hud-right-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .hud-combo-val {
   display: flex;
   align-items: center;
@@ -528,36 +575,47 @@ html, body {
 
 .combo-fire .combo-flame {
   opacity: 1;
-  transform: scale(1.15);
+  transform: scale(1.2);
   animation: flameBounce 0.4s ease infinite alternate;
 }
 
 @keyframes flameBounce {
-  from { transform: scale(1.1) rotate(-4deg); }
-  to   { transform: scale(1.3) rotate(4deg); }
+  from { transform: scale(1.1) rotate(-5deg); }
+  to   { transform: scale(1.35) rotate(5deg); }
 }
 
-.sound-chip {
-  background: rgba(25, 31, 42, 0.8);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
+.hud-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-control-btn {
+  background: #171e2b;
+  border: 1.5px solid #283347;
+  border-radius: 10px;
   font-size: 15px;
-  padding: 5px 9px;
+  padding: 6px 10px;
   cursor: pointer;
   color: var(--text-pure);
   transition: all 0.15s;
 }
-.sound-chip:hover { border-color: var(--amber-main); transform: scale(1.05); }
+
+.hud-control-btn:hover {
+  background: #222c3d;
+  border-color: var(--amber-main);
+  transform: scale(1.08);
+}
 
 /* ========================================================
-   DYNAMIC EQUATION DOCK (INTERACTIVE SLOTS)
+   TACTILE MECHANICAL EQUATION CONSOLE (DOCK)
    ======================================================== */
 #equation-dock {
   width: 100%;
   height: var(--dock-height);
-  background: rgba(16, 20, 27, 0.98);
-  border-bottom: 1.5px solid var(--border-subtle);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  background: #111620;
+  border-bottom: 2px solid #20293a;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -568,25 +626,64 @@ html, body {
 .dock-inner {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
-.mode-badge {
+.dock-mode-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #171f2c;
+  border: 1.5px solid #263347;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+.indicator-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emerald-bright);
+  box-shadow: 0 0 8px var(--emerald-bright);
+  animation: ledPulse 1.5s infinite alternate;
+}
+
+@keyframes ledPulse {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+.mode-badge-pill {
   font-family: var(--font-hud);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  color: var(--emerald-main);
-  background: rgba(16, 185, 129, 0.12);
-  border: 1.5px solid rgba(16, 185, 129, 0.35);
-  border-radius: 8px;
-  padding: 4px 10px;
+  color: var(--emerald-bright);
 }
 
-.equation-slots {
+.equation-slots-rig {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.slot-housing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.slot-label {
+  font-family: var(--font-hud);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.slot-label-gold {
+  color: var(--amber-bright);
 }
 
 .slot {
@@ -596,37 +693,38 @@ html, body {
   font-family: var(--font-hud);
   font-weight: 900;
   border-radius: 12px;
-  transition: all 0.18s ease;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .slot-operand {
-  width: 58px;
+  width: 62px;
   height: 50px;
-  background: rgba(25, 31, 42, 0.9);
-  border: 2px dashed rgba(255, 255, 255, 0.18);
+  background: #171e2a;
+  border: 2px dashed #2f3e57;
   color: var(--text-dim);
   font-size: 24px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Locked slot */
+/* Locked slot state */
 .slot-operand.locked {
-  background: rgba(16, 185, 129, 0.22);
-  border: 2px solid var(--emerald-main);
+  background: rgba(16, 185, 129, 0.2);
+  border: 2px solid var(--emerald-bright);
   color: var(--text-pure);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
-  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.35), inset 0 0 8px rgba(16, 185, 129, 0.2);
+  transform: scale(1.06);
 }
 
 .slot-operand.success-flash {
-  background: rgba(16, 185, 129, 0.5) !important;
-  border-color: var(--emerald-main) !important;
+  background: rgba(16, 185, 129, 0.55) !important;
+  border-color: var(--emerald-bright) !important;
   color: var(--text-pure) !important;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.7) !important;
-  transform: scale(1.1) !important;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.8) !important;
+  transform: scale(1.12) !important;
 }
 
 .slot-operand.wrong-flash {
-  background: rgba(244, 63, 94, 0.5) !important;
+  background: rgba(244, 63, 94, 0.55) !important;
   border-color: var(--coral-main) !important;
   color: var(--text-pure) !important;
   animation: slotShake 0.35s ease;
@@ -634,26 +732,29 @@ html, body {
 
 @keyframes slotShake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-6px); }
-  50% { transform: translateX(6px); }
-  75% { transform: translateX(-3px); }
+  25% { transform: translateX(-7px); }
+  50% { transform: translateX(7px); }
+  75% { transform: translateX(-4px); }
 }
 
-.op-sign, .eq-sign {
+.op-sign-badge, .eq-sign-badge {
   font-family: var(--font-hud);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 900;
-  color: var(--amber-main);
+  color: var(--amber-bright);
+  margin-top: 12px;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
 .slot-target {
-  min-width: 68px;
+  min-width: 72px;
   height: 50px;
-  padding: 0 12px;
-  background: rgba(245, 158, 11, 0.18);
-  border: 2px solid var(--amber-main);
+  padding: 0 14px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(180, 83, 9, 0.35) 100%);
+  border: 2px solid var(--amber-bright);
   color: var(--text-pure);
-  font-size: 25px;
+  font-size: 26px;
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Speed Toast */
@@ -661,35 +762,45 @@ html, body {
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%) translateY(6px);
+  transform: translateX(-50%) translateY(8px);
   background: var(--amber-bright);
-  color: #0c0f14;
+  color: #080b10;
   font-family: var(--font-hud);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 900;
-  padding: 3px 12px;
+  padding: 4px 14px;
   border-radius: 16px;
   pointer-events: none;
   opacity: 0;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
 .speed-toast.pop {
   opacity: 1;
-  transform: translateX(-50%) translateY(12px) scale(1.05);
+  transform: translateX(-50%) translateY(14px) scale(1.08);
 }
 
 /* ========================================================
-   RIVER GAME AREA (Dark Obsidian & Warm Charcoal)
+   RIVER GAME ARENA & 3D FLOATING ENERGY ORBS
    ======================================================== */
 #river {
   position: relative;
   flex: 1;
   width: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #12161f 0%, #080a0e 100%);
+  background: linear-gradient(180deg, #11151f 0%, #080b10 100%);
+}
+
+.river-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 .river-stream-overlay {
@@ -699,13 +810,19 @@ html, body {
   background: repeating-linear-gradient(
     115deg,
     transparent,
-    transparent 90px,
-    rgba(245, 158, 11, 0.015) 90px,
-    rgba(245, 158, 11, 0.015) 92px
+    transparent 100px,
+    rgba(245, 158, 11, 0.02) 100px,
+    rgba(245, 158, 11, 0.02) 102px
   );
+  animation: streamFlow 14s linear infinite;
 }
 
-/* ─── Grounded Game Orbs ───────────────────────────────── */
+@keyframes streamFlow {
+  from { background-position: 0 0; }
+  to   { background-position: 200px 100px; }
+}
+
+/* ─── 3D Floating Game Power Orbs ──────────────────────── */
 .orb-floater {
   position: absolute;
   width: var(--orb-size);
@@ -715,10 +832,10 @@ html, body {
   align-items: center;
   justify-content: center;
   font-family: var(--font-hud);
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 900;
   color: var(--text-pure);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
   cursor: pointer;
   z-index: 5;
   transition: 
@@ -730,78 +847,86 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* 3D Specular Light Gloss */
 .orb-floater::before {
   content: '';
   position: absolute;
-  top: 3px;
+  top: 4px;
   left: 12px;
-  width: 38%;
-  height: 22%;
+  width: 40%;
+  height: 24%;
   border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
 }
 
 .orb-floater:hover {
-  transform: scale(1.12) !important;
+  transform: scale(1.15) !important;
   z-index: 10;
-  border-color: rgba(255, 255, 255, 0.85);
+  border-color: #ffffff;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4) !important;
 }
 
-/* Non-Blue Orb Colors */
+/* Non-Blue Orb Colorways */
 .orb-amber {
-  background: linear-gradient(145deg, #d97706 0%, #92400e 100%);
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+  background: radial-gradient(circle at 35% 35%, #fbbf24 0%, #d97706 60%, #78350f 100%);
+  box-shadow: 0 4px 15px rgba(217, 119, 6, 0.5), 0 0 0 1px rgba(251, 191, 36, 0.3);
 }
 
 .orb-emerald {
-  background: linear-gradient(145deg, #059669 0%, #065f46 100%);
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+  background: radial-gradient(circle at 35% 35%, #34d399 0%, #059669 60%, #064e3b 100%);
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.5), 0 0 0 1px rgba(52, 211, 153, 0.3);
 }
 
 .orb-violet {
-  background: linear-gradient(145deg, #7c3aed 0%, #5b21b6 100%);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  background: radial-gradient(circle at 35% 35%, #a78bfa 0%, #7c3aed 60%, #4c1d95 100%);
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.5), 0 0 0 1px rgba(167, 139, 250, 0.3);
 }
 
 .orb-coral {
-  background: linear-gradient(145deg, #e11d48 0%, #9f1239 100%);
-  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4);
+  background: radial-gradient(circle at 35% 35%, #fb7185 0%, #e11d48 60%, #881337 100%);
+  box-shadow: 0 4px 15px rgba(225, 29, 72, 0.5), 0 0 0 1px rgba(251, 113, 133, 0.3);
 }
 
 /* Selected Orb */
 .orb-selected {
-  transform: scale(1.18) !important;
-  border: 2.5px solid #ffffff !important;
+  transform: scale(1.22) !important;
+  border: 3px solid #ffffff !important;
   box-shadow: 
-    0 0 20px rgba(245, 158, 11, 0.65),
-    0 4px 16px rgba(0, 0, 0, 0.5) !important;
+    0 0 30px rgba(245, 158, 11, 0.8),
+    0 0 50px rgba(245, 158, 11, 0.4) !important;
+  animation: orbPulse 0.5s infinite alternate;
   z-index: 12;
+}
+
+@keyframes orbPulse {
+  from { filter: brightness(1.1); }
+  to   { filter: brightness(1.35); }
 }
 
 /* Correct Burst Orb */
 .orb-correct {
-  background: var(--emerald-main) !important;
+  background: radial-gradient(circle at 35% 35%, #34d399 0%, #059669 100%) !important;
   border-color: #ffffff !important;
-  box-shadow: 0 0 30px rgba(16, 185, 129, 0.7) !important;
-  transform: scale(1.35) !important;
+  box-shadow: 0 0 40px var(--emerald-bright) !important;
+  transform: scale(1.45) !important;
   opacity: 0;
-  transition: all 0.25s ease-out;
+  transition: all 0.28s ease-out;
   pointer-events: none;
 }
 
 /* Wrong Shake Orb */
 .orb-wrong {
-  background: var(--coral-main) !important;
+  background: radial-gradient(circle at 35% 35%, #fb7185 0%, #e11d48 100%) !important;
   border-color: #ffffff !important;
-  box-shadow: 0 0 25px rgba(244, 63, 94, 0.6) !important;
+  box-shadow: 0 0 30px var(--coral-main) !important;
   animation: orbShake 0.35s ease;
 }
 
 @keyframes orbShake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-7px); }
-  50% { transform: translateX(7px); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
   75% { transform: translateX(-4px); }
 }
 
@@ -810,39 +935,88 @@ html, body {
   position: absolute;
   font-family: var(--font-hud);
   font-weight: 900;
-  font-size: 22px;
+  font-size: 24px;
   pointer-events: none;
   z-index: 30;
   transform: translateX(-50%);
-  animation: floatUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  animation: floatUpFade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .score-plus {
-  color: #34d399;
+  color: var(--emerald-bright);
+  text-shadow: 0 0 15px rgba(52, 211, 153, 0.8);
 }
 
 .score-minus {
-  color: #f87171;
+  color: var(--coral-main);
+  text-shadow: 0 0 15px rgba(244, 63, 94, 0.8);
 }
 
 @keyframes floatUpFade {
-  0% { opacity: 1; transform: translateX(-50%) translateY(0) scale(0.85); }
-  50% { opacity: 1; transform: translateX(-50%) translateY(-30px) scale(1.15); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-60px) scale(1.3); }
+  0% { opacity: 1; transform: translateX(-50%) translateY(0) scale(0.8); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-35px) scale(1.25); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-70px) scale(1.4); }
 }
 
 /* Screen Shake Effect */
 .screen-shake {
-  animation: cameraShake 0.3s ease;
+  animation: cameraShake 0.35s ease;
 }
 
 @keyframes cameraShake {
   0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-5px, 3px); }
-  40% { transform: translate(5px, -3px); }
-  60% { transform: translate(-3px, -2px); }
-  80% { transform: translate(3px, 2px); }
+  20% { transform: translate(-6px, 4px); }
+  40% { transform: translate(6px, -4px); }
+  60% { transform: translate(-4px, -2px); }
+  80% { transform: translate(4px, 2px); }
+}
+
+/* ========================================================
+   IN-GAME PAUSE MODAL
+   ======================================================== */
+.pause-modal {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 11, 16, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 50;
+  align-items: center;
+  justify-content: center;
+}
+
+.pause-modal.active {
+  display: flex;
+  animation: screenFadeIn 0.2s ease forwards;
+}
+
+.pause-card {
+  background: #141a24;
+  border: 2px solid #283347;
+  border-radius: 20px;
+  padding: 30px 24px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.pause-icon { font-size: 36px; }
+.pause-title { font-family: var(--font-hud); font-size: 28px; font-weight: 900; color: #ffffff; letter-spacing: 2px; }
+.pause-desc { font-size: 14px; color: var(--text-dim); }
+
+.pause-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
 }
 
 /* ========================================================
@@ -991,38 +1165,25 @@ html, body {
 @media (max-width: 520px) {
   :root {
     --orb-size: 52px;
-    --hud-height: 54px;
-    --dock-height: 66px;
+    --hud-height: 58px;
+    --dock-height: 72px;
   }
 
-  #start-screen {
-    padding: 16px 12px 14px 12px;
+  #arcade-hud {
+    padding: 0 10px;
   }
 
-  .arcade-title-stage {
-    gap: 16px;
+  .hud-dashboard-box {
+    min-width: 85px;
+    padding: 4px 8px;
   }
+  .hud-number-digital { font-size: 18px; }
 
-  .game-logo-3d {
-    font-size: 2.8rem;
-  }
-
-  .arcade-mode-selector {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  .cart-surge-mix { grid-column: span 2; }
-
-  .arcade-play-button {
-    height: 56px;
-  }
-  .play-btn-content {
-    font-size: 19px;
-  }
+  .speed-meter-track { width: 75px; }
 
   .slot-operand { width: 48px; height: 44px; font-size: 20px; }
   .slot-target  { min-width: 60px; height: 44px; font-size: 22px; }
-  .op-sign, .eq-sign { font-size: 22px; }
+  .op-sign-badge, .eq-sign-badge { font-size: 18px; }
 
-  .orb-floater { font-size: 18px; }
+  .orb-floater { font-size: 19px; }
 }

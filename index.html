@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Number Surge — Arcade math action. Solve floating equations before the 60-second surge runs out!">
-  <meta name="theme-color" content="#0a0e17">
+  <meta name="theme-color" content="#090c12">
   <title>Number Surge — Arcade Math Action</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,65 +105,119 @@
     <!-- ===== MAIN GAMEPLAY SCREEN ===== -->
     <div id="game-screen" class="screen">
 
-      <!-- TOP HUD -->
+      <!-- TOP ARCADE COCKPIT HUD -->
       <header id="arcade-hud">
         
-        <!-- Score Column -->
-        <div class="hud-box" id="hud-score-box">
-          <div class="hud-tag">SCORE</div>
-          <div class="hud-number" id="score-display">0</div>
+        <!-- Left: Score Panel with Level Pill -->
+        <div class="hud-dashboard-box" id="hud-score-box">
+          <div class="hud-subhead">
+            <span class="hud-tag">SCORE</span>
+            <span class="hud-level-tag" id="level-indicator">LVL 1</span>
+          </div>
+          <div class="hud-number-digital" id="score-display">000000</div>
         </div>
 
-        <!-- Center Timer & Speed Bar -->
-        <div class="hud-center-cluster">
-          <div class="timer-badge" id="timer-badge">
-            <span class="timer-icon">⏱️</span>
+        <!-- Center: Round Timer & Speed Surge Bar -->
+        <div class="hud-center-console">
+          <div class="timer-orb-badge" id="timer-badge">
+            <span class="timer-dial-icon">⏱️</span>
             <span class="timer-number" id="timer-display">60</span>
-            <span class="timer-sec">s</span>
+            <span class="timer-unit">SEC</span>
           </div>
-          <div id="speed-meter-wrap" title="Speed bonus gauge">
-            <div id="speed-meter-bar"></div>
-          </div>
-        </div>
-
-        <!-- Combo Multiplier Column -->
-        <div class="hud-box" id="hud-combo-box">
-          <div class="hud-tag">COMBO</div>
-          <div class="hud-combo-val" id="combo-display">
-            <span id="combo-flame" class="combo-flame">🔥</span>
-            <span id="combo-num">x0</span>
+          
+          <div class="speed-surge-meter">
+            <div class="speed-meter-track">
+              <div id="speed-meter-bar"></div>
+            </div>
+            <div class="speed-meter-label">⚡ SPEED SURGE</div>
           </div>
         </div>
 
-        <!-- Sound Toggle -->
-        <button id="sound-toggle" class="sound-chip" aria-label="Toggle sound" title="Toggle sound">
-          <span id="sound-icon">🔊</span>
-        </button>
+        <!-- Right: Combo Flame & Controls -->
+        <div class="hud-right-cluster">
+          <div class="hud-dashboard-box" id="hud-combo-box">
+            <div class="hud-subhead">
+              <span class="hud-tag">STREAK</span>
+            </div>
+            <div class="hud-combo-val" id="combo-display">
+              <span id="combo-flame" class="combo-flame">🔥</span>
+              <span id="combo-num">x0</span>
+            </div>
+          </div>
+
+          <div class="hud-btn-group">
+            <button id="pause-btn" class="hud-control-btn" aria-label="Pause game" title="Pause Game">⏸️</button>
+            <button id="sound-toggle" class="hud-control-btn" aria-label="Toggle sound" title="Toggle sound">
+              <span id="sound-icon">🔊</span>
+            </button>
+          </div>
+        </div>
 
       </header>
 
-      <!-- DYNAMIC EQUATION DOCK (INTERACTIVE SLOTS) -->
+      <!-- DYNAMIC EQUATION CONSOLE (TACTILE MECHANICAL SLOTS) -->
       <div id="equation-dock">
         <div class="dock-inner">
-          <div id="mode-badge" class="mode-badge">ADD</div>
           
-          <div class="equation-slots">
-            <div class="slot slot-operand" id="slot-a" data-slot="A">?</div>
-            <span class="op-sign" id="op-symbol">+</span>
-            <div class="slot slot-operand" id="slot-b" data-slot="B">?</div>
-            <span class="eq-sign">=</span>
-            <div class="slot slot-target" id="slot-target">40</div>
+          <div class="dock-mode-indicator">
+            <span class="indicator-led"></span>
+            <span id="mode-badge" class="mode-badge-pill">ADDITION</span>
+          </div>
+          
+          <div class="equation-slots-rig">
+            <!-- Operand Slot 1 -->
+            <div class="slot-housing">
+              <div class="slot-label">SLOT A</div>
+              <div class="slot slot-operand" id="slot-a" data-slot="A">?</div>
+            </div>
+
+            <!-- Operator Symbol -->
+            <div class="op-sign-badge" id="op-symbol">+</div>
+
+            <!-- Operand Slot 2 -->
+            <div class="slot-housing">
+              <div class="slot-label">SLOT B</div>
+              <div class="slot slot-operand" id="slot-b" data-slot="B">?</div>
+            </div>
+
+            <!-- Equals Symbol -->
+            <div class="eq-sign-badge">=</div>
+
+            <!-- Target Goal Display -->
+            <div class="slot-housing slot-housing-target">
+              <div class="slot-label slot-label-gold">TARGET GOAL</div>
+              <div class="slot slot-target" id="slot-target">40</div>
+            </div>
           </div>
 
-          <div id="speed-toast" class="speed-toast" aria-live="polite">⚡ SPEED +20</div>
+          <!-- Dynamic Action Feedback Toast -->
+          <div id="speed-toast" class="speed-toast" aria-live="polite">⚡ SPEED SURGE +20</div>
         </div>
       </div>
 
       <!-- RIVER / GAME AREA -->
       <main id="river" role="application" aria-label="Number Surge live river">
-        <!-- Floating orbs injected by script.js -->
+        <div class="river-grid-bg"></div>
         <div class="river-stream-overlay"></div>
+        <!-- Floating orbs injected by script.js -->
       </main>
+
+      <!-- PAUSE OVERLAY MODAL -->
+      <div id="pause-modal" class="pause-modal">
+        <div class="pause-card">
+          <div class="pause-icon">⏸️</div>
+          <h3 class="pause-title">GAME PAUSED</h3>
+          <p class="pause-desc">Take a breather. The surge is waiting.</p>
+          <div class="pause-actions">
+            <button id="resume-btn" class="arcade-play-button">
+              <span class="play-btn-content">▶ RESUME SURGE</span>
+            </button>
+            <button id="pause-menu-btn" class="arcade-secondary-btn">
+              <span>🏠 QUIT TO MENU</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -172,8 +226,8 @@
       <div class="gameover-stage">
 
         <div class="go-header">
-          <div class="gameover-banner">ROUND OVER</div>
-          <h2 class="gameover-title">SURGE COMPLETE</h2>
+          <div class="gameover-banner">ROUND COMPLETE</div>
+          <h2 class="gameover-title">SURGE RESULTS</h2>
           <div id="rank-badge" class="rank-badge">RANK S</div>
         </div>
 

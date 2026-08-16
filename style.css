@@ -1850,6 +1850,10 @@ body.theme-robotics .theme-btn[data-theme="robotics"].active {
   box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
 }
 
+body.theme-robotics .arcade-mode-selector {
+  grid-template-columns: repeat(6, 1fr);
+}
+
 body.theme-robotics .arcade-card {
   background: #121826;
   border-color: #1d283a;

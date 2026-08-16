@@ -12,50 +12,54 @@
 
   <!-- ===== Start Screen ===== -->
   <div id="start-screen" class="screen active">
-    <div class="start-inner">
-      <div class="title-block">
-        <h1 class="game-title">Number Surge</h1>
-        <p class="tagline">How many can you solve in 60 seconds?</p>
-      </div>
+    <div class="screen-table">
+      <div class="screen-cell">
+        <div class="start-inner">
+          <div class="title-block">
+            <h1 class="game-title">Number Surge</h1>
+            <p class="tagline">How many can you solve in 60 seconds?</p>
+          </div>
 
-      <!-- Mode Selector -->
-      <div class="mode-section">
-        <p class="mode-label">Choose Mode</p>
-        <div class="mode-grid" id="mode-grid" role="group" aria-label="Game mode selector">
-          <button class="mode-card active" data-mode="addition"       aria-pressed="true">
-            <span class="mode-icon">➕</span>
-            <span class="mode-name">Addition</span>
-            <span class="mode-example">_ + _ = ?</span>
-          </button>
-          <button class="mode-card" data-mode="subtraction"  aria-pressed="false">
-            <span class="mode-icon">➖</span>
-            <span class="mode-name">Subtraction</span>
-            <span class="mode-example">_ − _ = ?</span>
-          </button>
-          <button class="mode-card" data-mode="multiplication" aria-pressed="false">
-            <span class="mode-icon">✖️</span>
-            <span class="mode-name">Multiply</span>
-            <span class="mode-example">_ × _ = ?</span>
-          </button>
-          <button class="mode-card" data-mode="division"    aria-pressed="false">
-            <span class="mode-icon">➗</span>
-            <span class="mode-name">Division</span>
-            <span class="mode-example">_ ÷ _ = ?</span>
-          </button>
-          <button class="mode-card mode-card--mixed" data-mode="mixed" aria-pressed="false">
-            <span class="mode-icon">🔀</span>
-            <span class="mode-name">Mixed</span>
-            <span class="mode-example">All ops!</span>
-          </button>
+          <!-- Mode Selector -->
+          <div class="mode-section">
+            <p class="mode-label">Choose Mode</p>
+            <div class="mode-grid" id="mode-grid" role="group" aria-label="Game mode selector">
+              <button class="mode-card active" data-mode="addition"       aria-pressed="true">
+                <span class="mode-icon">➕</span>
+                <span class="mode-name">Addition</span>
+                <span class="mode-example">_ + _ = ?</span>
+              </button>
+              <button class="mode-card" data-mode="subtraction"  aria-pressed="false">
+                <span class="mode-icon">➖</span>
+                <span class="mode-name">Subtraction</span>
+                <span class="mode-example">_ − _ = ?</span>
+              </button>
+              <button class="mode-card" data-mode="multiplication" aria-pressed="false">
+                <span class="mode-icon">✖️</span>
+                <span class="mode-name">Multiply</span>
+                <span class="mode-example">_ × _ = ?</span>
+              </button>
+              <button class="mode-card" data-mode="division"    aria-pressed="false">
+                <span class="mode-icon">➗</span>
+                <span class="mode-name">Division</span>
+                <span class="mode-example">_ ÷ _ = ?</span>
+              </button>
+              <button class="mode-card mode-card--mixed" data-mode="mixed" aria-pressed="false">
+                <span class="mode-icon">🔀</span>
+                <span class="mode-name">Mixed</span>
+                <span class="mode-example">All ops!</span>
+              </button>
+            </div>
+          </div>
+
+          <button id="start-btn" class="btn btn-primary btn-large">▶ Start Game</button>
+
+          <div class="tips">
+            <span class="tip-item">⚡ Faster answers = more points</span>
+            <span class="tip-sep">·</span>
+            <span class="tip-item">🔥 Build combos for bonus</span>
+          </div>
         </div>
-      </div>
-
-      <button id="start-btn" class="btn btn-primary btn-large">▶ Start Game</button>
-
-      <div class="tips">
-        <span class="tip-item">⚡ Faster answers = more points</span>
-        <span class="tip-sep">·</span>
-        <span class="tip-item">🔥 Build combos for bonus</span>
       </div>
     </div>
   </div>
@@ -107,35 +111,39 @@
 
   <!-- ===== Game Over Screen ===== -->
   <div id="gameover-screen" class="screen">
-    <div class="gameover-inner">
-      <h2 class="gameover-title">Game Over!</h2>
+    <div class="screen-table">
+      <div class="screen-cell">
+        <div class="gameover-inner">
+          <h2 class="gameover-title">Game Over!</h2>
 
-      <div id="final-stats">
-        <div class="stat-row">
-          <span class="stat-label">🏆 Score</span>
-          <span id="final-score" class="stat-value highlight">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">✅ Solved</span>
-          <span id="final-solved" class="stat-value">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">🎯 Accuracy</span>
-          <span id="final-accuracy" class="stat-value">0%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">🔥 Best Combo</span>
-          <span id="final-combo" class="stat-value">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">⚡ Best Speed Bonus</span>
-          <span id="final-speed" class="stat-value">+0</span>
-        </div>
-      </div>
+          <div id="final-stats">
+            <div class="stat-row">
+              <span class="stat-label">🏆 Score</span>
+              <span id="final-score" class="stat-value highlight">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">✅ Solved</span>
+              <span id="final-solved" class="stat-value">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">🎯 Accuracy</span>
+              <span id="final-accuracy" class="stat-value">0%</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">🔥 Best Combo</span>
+              <span id="final-combo" class="stat-value">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">⚡ Best Speed Bonus</span>
+              <span id="final-speed" class="stat-value">+0</span>
+            </div>
+          </div>
 
-      <div id="gameover-actions">
-        <button id="play-again-btn" class="btn btn-primary">▶ Play Again</button>
-        <button id="menu-btn" class="btn btn-secondary">🏠 Main Menu</button>
+          <div id="gameover-actions">
+            <button id="play-again-btn" class="btn btn-primary">▶ Play Again</button>
+            <button id="menu-btn" class="btn btn-secondary">🏠 Main Menu</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

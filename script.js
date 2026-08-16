@@ -338,11 +338,14 @@ function removeFloater(id, reason = 'remove') {
   if (idx === -1) return;
 
   const { el } = gameState.floaters[idx];
-  if (reason === 'correct') el.classList.add('floater-correct');
-  el.classList.remove('visible');
-  el.style.opacity = '0';
-  el.style.transform = 'scale(0)';
-  setTimeout(() => el.parentNode && el.parentNode.removeChild(el), 320);
+  if (reason === 'correct') {
+    el.className = 'floater floater-correct';
+    setTimeout(() => {
+      if (el.parentNode) el.parentNode.removeChild(el);
+    }, 150);
+  } else {
+    if (el.parentNode) el.parentNode.removeChild(el);
+  }
 
   gameState.floaters.splice(idx, 1);
 }
@@ -660,7 +663,7 @@ function playSound(type) {
   } catch (_) { /* fail silently */ }
 }
 
-// ─── 17. SCORE POPUP & PARTICLES ──────────────────────────────
+// ─── 17. SCORE POPUP & PARTICLES (JS / CSS1 & CSS2) ──────────
 function showScorePopup(text, refEl, type) {
   const popup = document.createElement('div');
   popup.className = `score-popup popup-${type}`;
@@ -668,11 +671,22 @@ function showScorePopup(text, refEl, type) {
 
   const rect = refEl.getBoundingClientRect();
   const rRect = dom.river.getBoundingClientRect();
+  let topPos = rect.top - rRect.top;
   popup.style.left = `${rect.left - rRect.left + rect.width / 2}px`;
-  popup.style.top  = `${rect.top  - rRect.top}px`;
+  popup.style.top  = `${topPos}px`;
 
   dom.river.appendChild(popup);
-  setTimeout(() => popup.parentNode && popup.parentNode.removeChild(popup), 800);
+
+  let step = 0;
+  const interval = setInterval(() => {
+    step++;
+    topPos -= 2;
+    popup.style.top = `${topPos}px`;
+    if (step >= 15) {
+      clearInterval(interval);
+      if (popup.parentNode) popup.parentNode.removeChild(popup);
+    }
+  }, 30);
 }
 
 function spawnParticles(refEl) {
@@ -680,20 +694,31 @@ function spawnParticles(refEl) {
   const rRect = dom.river.getBoundingClientRect();
   const cx = rect.left - rRect.left + rect.width  / 2;
   const cy = rect.top  - rRect.top  + rect.height / 2;
-  const colors = ['var(--success)','var(--primary)','var(--warning)','var(--accent)'];
+  const colors = ['#34d399', '#38bdf8', '#fbbf24', '#818cf8'];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 8; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
-    const angle = (Math.PI * 2 / 10) * i;
-    const dist  = 28 + Math.random() * 36;
-    p.style.left       = `${cx}px`;
-    p.style.top        = `${cy}px`;
-    p.style.background = colors[i % colors.length];
-    p.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
-    p.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+    p.style.backgroundColor = colors[i % colors.length];
+    p.style.left = `${cx}px`;
+    p.style.top  = `${cy}px`;
     dom.river.appendChild(p);
-    setTimeout(() => p.parentNode && p.parentNode.removeChild(p), 560);
+
+    const angle = (Math.PI * 2 / 8) * i;
+    const dist  = 25 + Math.random() * 25;
+    const tx = Math.cos(angle) * dist;
+    const ty = Math.sin(angle) * dist;
+
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      p.style.left = `${cx + (tx * step / 10)}px`;
+      p.style.top  = `${cy + (ty * step / 10)}px`;
+      if (step >= 10) {
+        clearInterval(interval);
+        if (p.parentNode) p.parentNode.removeChild(p);
+      }
+    }, 30);
   }
 }
 

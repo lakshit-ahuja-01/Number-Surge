@@ -3,7 +3,7 @@
 > A fast-paced, arcade-style browser math game. Click floating bubbles to solve equations before time runs out!
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+![CSS1_CSS2](https://img.shields.io/badge/CSS-1_&_2.1-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
 ---
@@ -37,5 +37,5 @@
 ## 🛠️ Tech Stack
 
 - **HTML5** — Semantic, accessible structure
-- **CSS3** — Custom properties, animations, glassmorphism, responsive design
+- **CSS1 & CSS2.1** — Pure CSS1/2 box model, positioning, and table layouts without CSS3 dependencies
 - **Vanilla JavaScript** — `requestAnimationFrame` loop, Web Audio API, modular state management

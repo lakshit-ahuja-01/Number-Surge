@@ -1,33 +1,38 @@
 /* ========================================================
-   Number Surge — Warm Obsidian & Amber-Jade Master Theme
-   Curated non-blue palette: Warm Obsidian Charcoal, Radiant Amber,
-   Emerald Jade, and Amethyst Violet.
+   Number Surge — Authentic Arcade Master Theme
+   Crafted with video game UI aesthetics: 3D extruded typography,
+   tactile cartridge selectors, physical press-down buttons, and warm obsidian/amber accents.
    ======================================================== */
 
-/* ─── Curated Color System ─────────────────────────────── */
+/* ─── Design Tokens ─────────────────────────────────────── */
 :root {
-  /* Rich Dark Obsidian & Warm Charcoal Backdrops (Zero Blue) */
-  --bg-deep:        #0c0f14;
-  --bg-surface:     #131720;
-  --bg-panel:       rgba(20, 25, 34, 0.92);
+  /* Rich Dark Obsidian Backdrops */
+  --bg-deep:        #090c12;
+  --bg-surface:     #111620;
+  --bg-panel:       rgba(18, 23, 32, 0.94);
   --border-subtle:  rgba(255, 255, 255, 0.08);
-  --border-active:  #f59e0b;
+  --border-accent:  #f59e0b;
 
-  /* Controlled Non-Blue Accents */
-  --color-primary:  #f59e0b;   /* Radiant Amber Gold */
-  --color-accent:   #10b981;   /* Emerald Jade */
-  --color-amber:    #fbbf24;   /* Warm Gold / Combo */
-  --color-violet:   #8b5cf6;   /* Amethyst */
-  --color-coral:    #f43f5e;   /* Danger / Mistake Red */
+  /* Arcade Palette */
+  --amber-light:    #fde047;
+  --amber-bright:   #fbbf24;
+  --amber-main:     #f59e0b;
+  --amber-dark:     #b45309;
+  --amber-shadow:   #78350f;
+
+  --emerald-main:   #10b981;
+  --emerald-dark:   #047857;
+  --violet-main:    #8b5cf6;
+  --coral-main:     #f43f5e;
   
-  /* Text & Labels */
   --text-pure:      #ffffff;
   --text-main:      #f8fafc;
-  --text-dim:       #a1a1aa;
-  --text-muted:     #71717a;
+  --text-dim:       #94a3b8;
+  --text-muted:     #64748b;
 
   /* Typography */
-  --font-hud:       'Chakra Petch', 'Segoe UI', monospace;
+  --font-hud:       'Chakra Petch', monospace, sans-serif;
+  --font-retro:     'Press Start 2P', monospace;
   --font-body:      'Outfit', system-ui, sans-serif;
 
   /* Sizing */
@@ -55,7 +60,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Ambient Subtle Particles Canvas */
+/* Background Particle Canvas */
 #ambient-canvas {
   position: absolute;
   top: 0;
@@ -64,7 +69,7 @@ html, body {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.35;
+  opacity: 0.4;
 }
 
 #game-wrapper {
@@ -92,220 +97,304 @@ html, body {
 }
 
 @keyframes screenFadeIn {
-  from { opacity: 0; transform: scale(0.97); }
+  from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* ─── Screen Glass Card Container ──────────────────────── */
-.screen-card {
-  width: 90%;
-  max-width: 560px;
-  background: var(--bg-panel);
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 32px 28px;
-  text-align: center;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.65),
-    0 0 1px rgba(255, 255, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+/* ========================================================
+   AUTHENTIC ARCADE TITLE SCREEN
+   ======================================================== */
+#start-screen {
+  justify-content: space-between;
+  padding: 24px 20px 20px 20px;
+  background: 
+    radial-gradient(ellipse 70% 50% at 50% 25%, rgba(245, 158, 11, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 60%),
+    var(--bg-deep);
+}
+
+/* Top Bar: High Score Trophy Pill */
+.title-top-bar {
+  width: 100%;
+  max-width: 680px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
+  justify-content: center;
+  z-index: 5;
 }
 
-/* ─── Arcade Title & Logo (Warm Gold & White) ──────────── */
-.badge-pill {
-  display: inline-block;
-  font-family: var(--font-hud);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--color-primary);
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.28);
-  border-radius: 20px;
-  padding: 4px 14px;
-  margin-bottom: 6px;
-}
-
-.game-logo {
-  font-family: var(--font-hud);
-  font-weight: 900;
-  font-size: clamp(2.6rem, 7.5vw, 4rem);
-  line-height: 0.95;
-  letter-spacing: 2px;
-  margin-bottom: 6px;
-}
-
-.logo-top {
-  display: block;
-  color: var(--text-pure);
-}
-
-.logo-bot {
-  display: block;
-  color: var(--color-primary);
-  text-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
-}
-
-.tagline {
-  font-size: 15px;
-  color: var(--text-dim);
-  letter-spacing: 0.3px;
-}
-
-/* ─── Highscore Banner ─────────────────────────────────── */
-.highscore-banner {
-  display: flex;
+.title-highscore-pill {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: 10px;
-  padding: 7px 16px;
+  background: rgba(24, 30, 42, 0.85);
+  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  border-radius: 20px;
+  padding: 6px 18px;
   font-family: var(--font-hud);
   font-size: 13px;
   font-weight: 700;
-  color: var(--color-amber);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-.crown-icon { font-size: 15px; }
-.hs-val { color: var(--text-pure); font-weight: 900; }
+.trophy-icon { font-size: 16px; }
+.hs-txt { color: var(--text-dim); letter-spacing: 1px; }
+.hs-num { color: var(--amber-bright); font-weight: 900; }
 
-/* ─── Mode Selector Cards ──────────────────────────────── */
-.mode-section {
+/* ─── Main Arcade Title Stage ──────────────────────────── */
+.arcade-title-stage {
   width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  z-index: 5;
 }
 
-.section-title {
+/* 3D Extruded Game Logo */
+.title-logo-block {
+  text-align: center;
+  position: relative;
+}
+
+.logo-spark {
+  position: absolute;
+  top: -12px;
+  right: 18px;
+  font-size: 28px;
+  filter: drop-shadow(0 0 10px var(--amber-bright));
+  animation: sparkPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes sparkPulse {
+  from { transform: scale(0.9) rotate(-10deg); }
+  to   { transform: scale(1.2) rotate(10deg); }
+}
+
+.game-logo-3d {
+  font-family: var(--font-hud);
+  font-weight: 900;
+  font-size: clamp(3.2rem, 9vw, 5.2rem);
+  line-height: 0.9;
+  letter-spacing: 3px;
+}
+
+.logo-row-1 {
+  display: block;
+  color: #ffffff;
+  text-shadow: 
+    0 3px 0 #1e293b,
+    0 6px 0 #0f172a,
+    0 10px 20px rgba(0, 0, 0, 0.8);
+}
+
+.logo-row-2 {
+  display: block;
+  color: var(--amber-bright);
+  text-shadow: 
+    0 4px 0 var(--amber-dark),
+    0 7px 0 var(--amber-shadow),
+    0 12px 30px rgba(245, 158, 11, 0.45);
+}
+
+.logo-subline {
   font-family: var(--font-hud);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--text-muted);
-  margin-bottom: 8px;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  margin-top: 8px;
 }
 
-.mode-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
+/* ─── Arcade Cartridge Mode Selector ───────────────────── */
+.arcade-mode-panel {
   width: 100%;
 }
 
-.mode-card {
-  background: rgba(25, 31, 42, 0.7);
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 10px 4px;
+.panel-header {
+  font-family: var(--font-hud);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.arcade-mode-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.arcade-cartridge {
+  background: #141a24;
+  border: 2px solid #222c3d;
+  border-radius: 14px;
+  padding: 12px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
+  position: relative;
+  box-shadow: 0 4px 0 #0b0f15, 0 8px 15px rgba(0, 0, 0, 0.5);
 }
 
-.mode-card:hover {
-  background: rgba(35, 43, 58, 0.9);
-  border-color: rgba(245, 158, 11, 0.4);
+.arcade-cartridge:hover {
+  background: #1c2433;
+  border-color: #3b4961;
   color: var(--text-pure);
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 #0b0f15, 0 12px 20px rgba(0, 0, 0, 0.6);
+}
+
+.arcade-cartridge:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #0b0f15, 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.arcade-cartridge.active {
+  background: #1e2638;
+  border-color: var(--amber-bright);
+  color: var(--text-pure);
+  box-shadow: 
+    0 4px 0 var(--amber-dark),
+    0 0 20px rgba(245, 158, 11, 0.25);
   transform: translateY(-2px);
 }
 
-.mode-card.active {
-  background: rgba(245, 158, 11, 0.15);
-  border-color: var(--color-primary);
-  color: var(--text-pure);
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
-}
+.cart-icon { font-size: 22px; line-height: 1; }
+.cart-title { font-size: 13px; font-weight: 800; font-family: var(--font-hud); letter-spacing: 1px; }
+.cart-desc { font-size: 9px; color: var(--text-muted); }
+.arcade-cartridge.active .cart-desc { color: var(--amber-bright); }
 
-.mode-icon { font-size: 20px; line-height: 1; }
-.mode-name { font-size: 12px; font-weight: 700; font-family: var(--font-hud); }
-.mode-hint { font-size: 9px; color: var(--text-muted); }
-.mode-card.active .mode-hint { color: var(--color-primary); }
-
-.mode-mixed {
+.cart-surge-mix {
   grid-column: span 5;
   flex-direction: row;
   justify-content: center;
-  gap: 10px;
-  padding: 8px 14px;
+  gap: 12px;
+  padding: 10px 16px;
 }
-@media (min-width: 480px) {
-  .mode-mixed { grid-column: span 1; flex-direction: column; padding: 10px 4px; }
+@media (min-width: 520px) {
+  .cart-surge-mix { grid-column: span 1; flex-direction: column; padding: 12px 6px; }
 }
 
-/* ─── Action Buttons (Golden Amber) ────────────────────── */
-.arcade-btn {
+/* ─── Massive 3D Physical Play Button ──────────────────── */
+.arcade-cta-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.arcade-play-button {
   position: relative;
-  font-family: var(--font-hud);
-  font-weight: 900;
-  font-size: 16px;
-  letter-spacing: 1.5px;
-  padding: 15px 40px;
-  border-radius: 14px;
+  width: 100%;
+  max-width: 380px;
+  height: 64px;
+  background: linear-gradient(180deg, var(--amber-light) 0%, var(--amber-main) 50%, var(--amber-dark) 100%);
   border: none;
+  border-radius: 18px;
   cursor: pointer;
-  transition: all 0.18s ease;
-  display: inline-flex;
+  box-shadow: 
+    0 6px 0 var(--amber-shadow),
+    0 12px 25px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.arcade-btn-play {
-  background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
-  color: #0c0f14;
-  box-shadow: 
-    0 4px 14px rgba(217, 119, 6, 0.4),
-    0 1px 0 rgba(255, 255, 255, 0.4) inset;
-}
-
-.arcade-btn-play:hover {
-  background: linear-gradient(180deg, #fde047 0%, #b45309 100%);
+.arcade-play-button:hover {
+  background: linear-gradient(180deg, #ffffff 0%, var(--amber-bright) 45%, var(--amber-main) 100%);
   transform: translateY(-2px);
   box-shadow: 
-    0 6px 20px rgba(217, 119, 6, 0.55),
-    0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    0 8px 0 var(--amber-shadow),
+    0 16px 30px rgba(245, 158, 11, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.arcade-btn-play:active {
-  transform: translateY(1px);
+.arcade-play-button:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 2px 0 var(--amber-shadow),
+    0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-.arcade-btn-secondary {
-  background: rgba(25, 31, 42, 0.85);
-  border: 1.5px solid var(--border-subtle);
+.play-btn-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-hud);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #090c12;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.play-arrow { font-size: 20px; }
+
+.press-space-prompt {
+  font-family: var(--font-hud);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.arcade-btn-secondary:hover {
-  background: rgba(35, 43, 58, 0.95);
-  color: var(--text-pure);
-  border-color: var(--color-primary);
-  transform: translateY(-1px);
+.press-space-prompt kbd {
+  background: #1a2230;
+  border: 1px solid #2e3b52;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: var(--amber-bright);
 }
 
-.how-to-play-pills {
+.blink-dot {
+  color: var(--amber-bright);
+  animation: blinkDot 1s infinite alternate;
+}
+
+@keyframes blinkDot {
+  from { opacity: 0.2; }
+  to   { opacity: 1; }
+}
+
+/* Bottom Feature Chips */
+.title-footer-perks {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   justify-content: center;
+  z-index: 5;
 }
 
-.pill {
+.perk-chip {
+  font-family: var(--font-hud);
   font-size: 11px;
+  font-weight: 700;
   color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(20, 26, 36, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 4px 10px;
+  border-radius: 20px;
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
+
+.p-icon { font-size: 13px; }
 
 /* ========================================================
    GAMEPLAY SCREEN HUD & INTERACTIVE EQUATION DOCK
@@ -353,7 +442,7 @@ html, body {
 
 #hud-score-box.score-pop .hud-number {
   animation: scoreBounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--color-accent);
+  color: var(--emerald-main);
 }
 
 @keyframes scoreBounce {
@@ -392,7 +481,7 @@ html, body {
 .timer-sec { font-size: 11px; color: var(--text-muted); }
 
 .timer-low .timer-number {
-  color: var(--color-coral) !important;
+  color: var(--coral-main) !important;
   animation: timerPanic 0.4s ease infinite alternate;
 }
 
@@ -413,7 +502,7 @@ html, body {
 #speed-meter-bar {
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, #10b981 0%, #f59e0b 60%, #f43f5e 100%);
+  background: linear-gradient(90deg, var(--emerald-main) 0%, var(--amber-main) 60%, var(--coral-main) 100%);
   border-radius: 8px;
   transform-origin: left;
   transition: width 0.1s linear;
@@ -427,7 +516,7 @@ html, body {
   font-family: var(--font-hud);
   font-size: 20px;
   font-weight: 900;
-  color: var(--color-amber);
+  color: var(--amber-bright);
 }
 
 .combo-flame {
@@ -458,7 +547,7 @@ html, body {
   color: var(--text-pure);
   transition: all 0.15s;
 }
-.sound-chip:hover { border-color: var(--color-primary); transform: scale(1.05); }
+.sound-chip:hover { border-color: var(--amber-main); transform: scale(1.05); }
 
 /* ========================================================
    DYNAMIC EQUATION DOCK (INTERACTIVE SLOTS)
@@ -487,7 +576,7 @@ html, body {
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  color: var(--color-accent);
+  color: var(--emerald-main);
   background: rgba(16, 185, 129, 0.12);
   border: 1.5px solid rgba(16, 185, 129, 0.35);
   border-radius: 8px;
@@ -522,7 +611,7 @@ html, body {
 /* Locked slot */
 .slot-operand.locked {
   background: rgba(16, 185, 129, 0.22);
-  border: 2px solid var(--color-accent);
+  border: 2px solid var(--emerald-main);
   color: var(--text-pure);
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
   transform: scale(1.05);
@@ -530,7 +619,7 @@ html, body {
 
 .slot-operand.success-flash {
   background: rgba(16, 185, 129, 0.5) !important;
-  border-color: var(--color-accent) !important;
+  border-color: var(--emerald-main) !important;
   color: var(--text-pure) !important;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.7) !important;
   transform: scale(1.1) !important;
@@ -538,7 +627,7 @@ html, body {
 
 .slot-operand.wrong-flash {
   background: rgba(244, 63, 94, 0.5) !important;
-  border-color: var(--color-coral) !important;
+  border-color: var(--coral-main) !important;
   color: var(--text-pure) !important;
   animation: slotShake 0.35s ease;
 }
@@ -554,7 +643,7 @@ html, body {
   font-family: var(--font-hud);
   font-size: 24px;
   font-weight: 900;
-  color: var(--color-primary);
+  color: var(--amber-main);
 }
 
 .slot-target {
@@ -562,7 +651,7 @@ html, body {
   height: 50px;
   padding: 0 12px;
   background: rgba(245, 158, 11, 0.18);
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--amber-main);
   color: var(--text-pure);
   font-size: 25px;
 }
@@ -573,7 +662,7 @@ html, body {
   top: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(6px);
-  background: var(--color-amber);
+  background: var(--amber-bright);
   color: #0c0f14;
   font-family: var(--font-hud);
   font-size: 12px;
@@ -616,7 +705,7 @@ html, body {
   );
 }
 
-/* ─── Grounded Non-Blue Game Orbs ──────────────────────── */
+/* ─── Grounded Game Orbs ───────────────────────────────── */
 .orb-floater {
   position: absolute;
   width: var(--orb-size);
@@ -659,7 +748,7 @@ html, body {
   border-color: rgba(255, 255, 255, 0.85);
 }
 
-/* Tasteful Non-Blue Orb Colors */
+/* Non-Blue Orb Colors */
 .orb-amber {
   background: linear-gradient(145deg, #d97706 0%, #92400e 100%);
   box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
@@ -692,7 +781,7 @@ html, body {
 
 /* Correct Burst Orb */
 .orb-correct {
-  background: #10b981 !important;
+  background: var(--emerald-main) !important;
   border-color: #ffffff !important;
   box-shadow: 0 0 30px rgba(16, 185, 129, 0.7) !important;
   transform: scale(1.35) !important;
@@ -703,7 +792,7 @@ html, body {
 
 /* Wrong Shake Orb */
 .orb-wrong {
-  background: #f43f5e !important;
+  background: var(--coral-main) !important;
   border-color: #ffffff !important;
   box-shadow: 0 0 25px rgba(244, 63, 94, 0.6) !important;
   animation: orbShake 0.35s ease;
@@ -757,10 +846,20 @@ html, body {
 }
 
 /* ========================================================
-   GAME OVER STATS MATRIX & RANK BADGES
+   GAME OVER STATS STAGE
    ======================================================== */
-.gameover-card {
+.gameover-stage {
+  width: 90%;
   max-width: 520px;
+  background: var(--bg-panel);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
 }
 
 .go-header {
@@ -775,7 +874,7 @@ html, body {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
-  color: var(--color-coral);
+  color: var(--coral-main);
 }
 
 .gameover-title {
@@ -790,7 +889,7 @@ html, body {
   font-size: 15px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  background: var(--color-amber);
+  background: var(--amber-bright);
   color: #0c0f14;
   padding: 4px 16px;
   border-radius: 16px;
@@ -817,7 +916,7 @@ html, body {
 }
 
 .stat-card .stat-icon { font-size: 30px; }
-.stat-sub { font-family: var(--font-hud); font-size: 11px; font-weight: 700; color: var(--color-primary); letter-spacing: 1px; }
+.stat-sub { font-family: var(--font-hud); font-size: 11px; font-weight: 700; color: var(--amber-main); letter-spacing: 1px; }
 .stat-big { font-family: var(--font-hud); font-size: 34px; font-weight: 900; color: var(--text-pure); }
 
 .new-record-pill {
@@ -825,7 +924,7 @@ html, body {
   position: absolute;
   right: 16px;
   top: 16px;
-  background: var(--color-amber);
+  background: var(--amber-bright);
   color: #0c0f14;
   font-family: var(--font-hud);
   font-size: 11px;
@@ -863,7 +962,28 @@ html, body {
   gap: 10px;
   width: 100%;
 }
-.gameover-actions .arcade-btn { width: 100%; }
+.gameover-actions .arcade-play-button { max-width: 100%; }
+
+.arcade-secondary-btn {
+  width: 100%;
+  height: 48px;
+  background: #18202c;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 14px;
+  color: var(--text-dim);
+  font-family: var(--font-hud);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.arcade-secondary-btn:hover {
+  background: #242f40;
+  color: var(--text-pure);
+  border-color: var(--amber-main);
+}
 
 /* ========================================================
    RESPONSIVE DESIGN (MOBILE & TABLET)
@@ -875,15 +995,30 @@ html, body {
     --dock-height: 66px;
   }
 
-  .screen-card {
-    padding: 22px 14px;
-    border-radius: 16px;
+  #start-screen {
+    padding: 16px 12px 14px 12px;
   }
 
-  .mode-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .arcade-title-stage {
+    gap: 16px;
   }
-  .mode-mixed { grid-column: span 2; }
+
+  .game-logo-3d {
+    font-size: 2.8rem;
+  }
+
+  .arcade-mode-selector {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .cart-surge-mix { grid-column: span 2; }
+
+  .arcade-play-button {
+    height: 56px;
+  }
+  .play-btn-content {
+    font-size: 19px;
+  }
 
   .slot-operand { width: 48px; height: 44px; font-size: 20px; }
   .slot-target  { min-width: 60px; height: 44px; font-size: 22px; }

@@ -839,11 +839,11 @@ function resetState() {
 }
 
 // ─── 19. EVENT LISTENERS ─────────────────────────────────────
-// Mode Cards
+// Mode Cartridges
 dom.modeGrid.addEventListener('click', e => {
-  const card = e.target.closest('.mode-card');
+  const card = e.target.closest('.arcade-cartridge, .mode-card');
   if (!card) return;
-  dom.modeGrid.querySelectorAll('.mode-card').forEach(c => {
+  dom.modeGrid.querySelectorAll('.arcade-cartridge, .mode-card').forEach(c => {
     c.classList.remove('active');
     c.setAttribute('aria-pressed', 'false');
   });

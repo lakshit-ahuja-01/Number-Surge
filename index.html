@@ -40,12 +40,12 @@
             <span class="logo-row-1">NUMBER</span>
             <span class="logo-row-2">SURGE</span>
           </h1>
-          <div class="logo-subline">TACTICAL 60-SECOND MATH BLITZ</div>
+          <div class="logo-subline">FAST ARITHMETIC ARCADE</div>
         </div>
 
         <!-- Arcade Operation Mode Selector -->
         <div class="arcade-mode-panel">
-          <div class="panel-header">CHOOSE GAME MODE</div>
+          <div class="panel-header">1. CHOOSE OPERATION</div>
           
           <div class="arcade-mode-selector" id="mode-grid" role="group" aria-label="Game mode selector">
             <!-- Addition Card -->
@@ -110,13 +110,41 @@
           </div>
         </div>
 
+        <!-- Duration Time Selector -->
+        <div class="arcade-time-panel">
+          <div class="panel-header">2. SELECT ROUND TIMER</div>
+          
+          <div class="time-chips-grid" id="time-grid" role="group" aria-label="Round duration selector">
+            <button class="time-chip" data-time="30" aria-pressed="false">
+              <span class="time-chip-icon">⚡</span>
+              <span class="time-chip-val">30s</span>
+              <span class="time-chip-label">BLITZ</span>
+            </button>
+            <button class="time-chip active" data-time="60" aria-pressed="true">
+              <span class="time-chip-icon">⏱️</span>
+              <span class="time-chip-val">60s</span>
+              <span class="time-chip-label">CLASSIC</span>
+            </button>
+            <button class="time-chip" data-time="90" aria-pressed="false">
+              <span class="time-chip-icon">⏳</span>
+              <span class="time-chip-val">90s</span>
+              <span class="time-chip-label">MARATHON</span>
+            </button>
+            <button class="time-chip" data-time="120" aria-pressed="false">
+              <span class="time-chip-icon">🔥</span>
+              <span class="time-chip-val">120s</span>
+              <span class="time-chip-label">ENDURANCE</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Big Play Button -->
         <div class="arcade-cta-box">
           <button id="start-btn" class="arcade-play-button">
             <span class="play-btn-bevel"></span>
             <span class="play-btn-content">
               <span class="play-arrow">▶</span>
-              <span class="play-label">START SURGE</span>
+              <span id="play-btn-label" class="play-label">START SURGE (60s)</span>
             </span>
           </button>
           

@@ -107,12 +107,13 @@ html, body {
    AUTHENTIC ARCADE TITLE SCREEN
    ======================================================== */
 #start-screen {
-  justify-content: space-between;
-  padding: 24px 20px 20px 20px;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px 20px;
   background: 
-    radial-gradient(ellipse 70% 50% at 50% 25%, rgba(245, 158, 11, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 50% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 45% at 50% 35%, rgba(245, 158, 11, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
     var(--bg-deep);
+  overflow-y: auto;
 }
 
 .title-top-bar {
@@ -121,6 +122,7 @@ html, body {
   display: flex;
   justify-content: center;
   z-index: 5;
+  margin-bottom: -4px;
 }
 
 .title-highscore-pill {
@@ -414,6 +416,64 @@ html, body {
   }
   .mode-mix { grid-column: span 2; }
 }
+
+/* ─── Duration Time Selector ───────────────────────────── */
+.arcade-time-panel {
+  width: 100%;
+}
+
+.time-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.time-chip {
+  background: linear-gradient(180deg, #151b26 0%, #0d121b 100%);
+  border: 2px solid #253144;
+  border-radius: 14px;
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: var(--text-dim);
+  box-shadow: 0 4px 0 #080b10, 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+.time-chip:hover {
+  background: #1c2433;
+  border-color: #3b4961;
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 #080b10, 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.time-chip:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #080b10, 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.time-chip.active {
+  background: #1e2738;
+  border-color: var(--amber-bright);
+  color: #ffffff;
+  box-shadow: 
+    0 4px 0 var(--amber-dark),
+    0 0 20px rgba(245, 158, 11, 0.3);
+  transform: translateY(-2px);
+}
+
+.time-chip-icon { font-size: 16px; line-height: 1; }
+.time-chip-val { font-family: var(--font-hud); font-size: 15px; font-weight: 900; letter-spacing: 0.5px; color: var(--text-pure); }
+.time-chip-label { font-family: var(--font-hud); font-size: 8px; font-weight: 800; letter-spacing: 1px; color: var(--text-muted); }
+.time-chip.active .time-chip-label { color: var(--amber-bright); }
+.time-chip.active .time-chip-val { color: var(--amber-bright); }
 
 /* Massive 3D Play Button */
 .arcade-cta-box {

@@ -120,6 +120,7 @@ const gameState = {
   bestSpeedBonus:  0,
   highScore:       0,
   isPaused:        false,
+  duration:        60,
 };
 
 // ─── 4. DOM ELEMENT CACHE ────────────────────────────────────
@@ -130,11 +131,13 @@ const dom = {
   gameoverScreen:  document.getElementById('gameover-screen'),
 
   startBtn:        document.getElementById('start-btn'),
+  playBtnLabel:    document.getElementById('play-btn-label'),
   playAgainBtn:    document.getElementById('play-again-btn'),
   menuBtn:         document.getElementById('menu-btn'),
   soundToggle:     document.getElementById('sound-toggle'),
   soundIcon:       document.getElementById('sound-icon'),
   modeGrid:        document.getElementById('mode-grid'),
+  timeGrid:        document.getElementById('time-grid'),
 
   scoreDisplay:    document.getElementById('score-display'),
   hudScoreBox:     document.getElementById('hud-score-box'),
@@ -634,7 +637,7 @@ function spawnEnergyParticles(refEl) {
 
 // ─── 14. COUNTDOWN TIMER ─────────────────────────────────────
 function startTimer() {
-  gameState.timeLeft = CONFIG.GAME_DURATION;
+  gameState.timeLeft = gameState.duration || CONFIG.GAME_DURATION;
   updateHUD();
 
   gameState.timerIntervalId = setInterval(() => {
@@ -905,6 +908,25 @@ dom.modeGrid.addEventListener('click', e => {
   gameState.mode = card.dataset.mode;
   playArcadeSound('click');
 });
+
+// Duration Chips
+if (dom.timeGrid) {
+  dom.timeGrid.addEventListener('click', e => {
+    const chip = e.target.closest('.time-chip');
+    if (!chip) return;
+    dom.timeGrid.querySelectorAll('.time-chip').forEach(c => {
+      c.classList.remove('active');
+      c.setAttribute('aria-pressed', 'false');
+    });
+    chip.classList.add('active');
+    chip.setAttribute('aria-pressed', 'true');
+    gameState.duration = parseInt(chip.dataset.time, 10);
+    if (dom.playBtnLabel) {
+      dom.playBtnLabel.textContent = `START SURGE (${gameState.duration}s)`;
+    }
+    playArcadeSound('click');
+  });
+}
 
 dom.startBtn.addEventListener('click', startGame);
 dom.playAgainBtn.addEventListener('click', startGame);

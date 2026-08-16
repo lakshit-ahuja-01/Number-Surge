@@ -61,6 +61,7 @@ const gameState = {
   timerIntervalId: null,       // setInterval handle
   lastFrameTime:   0,          // for delta-time movement
   difficultyLevel: 0,          // increases over time
+  isMuted:         false,      // sound toggle
 };
 
 // ─── 3. DOM REFERENCES ─────────────────────────────────────
@@ -72,6 +73,7 @@ const dom = {
   startBtn:       document.getElementById('start-btn'),
   playAgainBtn:   document.getElementById('play-again-btn'),
   menuBtn:        document.getElementById('menu-btn'),
+  soundToggle:    document.getElementById('sound-toggle'),
 
   scoreDisplay:   document.getElementById('score-display'),
   timerDisplay:   document.getElementById('timer-display'),
@@ -624,6 +626,7 @@ function getAudioCtx() {
  * @param {'correct' | 'wrong' | 'click' | 'gameover'} type
  */
 function playSound(type) {
+  if (gameState.isMuted) return;
   try {
     const ctx = getAudioCtx();
     const osc = ctx.createOscillator();
@@ -751,6 +754,18 @@ document.addEventListener('keydown', (e) => {
     }
   }
 });
+
+// Sound toggle
+dom.soundToggle.addEventListener('click', () => {
+  gameState.isMuted = !gameState.isMuted;
+  dom.soundToggle.textContent = gameState.isMuted ? '🔇' : '🔊';
+  dom.soundToggle.setAttribute('aria-label', gameState.isMuted ? 'Unmute sound' : 'Mute sound');
+});
+
+// Prevent double-tap zoom on mobile game area
+dom.river.addEventListener('touchend', (e) => {
+  e.preventDefault();
+}, { passive: false });
 
 // ─── INIT ──────────────────────────────────────────────────
 showScreen('start');

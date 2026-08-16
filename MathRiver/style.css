@@ -208,6 +208,28 @@ html, body {
   transition: color 0.3s, transform 0.2s var(--ease-spring);
 }
 
+.hud-sound-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.15s var(--ease-spring);
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hud-sound-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.1);
+}
+
+.hud-sound-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 .timer-low {
   color: var(--color-danger) !important;
   animation: timerFlash 0.5s ease-in-out infinite alternate;

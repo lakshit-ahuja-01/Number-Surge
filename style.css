@@ -2072,27 +2072,6 @@ body.theme-robotics .panel-header {
   text-shadow: 0 2px 4px rgba(0, 242, 254, 0.4);
 }
 
-body.theme-robotics .time-chip {
-  background: rgba(10, 14, 23, 0.92);
-  border-color: #1d283a;
-  color: #94a3b8;
-  box-shadow: 0 4px 0 #0f141e;
-}
-body.theme-robotics .time-chip:hover {
-  background: #1a2235;
-}
-body.theme-robotics .time-chip.active {
-  background: rgba(0, 242, 254, 0.1);
-  border-color: #00f2fe;
-  box-shadow: 0 4px 0 #005577, 0 0 15px rgba(0,242,254,0.3);
-}
-body.theme-robotics .time-chip.active .time-chip-val {
-  color: #00f2fe;
-}
-body.theme-robotics .time-chip.active .time-chip-label {
-  color: #00ff88;
-}
-
 body.theme-robotics .pause-modal {
   background: rgba(10, 14, 23, 0.85);
   backdrop-filter: blur(8px);
@@ -2140,17 +2119,6 @@ body.theme-robotics .slot-label-gold {
   text-shadow: 0 1px 0 #99004d;
 }
 
-/* Fix for active difficulty chips overriding standard active class */
-body.theme-robotics .diff-grid .time-chip.active {
-  background: rgba(0, 242, 254, 0.1) !important;
-  border-color: #00f2fe !important;
-  box-shadow: 0 4px 0 #005577, 0 0 15px rgba(0,242,254,0.3) !important;
-}
-body.theme-robotics .diff-grid .time-chip.active .time-chip-val {
-  color: #00f2fe !important;
-  text-shadow: none !important;
-}
-
 /* Fix for Spacebar Prompt */
 body.theme-robotics .press-space-prompt kbd {
   background: rgba(10, 14, 23, 0.92);
@@ -2159,8 +2127,6 @@ body.theme-robotics .press-space-prompt kbd {
   box-shadow: 0 2px 0 #005577;
 }
 
-
-
 /* Force HUD font variable override globally under robotics theme */
 body.theme-robotics,
 body.theme-robotics * {
@@ -2168,23 +2134,38 @@ body.theme-robotics * {
   --font-body: 'Rajdhani', sans-serif !important;
 }
 
-/* Inactive time-chips: Use a muted, low-opacity glowing cyan instead of flat gray */
-body.theme-robotics .time-chip {
+/* Inactive time-chips under Robotics (Both duration & difficulty) */
+body.theme-robotics .time-chip:not(.active) {
   background: #121826 !important;
   border-color: rgba(0, 242, 254, 0.15) !important;
   box-shadow: 0 4px 0 #0f141e !important;
 }
-body.theme-robotics .time-chip:hover {
+body.theme-robotics .time-chip:not(.active):hover {
   background: #1a2235 !important;
   border-color: rgba(0, 242, 254, 0.4) !important;
 }
-body.theme-robotics .time-chip-val {
+body.theme-robotics .time-chip:not(.active) .time-chip-val {
   color: rgba(0, 242, 254, 0.5) !important;
   text-shadow: none !important;
 }
-body.theme-robotics .time-chip-label {
+body.theme-robotics .time-chip:not(.active) .time-chip-label {
   color: rgba(0, 242, 254, 0.3) !important;
   text-shadow: none !important;
+}
+
+/* Active time-chips under Robotics (Both 30s/60s/90s/120s and Easy/Normal/Hard) */
+body.theme-robotics .time-chip.active {
+  background: rgba(0, 242, 254, 0.12) !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 4px 0 #005577, 0 0 16px rgba(0, 242, 254, 0.4) !important;
+}
+body.theme-robotics .time-chip.active .time-chip-val {
+  color: #00f2fe !important;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.6) !important;
+}
+body.theme-robotics .time-chip.active .time-chip-label {
+  color: #00ff88 !important;
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.4) !important;
 }
 
 /* Inactive Adventure Cards: Remove kids colors, use muted cyan theme */

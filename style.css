@@ -225,32 +225,31 @@ html, body {
   margin-bottom: 10px;
 }
 
-/* ─── Colorful Kids Mode Cards ────────────────────────── */
+/* ─── Ultra-Cartoonish 3D Kids Mode Cards ────────────────── */
 .arcade-mode-selector {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 12px;
   width: 100%;
 }
 
 .arcade-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.75);
-  border: 2.5px solid rgba(0, 0, 0, 0.08);
-  border-radius: 18px;
+  background: #ffffff;
+  border: 3.5px solid #e2e8f0;
+  border-radius: 24px;
   padding: 14px 8px 12px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.06), 0 6px 18px rgba(0, 0, 0, 0.08);
-  min-height: 130px;
+  box-shadow: 0 8px 0 #cbd5e1, 0 12px 24px rgba(0, 0, 0, 0.08);
+  min-height: 145px;
   justify-content: space-between;
   overflow: hidden;
-  backdrop-filter: blur(6px);
 }
 
 .card-glow-bg {
@@ -263,21 +262,21 @@ html, body {
 
 .card-pill {
   font-family: var(--font-hud);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.04);
-  color: var(--text-muted);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  color: #64748b;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .card-glyph {
-  font-size: 30px;
+  font-size: 38px;
   line-height: 1;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
 }
 
 .card-info {
@@ -289,45 +288,49 @@ html, body {
 
 .card-name {
   font-family: var(--font-hud);
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 900;
   letter-spacing: 0.5px;
-  color: var(--text-main);
+  color: #2d3436;
 }
 
 .card-tagline {
-  font-size: 9px;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
   white-space: nowrap;
 }
 
 .card-check-tag {
   font-family: var(--font-hud);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 900;
-  letter-spacing: 1px;
-  padding: 2px 8px;
-  border-radius: 6px;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 10px;
   opacity: 0;
-  transform: translateY(4px);
+  transform: translateY(6px);
   transition: all 0.2s ease;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.1);
 }
 
-/* Hover lift */
+/* Playful Hover Bounce & Wobble */
 .arcade-card:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.05), 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px) scale(1.05) rotate(-2deg);
+  box-shadow: 0 14px 0 #cbd5e1, 0 20px 30px rgba(0, 0, 0, 0.12);
+}
+
+.arcade-card:nth-child(even):hover {
+  transform: translateY(-8px) scale(1.05) rotate(2deg);
 }
 
 .arcade-card:hover .card-glyph {
-  transform: scale(1.2) rotate(5deg);
+  transform: scale(1.25) rotate(8deg);
 }
 
-/* Active Pressed / Selected */
+/* Active Pressed / Selected State */
 .arcade-card.active {
-  transform: translateY(-3px) scale(1.02);
-  color: var(--text-main);
+  transform: translateY(4px);
 }
 
 .arcade-card.active .card-check-tag {
@@ -336,78 +339,103 @@ html, body {
 }
 
 .arcade-card.active .card-glow-bg {
-  opacity: 0.2;
+  opacity: 0.25;
 }
 
-/* ── 1. Addition (Mint Green) ── */
-.mode-add { border-color: rgba(46, 213, 115, 0.4); }
-.mode-add .card-glyph { color: #2ed573; }
-.mode-add:hover { border-color: #2ed573; }
+/* ── 1. Addition (Fresh Lime / Mint) ── */
+.mode-add { 
+  border-color: #a7f3d0; 
+  box-shadow: 0 8px 0 #6ee7b7, 0 12px 24px rgba(46, 213, 115, 0.15);
+}
+.mode-add:hover { border-color: #34d399; box-shadow: 0 14px 0 #10b981, 0 20px 30px rgba(46, 213, 115, 0.25); }
+.mode-add .card-glyph { color: #10b981; }
+.mode-add .card-pill { background: #d1fae5; color: #047857; }
 .mode-add.active {
-  border-color: #2ed573;
-  background: rgba(46, 213, 115, 0.1);
-  box-shadow: 0 4px 0 rgba(46, 213, 115, 0.2), 0 0 20px rgba(46, 213, 115, 0.15);
+  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+  border-color: #10b981;
+  box-shadow: 0 4px 0 #059669, 0 0 24px rgba(16, 185, 129, 0.35);
 }
-.mode-add.active .card-pill { background: rgba(46, 213, 115, 0.2); color: #1e8449; border-color: #2ed573; }
-.mode-add.active .card-tagline { color: #27ae60; }
-.mode-add.active .card-check-tag { background: #2ed573; color: #fff; }
-.mode-add .card-glow-bg { background: radial-gradient(circle at 50% 30%, #2ed573, transparent 70%); }
+.mode-add.active .card-pill { background: #10b981; color: #ffffff; }
+.mode-add.active .card-name { color: #065f46; }
+.mode-add.active .card-tagline { color: #059669; }
+.mode-add.active .card-check-tag { background: #10b981; color: #ffffff; }
+.mode-add .card-glow-bg { background: radial-gradient(circle at 50% 30%, #10b981, transparent 70%); }
 
-/* ── 2. Subtraction (Sunny Orange) ── */
-.mode-sub { border-color: rgba(255, 159, 67, 0.4); }
-.mode-sub .card-glyph { color: #ff9f43; }
-.mode-sub:hover { border-color: #ff9f43; }
+/* ── 2. Subtraction (Sunny Tangerine) ── */
+.mode-sub { 
+  border-color: #fed7aa; 
+  box-shadow: 0 8px 0 #fdba74, 0 12px 24px rgba(255, 159, 67, 0.15);
+}
+.mode-sub:hover { border-color: #fb923c; box-shadow: 0 14px 0 #f97316, 0 20px 30px rgba(255, 159, 67, 0.25); }
+.mode-sub .card-glyph { color: #f97316; }
+.mode-sub .card-pill { background: #ffedd5; color: #c2410c; }
 .mode-sub.active {
-  border-color: #ff9f43;
-  background: rgba(255, 159, 67, 0.1);
-  box-shadow: 0 4px 0 rgba(255, 159, 67, 0.2), 0 0 20px rgba(255, 159, 67, 0.15);
+  background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+  border-color: #f97316;
+  box-shadow: 0 4px 0 #c2410c, 0 0 24px rgba(249, 115, 22, 0.35);
 }
-.mode-sub.active .card-pill { background: rgba(255, 159, 67, 0.2); color: #e67e22; border-color: #ff9f43; }
-.mode-sub.active .card-tagline { color: #e67e22; }
-.mode-sub.active .card-check-tag { background: #ff9f43; color: #fff; }
-.mode-sub .card-glow-bg { background: radial-gradient(circle at 50% 30%, #ff9f43, transparent 70%); }
+.mode-sub.active .card-pill { background: #f97316; color: #ffffff; }
+.mode-sub.active .card-name { color: #9a3412; }
+.mode-sub.active .card-tagline { color: #c2410c; }
+.mode-sub.active .card-check-tag { background: #f97316; color: #ffffff; }
+.mode-sub .card-glow-bg { background: radial-gradient(circle at 50% 30%, #f97316, transparent 70%); }
 
-/* ── 3. Multiplication (Lavender Purple) ── */
-.mode-mult { border-color: rgba(165, 94, 234, 0.4); }
-.mode-mult .card-glyph { color: #a55eea; }
-.mode-mult:hover { border-color: #a55eea; }
-.mode-mult.active {
-  border-color: #a55eea;
-  background: rgba(165, 94, 234, 0.1);
-  box-shadow: 0 4px 0 rgba(165, 94, 234, 0.2), 0 0 20px rgba(165, 94, 234, 0.15);
+/* ── 3. Multiplication (Grape Purple) ── */
+.mode-mult { 
+  border-color: #e9d5ff; 
+  box-shadow: 0 8px 0 #d8b4fe, 0 12px 24px rgba(165, 94, 234, 0.15);
 }
-.mode-mult.active .card-pill { background: rgba(165, 94, 234, 0.2); color: #8e44ad; border-color: #a55eea; }
-.mode-mult.active .card-tagline { color: #8e44ad; }
-.mode-mult.active .card-check-tag { background: #a55eea; color: #fff; }
-.mode-mult .card-glow-bg { background: radial-gradient(circle at 50% 30%, #a55eea, transparent 70%); }
+.mode-mult:hover { border-color: #c084fc; box-shadow: 0 14px 0 #a855f7, 0 20px 30px rgba(165, 94, 234, 0.25); }
+.mode-mult .card-glyph { color: #a855f7; }
+.mode-mult .card-pill { background: #f3e8ff; color: #7e22ce; }
+.mode-mult.active {
+  background: linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%);
+  border-color: #a855f7;
+  box-shadow: 0 4px 0 #7e22ce, 0 0 24px rgba(168, 85, 247, 0.35);
+}
+.mode-mult.active .card-pill { background: #a855f7; color: #ffffff; }
+.mode-mult.active .card-name { color: #581c87; }
+.mode-mult.active .card-tagline { color: #7e22ce; }
+.mode-mult.active .card-check-tag { background: #a855f7; color: #ffffff; }
+.mode-mult .card-glow-bg { background: radial-gradient(circle at 50% 30%, #a855f7, transparent 70%); }
 
 /* ── 4. Division (Bubblegum Pink) ── */
-.mode-div { border-color: rgba(255, 107, 138, 0.4); }
-.mode-div .card-glyph { color: #ff6b8a; }
-.mode-div:hover { border-color: #ff6b8a; }
+.mode-div { 
+  border-color: #fecdd3; 
+  box-shadow: 0 8px 0 #fda4af, 0 12px 24px rgba(255, 107, 138, 0.15);
+}
+.mode-div:hover { border-color: #fb7185; box-shadow: 0 14px 0 #f43f5e, 0 20px 30px rgba(255, 107, 138, 0.25); }
+.mode-div .card-glyph { color: #f43f5e; }
+.mode-div .card-pill { background: #ffe4e6; color: #be123c; }
 .mode-div.active {
-  border-color: #ff6b8a;
-  background: rgba(255, 107, 138, 0.1);
-  box-shadow: 0 4px 0 rgba(255, 107, 138, 0.2), 0 0 20px rgba(255, 107, 138, 0.15);
+  background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+  border-color: #f43f5e;
+  box-shadow: 0 4px 0 #be123c, 0 0 24px rgba(244, 63, 94, 0.35);
 }
-.mode-div.active .card-pill { background: rgba(255, 107, 138, 0.2); color: #e84865; border-color: #ff6b8a; }
-.mode-div.active .card-tagline { color: #e84865; }
-.mode-div.active .card-check-tag { background: #ff6b8a; color: #fff; }
-.mode-div .card-glow-bg { background: radial-gradient(circle at 50% 30%, #ff6b8a, transparent 70%); }
+.mode-div.active .card-pill { background: #f43f5e; color: #ffffff; }
+.mode-div.active .card-name { color: #881337; }
+.mode-div.active .card-tagline { color: #be123c; }
+.mode-div.active .card-check-tag { background: #f43f5e; color: #ffffff; }
+.mode-div .card-glow-bg { background: radial-gradient(circle at 50% 30%, #f43f5e, transparent 70%); }
 
-/* ── 5. Surge Mix (Sunny Yellow) ── */
-.mode-mix { border-color: rgba(254, 211, 48, 0.5); }
-.mode-mix .card-glyph { color: #e67e22; animation: sparkPulse 0.9s infinite alternate; }
-.mode-mix:hover { border-color: #fed330; }
-.mode-mix.active {
-  border-color: #fed330;
-  background: rgba(254, 211, 48, 0.12);
-  box-shadow: 0 4px 0 rgba(254, 211, 48, 0.25), 0 0 20px rgba(254, 211, 48, 0.2);
+/* ── 5. Surge Mix (Sunny Rainbow Gold) ── */
+.mode-mix { 
+  border-color: #fef08a; 
+  box-shadow: 0 8px 0 #fde047, 0 12px 24px rgba(254, 211, 48, 0.2);
 }
-.mode-mix.active .card-pill { background: rgba(254, 211, 48, 0.25); color: #e67e22; border-color: #fed330; }
-.mode-mix.active .card-tagline { color: #e67e22; }
-.mode-mix.active .card-check-tag { background: #fed330; color: #5a3e00; }
-.mode-mix .card-glow-bg { background: radial-gradient(circle at 50% 30%, #fed330, transparent 70%); }
+.mode-mix:hover { border-color: #facc15; box-shadow: 0 14px 0 #eab308, 0 20px 30px rgba(254, 211, 48, 0.3); }
+.mode-mix .card-glyph { color: #ca8a04; animation: sparkPulse 0.9s infinite alternate; }
+.mode-mix .card-pill { background: #fef9c3; color: #854d0e; }
+.mode-mix.active {
+  background: linear-gradient(180deg, #fefce8 0%, #fef9c3 100%);
+  border-color: #eab308;
+  box-shadow: 0 4px 0 #a16207, 0 0 24px rgba(234, 179, 8, 0.4);
+}
+.mode-mix.active .card-pill { background: #eab308; color: #ffffff; }
+.mode-mix.active .card-name { color: #713f12; }
+.mode-mix.active .card-tagline { color: #a16207; }
+.mode-mix.active .card-check-tag { background: #eab308; color: #ffffff; }
+.mode-mix .card-glow-bg { background: radial-gradient(circle at 50% 30%, #eab308, transparent 70%); }
 
 @media (max-width: 580px) {
   .arcade-mode-selector {
@@ -416,7 +444,7 @@ html, body {
   .mode-mix { grid-column: span 2; }
 }
 
-/* ─── Duration Time Selector ───────────────────────────── */
+/* ─── Chunky 3D Cartoon Round Timer Chips ────────────────── */
 .arcade-time-panel {
   width: 100%;
 }
@@ -424,56 +452,73 @@ html, body {
 .time-chips-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
 .time-chip {
-  background: rgba(255, 255, 255, 0.8);
-  border: 2.5px solid rgba(0, 0, 0, 0.08);
-  border-radius: 16px;
-  padding: 10px 4px;
+  background: #ffffff;
+  border: 3px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 12px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.06);
-  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 0 #cbd5e1, 0 8px 16px rgba(0, 0, 0, 0.06);
 }
 
 .time-chip:hover {
-  background: #ffffff;
-  border-color: rgba(255, 159, 67, 0.4);
-  color: var(--text-main);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.04), 0 8px 20px rgba(0, 0, 0, 0.1);
+  background: #fffdfa;
+  border-color: #fed7aa;
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 0 #fdba74, 0 14px 22px rgba(255, 159, 67, 0.2);
 }
 
 .time-chip:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #cbd5e1;
 }
 
 .time-chip.active {
-  background: #fff8ef;
-  border-color: var(--candy-orange);
+  background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+  border-color: #ff9f43;
   color: var(--text-main);
   box-shadow: 
-    0 3px 0 var(--candy-orange-d),
-    0 0 16px rgba(255, 159, 67, 0.25);
-  transform: translateY(-2px);
+    0 4px 0 #ea580c,
+    0 0 20px rgba(255, 159, 67, 0.35);
+  transform: translateY(2px);
 }
 
-.time-chip-icon { font-size: 16px; line-height: 1; }
-.time-chip-val { font-family: var(--font-hud); font-size: 15px; font-weight: 900; letter-spacing: 0.5px; color: var(--text-main); }
-.time-chip-label { font-family: var(--font-hud); font-size: 8px; font-weight: 800; letter-spacing: 1px; color: var(--text-muted); }
-.time-chip.active .time-chip-label { color: var(--candy-orange-d); }
-.time-chip.active .time-chip-val { color: var(--candy-orange); }
+.time-chip-icon { 
+  font-size: 20px; 
+  line-height: 1; 
+  animation: clockWiggle 3s infinite ease-in-out;
+}
+
+.time-chip-val { 
+  font-family: var(--font-hud); 
+  font-size: 17px; 
+  font-weight: 900; 
+  letter-spacing: 0.5px; 
+  color: #2d3436; 
+}
+
+.time-chip-label { 
+  font-family: var(--font-hud); 
+  font-size: 9px; 
+  font-weight: 900; 
+  letter-spacing: 1px; 
+  color: #94a3b8; 
+}
+
+.time-chip.active .time-chip-label { color: #ea580c; }
+.time-chip.active .time-chip-val { color: #c2410c; }
 
 /* 🎮 Big Rounded Play Button */
 .arcade-cta-box {

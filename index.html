@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Number Surge — Fun and colorful math blitz game for kids! Solve floating equations and score combos!">
   <meta name="theme-color" content="#e8f4fd">
-  <title>Number Surge — Kids Math Adventure</title>
+  <title>🎉 Number Surge — Kids Math Adventure! 🌈</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800;900&family=Outfit:wght@500;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800;900&family=Outfit:wght@500;700;800;900&family=Press+Start+2P&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,6 +21,12 @@
     <!-- ===== START SCREEN (AUTHENTIC ARCADE TITLE SCREEN) ===== -->
     <div id="start-screen" class="screen active">
       
+      <!-- Theme Switcher -->
+      <div class="theme-switcher-bar">
+        <button class="theme-btn active" data-theme="kids">🍭 KIDS CANDY</button>
+        <button class="theme-btn" data-theme="robotics">🤖 CYBER ROBOTICS</button>
+      </div>
+
       <!-- Top Title Screen Bar -->
       <div class="title-top-bar">
         <div class="title-highscore-pill">
@@ -35,105 +41,143 @@
         
         <!-- 3D Extruded Logo Block -->
         <div class="title-logo-block">
+          <div class="logo-deco logo-deco-left">🌟</div>
+          <div class="logo-deco logo-deco-right">🌟</div>
           <div class="logo-spark">⚡</div>
           <h1 class="game-logo-3d">
             <span class="logo-row-1">NUMBER</span>
             <span class="logo-row-2">SURGE</span>
           </h1>
-          <div class="logo-subline">FAST ARITHMETIC ARCADE</div>
+          <div class="logo-subline">🍭 FUN MATH FOR KIDS! 🍭</div>
+          <div class="logo-emoji-row">🌈 ➕ ➖ ✖️ ➗ 🌈</div>
         </div>
 
         <!-- Arcade Operation Mode Selector -->
         <div class="arcade-mode-panel">
-          <div class="panel-header">1. CHOOSE OPERATION</div>
+          <div class="panel-header">🎯 STEP 1 — PICK YOUR ADVENTURE!</div>
           
           <div class="arcade-mode-selector" id="mode-grid" role="group" aria-label="Game mode selector">
             <!-- Addition Card -->
             <button class="arcade-card mode-add active" data-mode="addition" aria-pressed="true">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍏 PLUS</div>
+              <div class="card-pill">🍏 PLUS!</div>
               <div class="card-glyph">➕</div>
               <div class="card-info">
                 <span class="card-name">ADDITION</span>
-                <span class="card-tagline">Add Together!</span>
+                <span class="card-tagline">🤝 Add Together!</span>
               </div>
-              <div class="card-check-tag">⭐ READY!</div>
+              <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
 
             <!-- Subtraction Card -->
             <button class="arcade-card mode-sub" data-mode="subtraction" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍊 MINUS</div>
+              <div class="card-pill">🍊 MINUS!</div>
               <div class="card-glyph">➖</div>
               <div class="card-info">
                 <span class="card-name">SUBTRACT</span>
-                <span class="card-tagline">Take Away!</span>
+                <span class="card-tagline">✂️ Take Away!</span>
               </div>
-              <div class="card-check-tag">⭐ READY!</div>
+              <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
 
             <!-- Multiplication Card -->
             <button class="arcade-card mode-mult" data-mode="multiplication" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍇 TIMES</div>
+              <div class="card-pill">🍇 TIMES!</div>
               <div class="card-glyph">✖️</div>
               <div class="card-info">
                 <span class="card-name">MULTIPLY</span>
-                <span class="card-tagline">Multiply Up!</span>
+                <span class="card-tagline">🚀 Power Up!</span>
               </div>
-              <div class="card-check-tag">⭐ READY!</div>
+              <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
 
             <!-- Division Card -->
             <button class="arcade-card mode-div" data-mode="division" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍓 SHARE</div>
+              <div class="card-pill">🍓 SHARE!</div>
               <div class="card-glyph">➗</div>
               <div class="card-info">
                 <span class="card-name">DIVISION</span>
-                <span class="card-tagline">Share Fair!</span>
+                <span class="card-tagline">🍕 Share It!</span>
               </div>
-              <div class="card-check-tag">⭐ READY!</div>
+              <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
 
             <!-- Surge Mix Card -->
             <button class="arcade-card mode-mix" data-mode="mixed" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">⭐ ALL MIX</div>
+              <div class="card-pill">🎉 ALL MIX!</div>
               <div class="card-glyph">🎲</div>
               <div class="card-info">
                 <span class="card-name">SURGE MIX</span>
-                <span class="card-tagline">Wild Adventure!</span>
+                <span class="card-tagline">🌈 Wild Surprise!</span>
               </div>
-              <div class="card-check-tag">⭐ READY!</div>
+              <div class="card-check-tag">⭐ LET'S GO!</div>
+            </button>
+
+            <!-- Powers Card (Robotics Mode Only) -->
+            <button class="arcade-card mode-pow" data-mode="powers" aria-pressed="false" style="display: none;">
+              <div class="card-glow-bg"></div>
+              <div class="card-pill">⚡ POWERS!</div>
+              <div class="card-glyph">A<sup>B</sup></div>
+              <div class="card-info">
+                <span class="card-name">POWERS</span>
+                <span class="card-tagline">🔋 Exponents!</span>
+              </div>
+              <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
           </div>
         </div>
 
         <!-- Duration Time Selector -->
         <div class="arcade-time-panel">
-          <div class="panel-header">⏰ 2. CHOOSE ROUND TIMER</div>
+          <div class="panel-header">⏰ STEP 2 — HOW LONG DO YOU PLAY?</div>
           
           <div class="time-chips-grid" id="time-grid" role="group" aria-label="Round duration selector">
             <button class="time-chip" data-time="30" aria-pressed="false">
               <span class="time-chip-icon">⚡</span>
               <span class="time-chip-val">30s</span>
-              <span class="time-chip-label">QUICK</span>
+              <span class="time-chip-label">⚡ SPEEDY!</span>
             </button>
             <button class="time-chip active" data-time="60" aria-pressed="true">
               <span class="time-chip-icon">⏰</span>
               <span class="time-chip-val">60s</span>
-              <span class="time-chip-label">CLASSIC</span>
+              <span class="time-chip-label">🌟 CLASSIC!</span>
             </button>
             <button class="time-chip" data-time="90" aria-pressed="false">
               <span class="time-chip-icon">⏳</span>
               <span class="time-chip-val">90s</span>
-              <span class="time-chip-label">LONG RUN</span>
+              <span class="time-chip-label">🏃 LONG GO!</span>
             </button>
             <button class="time-chip" data-time="120" aria-pressed="false">
-              <span class="time-chip-icon">🔥</span>
+              <span class="time-chip-icon">🦸</span>
               <span class="time-chip-val">120s</span>
-              <span class="time-chip-label">SUPER RUN</span>
+              <span class="time-chip-label">🦸 HERO!</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Difficulty Selector -->
+        <div class="arcade-time-panel">
+          <div class="panel-header">🏅 STEP 3 — HOW HARD?</div>
+          
+          <div class="time-chips-grid diff-grid" id="diff-grid" role="group" aria-label="Difficulty selector">
+            <button class="time-chip active" data-diff="0" aria-pressed="true">
+              <span class="time-chip-icon">🌱</span>
+              <span class="time-chip-val">EASY</span>
+              <span class="time-chip-label">RELAXED</span>
+            </button>
+            <button class="time-chip" data-diff="3" aria-pressed="false">
+              <span class="time-chip-icon">🌟</span>
+              <span class="time-chip-val">NORMAL</span>
+              <span class="time-chip-label">CLASSIC</span>
+            </button>
+            <button class="time-chip" data-diff="6" aria-pressed="false">
+              <span class="time-chip-icon">🔥</span>
+              <span class="time-chip-val">HARD</span>
+              <span class="time-chip-label">FAST!</span>
             </button>
           </div>
         </div>
@@ -143,13 +187,13 @@
           <button id="start-btn" class="arcade-play-button">
             <span class="play-btn-bevel"></span>
             <span class="play-btn-content">
-              <span class="play-arrow">▶</span>
-              <span id="play-btn-label" class="play-label">START SURGE (60s)</span>
+              <span class="play-arrow">🚀</span>
+              <span id="play-btn-label" class="play-label">LET'S PLAY! (60s)</span>
             </span>
           </button>
           
           <div class="press-space-prompt">
-            <span class="blink-dot">●</span> PRESS <kbd>SPACEBAR</kbd> TO PLAY
+            <span class="blink-dot">🎯</span> PRESS <kbd>SPACEBAR</kbd> TO START!
           </div>
         </div>
 
@@ -260,27 +304,23 @@
           <div class="sky-star star-2">⭐</div>
           <div class="sky-star star-3">✨</div>
         </div>
-        <div class="river-bottom-waves">
-          <div class="wave wave-1"></div>
-          <div class="wave wave-2"></div>
-        </div>
+
         <div class="river-grid-bg"></div>
-        <div class="river-stream-overlay"></div>
         <!-- Floating orbs injected by script.js -->
       </main>
 
       <!-- PAUSE OVERLAY MODAL -->
       <div id="pause-modal" class="pause-modal">
         <div class="pause-card">
-          <div class="pause-icon">⏸️ 🍦</div>
-          <h3 class="pause-title">TAKE A BREAK! ✨</h3>
-          <p class="pause-desc">Game is paused. Catch your breath or stretch!</p>
+          <div class="pause-icon">⏸️ 🍦 </div>
+          <h3 class="pause-title">TAKING A BREAK! 😊</h3>
+          <p class="pause-desc">Game is resting! 💤 Come back soon!</p>
           <div class="pause-actions">
             <button id="resume-btn" class="arcade-play-button">
-              <span class="play-btn-content">▶ CONTINUE PLAYING</span>
+              <span class="play-btn-content">🚀 KEEP PLAYING!</span>
             </button>
             <button id="pause-menu-btn" class="arcade-secondary-btn">
-              <span>🏠 BACK TO MENU</span>
+              <span>🏠 GO HOME</span>
             </button>
           </div>
         </div>
@@ -293,8 +333,9 @@
       <div class="gameover-stage">
 
         <div class="go-header">
-          <div class="gameover-banner">🎉 ROUND FINISHED!</div>
-          <h2 class="gameover-title">GREAT EFFORT! 🌟</h2>
+          <div class="gameover-banner">🎊 ROUND COMPLETE! 🎊</div>
+          <h2 class="gameover-title">YOU DID IT! 🎉</h2>
+          <div class="gameover-stars">⭐ ⭐ ⭐</div>
           <div id="rank-badge" class="rank-badge">🌟 SUPERSTAR ⭐⭐</div>
         </div>
 
@@ -340,7 +381,7 @@
           <button id="play-again-btn" class="arcade-play-button">
             <span class="play-btn-bevel"></span>
             <span class="play-btn-content">
-              <span>🔄 PLAY AGAIN!</span>
+              <span>🚀 PLAY AGAIN!</span>
             </span>
           </button>
           

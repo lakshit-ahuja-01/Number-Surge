@@ -108,38 +108,44 @@ html, body {
    🌈 PLAYFUL KIDS TITLE SCREEN
    ======================================================== */
 #start-screen {
-  justify-content: center;
-  gap: 16px;
-  padding: 24px 20px;
+  display: none;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px;
+  padding-top: 32px;
   background: 
-    radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 214, 109, 0.3) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(255, 107, 138, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(69, 170, 242, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 214, 109, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(255, 107, 138, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(69, 170, 242, 0.2) 0%, transparent 50%),
     linear-gradient(180deg, #c8e6ff 0%, #e8f4fd 35%, #fff5e6 70%, #ffe8d6 100%);
   overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#start-screen.active {
+  display: flex;
 }
 
 .title-top-bar {
   width: 100%;
-  max-width: 680px;
   display: flex;
   justify-content: center;
   z-index: 5;
-  margin-bottom: -4px;
+  margin-top: 24px;
 }
 
 .title-highscore-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 2px solid rgba(255, 159, 67, 0.4);
-  border-radius: 24px;
-  padding: 6px 18px;
+  background: #ffffff;
+  border: 2.5px solid #fdba74;
+  border-radius: 20px;
+  padding: 4px 16px;
   font-family: var(--font-hud);
   font-size: 13px;
-  font-weight: 700;
-  box-shadow: 0 4px 15px rgba(255, 159, 67, 0.2);
+  font-weight: 800;
+  box-shadow: 0 4px 0 #fed7aa;
 }
 
 .trophy-icon { font-size: 16px; }
@@ -152,8 +158,10 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 14px;
   z-index: 5;
+  margin: auto;
 }
 
 .title-logo-block {
@@ -161,26 +169,12 @@ html, body {
   position: relative;
 }
 
-.logo-spark {
-  position: absolute;
-  top: -14px;
-  right: 12px;
-  font-size: 30px;
-  filter: drop-shadow(0 0 8px rgba(255, 159, 67, 0.6));
-  animation: sparkPulse 1.2s ease-in-out infinite alternate;
-}
-
-@keyframes sparkPulse {
-  from { transform: scale(0.9) rotate(-10deg); }
-  to   { transform: scale(1.25) rotate(10deg); }
-}
-
 .game-logo-3d {
   font-family: var(--font-hud);
   font-weight: 900;
-  font-size: clamp(3rem, 9vw, 5rem);
-  line-height: 0.95;
-  letter-spacing: 2px;
+  font-size: clamp(2.4rem, 5.5vw, 3.4rem);
+  line-height: 0.92;
+  letter-spacing: 1.5px;
 }
 
 .logo-row-1 {
@@ -189,7 +183,7 @@ html, body {
   text-shadow: 
     0 3px 0 #e84865,
     0 6px 0 #c13055,
-    0 8px 18px rgba(255, 107, 138, 0.4);
+    0 10px 20px rgba(255, 107, 138, 0.4);
 }
 
 .logo-row-2 {
@@ -198,16 +192,33 @@ html, body {
   text-shadow: 
     0 3px 0 var(--candy-orange-d),
     0 6px 0 var(--candy-orange-s),
-    0 10px 24px rgba(255, 159, 67, 0.4);
+    0 10px 20px rgba(255, 159, 67, 0.4);
 }
 
 .logo-subline {
   font-family: var(--font-hud);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #c2410c;
+  margin-top: 4px;
+  background: #ffedd5;
+  padding: 3px 14px;
+  border-radius: 20px;
+  border: 2px solid #fdba74;
+  display: inline-block;
+  box-shadow: 0 3px 0 #fed7aa;
+}
+
+.logo-deco {
+  display: none;
+}
+
+.logo-emoji-row {
+  font-size: 15px;
+  margin-top: 4px;
   letter-spacing: 3px;
-  color: var(--text-dim);
-  margin-top: 6px;
+  animation: emojiWobble 3s infinite alternate;
 }
 
 /* Mode Selector */
@@ -217,102 +228,94 @@ html, body {
 
 .panel-header {
   font-family: var(--font-hud);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #ff9f43;
+  text-shadow: 0 2px 0 #fed7aa;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 /* ─── Ultra-Cartoonish 3D Kids Mode Cards ────────────────── */
 .arcade-mode-selector {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 10px;
   width: 100%;
 }
 
 .arcade-card {
   position: relative;
   background: #ffffff;
-  border: 3.5px solid #e2e8f0;
-  border-radius: 24px;
-  padding: 14px 8px 12px 8px;
+  border: 3px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 10px 6px 8px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--text-dim);
-  box-shadow: 0 8px 0 #cbd5e1, 0 12px 24px rgba(0, 0, 0, 0.08);
-  min-height: 145px;
   justify-content: space-between;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease;
+  color: var(--text-dim);
+  box-shadow: 0 6px 0 #cbd5e1, 0 8px 16px rgba(0, 0, 0, 0.06);
+  min-height: 105px;
   overflow: hidden;
 }
 
-.card-glow-bg {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
+.arcade-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 0 #cbd5e1, 0 14px 20px rgba(0, 0, 0, 0.1);
+}
+
+.arcade-card.active {
+  transform: translateY(3px);
+  box-shadow: 0 3px 0 #cbd5e1;
 }
 
 .card-pill {
   font-family: var(--font-hud);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 900;
-  letter-spacing: 0.5px;
-  padding: 3px 10px;
-  border-radius: 12px;
+  padding: 3px 8px;
+  border-radius: 10px;
   background: #f1f5f9;
   color: #64748b;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .card-glyph {
-  font-size: 38px;
+  font-size: 28px;
   line-height: 1;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
 }
 
 .card-info {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 1px;
 }
 
 .card-name {
   font-family: var(--font-hud);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.5px;
-  color: #2d3436;
 }
+
+.mode-add .card-name { color: #10b981; text-shadow: 0 1.5px 0 #a7f3d0; }
+.mode-sub .card-name { color: #f97316; text-shadow: 0 1.5px 0 #fed7aa; }
+.mode-mult .card-name { color: #a855f7; text-shadow: 0 1.5px 0 #e9d5ff; }
+.mode-div .card-name { color: #f43f5e; text-shadow: 0 1.5px 0 #fecdd3; }
+.mode-mix .card-name { color: #ca8a04; text-shadow: 0 1.5px 0 #fef08a; }
 
 .card-tagline {
-  font-size: 10px;
-  font-weight: 700;
-  color: #94a3b8;
-  white-space: nowrap;
+  display: none;
 }
 
-.card-check-tag {
-  font-family: var(--font-hud);
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  padding: 3px 10px;
-  border-radius: 10px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.1);
-}
+.card-check-tag { display: none; }
 
 /* Playful Hover Bounce & Wobble */
 .arcade-card:hover {
@@ -452,100 +455,214 @@ html, body {
 .time-chips-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
   margin: 0 auto;
+}
+
+.diff-grid {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 440px;
 }
 
 .time-chip {
   background: #ffffff;
   border: 3px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 12px 6px;
+  border-radius: 16px;
+  padding: 8px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   cursor: pointer;
-  transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
   color: var(--text-dim);
-  box-shadow: 0 6px 0 #cbd5e1, 0 8px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 5px 0 #cbd5e1, 0 6px 12px rgba(0, 0, 0, 0.05);
 }
 
 .time-chip:hover {
-  background: #fffdfa;
+  transform: translateY(-3px);
   border-color: #fed7aa;
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 10px 0 #fdba74, 0 14px 22px rgba(255, 159, 67, 0.2);
-}
-
-.time-chip:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #cbd5e1;
+  box-shadow: 0 8px 0 #fdba74;
 }
 
 .time-chip.active {
   background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
   border-color: #ff9f43;
-  color: var(--text-main);
-  box-shadow: 
-    0 4px 0 #ea580c,
-    0 0 20px rgba(255, 159, 67, 0.35);
+  box-shadow: 0 3px 0 #ea580c, 0 0 16px rgba(255, 159, 67, 0.3);
   transform: translateY(2px);
 }
 
-.time-chip-icon { 
-  font-size: 20px; 
-  line-height: 1; 
-  animation: clockWiggle 3s infinite ease-in-out;
+.time-chip-icon {
+  font-size: 20px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
 }
 
-.time-chip-val { 
-  font-family: var(--font-hud); 
-  font-size: 17px; 
-  font-weight: 900; 
-  letter-spacing: 0.5px; 
-  color: #2d3436; 
+.time-chip-val {
+  font-family: var(--font-hud);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #ff9f43;
+  text-shadow: 0 1.5px 0 #fed7aa;
 }
 
-.time-chip-label { 
-  font-family: var(--font-hud); 
-  font-size: 9px; 
-  font-weight: 900; 
-  letter-spacing: 1px; 
-  color: #94a3b8; 
+.time-chip-label {
+  font-family: var(--font-hud);
+  font-size: 9px;
+  font-weight: 900;
+  color: #94a3b8;
 }
 
 .time-chip.active .time-chip-label { color: #ea580c; }
-.time-chip.active .time-chip-val { color: #c2410c; }
+.time-chip.active .time-chip-val { 
+  color: #ea580c; 
+  text-shadow: 0 1.5px 0 #fdba74;
+}
+
+/* 3D themed difficulty chips */
+.diff-grid .time-chip[data-diff="0"] .time-chip-val {
+  color: #10b981;
+  text-shadow: 0 1.5px 0 #a7f3d0;
+}
+.diff-grid .time-chip[data-diff="0"].active {
+  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+  border-color: #10b981;
+  box-shadow: 0 4px 0 #059669, 0 0 16px rgba(16, 185, 129, 0.3);
+}
+
+.diff-grid .time-chip[data-diff="3"] .time-chip-val {
+  color: #eab308;
+  text-shadow: 0 1.5px 0 #fef08a;
+}
+.diff-grid .time-chip[data-diff="3"].active {
+  background: linear-gradient(180deg, #fefce8 0%, #fef9c3 100%);
+  border-color: #eab308;
+  box-shadow: 0 4px 0 #ca8a04, 0 0 16px rgba(234, 179, 8, 0.3);
+}
+
+.diff-grid .time-chip[data-diff="6"] .time-chip-val {
+  color: #f43f5e;
+  text-shadow: 0 1.5px 0 #fecdd3;
+}
+.diff-grid .time-chip[data-diff="6"].active {
+  background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+  border-color: #f43f5e;
+  box-shadow: 0 4px 0 #e11d48, 0 0 16px rgba(244, 63, 94, 0.3);
+}
 
 /* 🎮 Big Rounded Play Button */
 .arcade-cta-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
+  margin-top: 4px;
 }
 
 .arcade-play-button {
   position: relative;
   width: 100%;
   max-width: 380px;
-  height: 62px;
+  height: 56px;
   background: linear-gradient(180deg, #ffb347 0%, #ff9f43 50%, #e67e22 100%);
   border: none;
   border-radius: 20px;
   cursor: pointer;
   box-shadow: 
-    0 5px 0 #cc6600,
-    0 10px 24px rgba(255, 159, 67, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  transition: all 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 6px 0 #cc6600,
+    0 12px 24px rgba(255, 159, 67, 0.35);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.arcade-play-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 #cc6600, 0 16px 28px rgba(255, 159, 67, 0.4);
+}
+
+.arcade-play-button:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #cc6600;
+}
+
+.play-btn-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-hud);
+  font-size: 18px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.play-arrow { font-size: 18px; }
+
+.press-space-prompt {
+  font-family: var(--font-hud);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.press-space-prompt kbd {
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 10px;
+  color: var(--candy-orange);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Responsive Scaling for short screens */
+@media (max-height: 720px) {
+  .arcade-title-stage {
+    gap: 8px;
+  }
+  .game-logo-3d {
+    font-size: 2.2rem;
+  }
+  .arcade-card {
+    min-height: 80px;
+    padding: 6px 4px;
+  }
+  .card-glyph {
+    font-size: 22px;
+  }
+  .card-tagline {
+    display: none;
+  }
+  .time-chip {
+    padding: 6px 4px;
+  }
+  .time-chip-icon {
+    font-size: 15px;
+  }
+  .time-chip-val {
+    font-size: 12px;
+  }
+  .arcade-play-button {
+    height: 48px;
+  }
+}
+
+@media (max-width: 580px) {
+  .arcade-mode-selector {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .mode-div { grid-column: span 1; }
+  .mode-mix { grid-column: span 2; }
 }
 
 .arcade-play-button:hover {
@@ -619,34 +736,34 @@ html, body {
 
 #arcade-hud {
   width: 100%;
-  height: 74px;
-  background: linear-gradient(180deg, #ffffff 0%, #f4faff 100%);
-  border-bottom: 3.5px solid #d4ebfc;
-  box-shadow: 0 6px 20px rgba(69, 170, 242, 0.15);
+  height: 78px;
+  background: #ffffff;
+  border-bottom: 4px solid #bae6fd;
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
   z-index: 20;
-  border-radius: 0 0 24px 24px;
+  border-radius: 0 0 28px 28px;
 }
 
 /* Dashboard Box */
 .hud-dashboard-box {
-  background: linear-gradient(135deg, #fffaf2 0%, #fff2e0 100%);
-  border: 2.5px solid #ffcc80;
-  border-radius: 18px;
-  padding: 6px 14px;
+  background: linear-gradient(180deg, #fffdfa 0%, #fff7ed 100%);
+  border: 3px solid #fed7aa;
+  border-radius: 20px;
+  padding: 6px 16px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 3px 0 #f5a623, 0 6px 16px rgba(255, 159, 67, 0.15);
-  min-width: 115px;
+  box-shadow: 0 4px 0 #fdba74, 0 6px 16px rgba(251, 146, 60, 0.12);
+  min-width: 125px;
 }
 
 #hud-combo-box {
-  background: linear-gradient(135deg, #f0f7ff 0%, #e1effe 100%);
-  border: 2.5px solid #90cdf4;
-  box-shadow: 0 3px 0 #63b3ed, 0 6px 16px rgba(66, 153, 225, 0.15);
+  background: linear-gradient(180deg, #f8faff 0%, #eff6ff 100%);
+  border: 3px solid #bfdbfe;
+  box-shadow: 0 4px 0 #93c5fd, 0 6px 16px rgba(59, 130, 246, 0.12);
 }
 
 .hud-subhead {
@@ -661,11 +778,13 @@ html, body {
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 1px;
-  color: #e67e22;
+  color: #ea580c;
+  text-shadow: 0 1px 0 #fed7aa;
 }
 
 #hud-combo-box .hud-tag {
-  color: #3182ce;
+  color: #2563eb;
+  text-shadow: 0 1px 0 #bfdbfe;
 }
 
 .hud-level-tag {
@@ -673,10 +792,11 @@ html, body {
   font-size: 10px;
   font-weight: 900;
   color: #ffffff;
-  background: #2ed573;
+  background: #10b981;
+  border: 1.5px solid #ffffff;
   padding: 2px 8px;
   border-radius: 12px;
-  box-shadow: 0 2px 0 #219653;
+  box-shadow: 0 2px 0 #059669;
 }
 
 .hud-number-digital {
@@ -684,12 +804,14 @@ html, body {
   font-size: 24px;
   font-weight: 900;
   letter-spacing: 0.5px;
-  color: #d35400;
+  color: #d97706;
+  text-shadow: 0 2px 0 #fde68a;
 }
 
 #hud-score-box.score-pop .hud-number-digital {
   animation: scoreBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: #27ae60;
+  color: #10b981;
+  text-shadow: 0 2px 0 #a7f3d0;
 }
 
 @keyframes scoreBounce {
@@ -710,11 +832,11 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(135deg, #ffffff 0%, #fff9f0 100%);
-  border: 3px solid #ff9f43;
-  border-radius: 20px;
-  padding: 3px 18px;
-  box-shadow: 0 4px 0 #e67e22, 0 6px 18px rgba(255, 159, 67, 0.25);
+  background: #ffffff;
+  border: 3.5px solid #fb923c;
+  border-radius: 24px;
+  padding: 4px 22px;
+  box-shadow: 0 4px 0 #ea580c, 0 8px 20px rgba(251, 146, 60, 0.25);
   animation: timerFloat 2s infinite ease-in-out;
 }
 
@@ -738,7 +860,7 @@ html, body {
   font-family: var(--font-hud);
   font-size: 24px;
   font-weight: 900;
-  color: #2d3436;
+  color: #1e293b;
   min-width: 28px;
   text-align: center;
 }
@@ -747,11 +869,12 @@ html, body {
   font-family: var(--font-hud);
   font-size: 13px;
   font-weight: 900;
-  color: #ff9f43;
+  color: #ea580c;
 }
 
 .timer-low .timer-number {
-  color: #fc5c65 !important;
+  color: #ef4444 !important;
+  text-shadow: 0 2px 0 #fee2e2;
   animation: timerPanic 0.35s ease infinite alternate;
 }
 
@@ -768,36 +891,38 @@ html, body {
 }
 
 .speed-meter-track {
-  width: 120px;
-  height: 8px;
-  background: #e2e8f0;
+  width: 140px;
+  height: 10px;
+  background: #f1f5f9;
   border-radius: 10px;
   overflow: hidden;
-  border: 1.5px solid #cbd5e1;
+  border: 2px solid #cbd5e1;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 #speed-meter-bar {
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, #2ed573 0%, #fed330 50%, #ff6b8a 100%);
-  border-radius: 10px;
+  background: linear-gradient(90deg, #10b981 0%, #eab308 50%, #f43f5e 100%);
+  border-radius: 8px;
   transform-origin: left;
   transition: width 0.1s linear;
 }
 
 .speed-meter-label {
   font-family: var(--font-hud);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 900;
   letter-spacing: 1px;
-  color: #ff9f43;
+  color: #ea580c;
+  text-shadow: 0 1px 0 #fed7aa;
 }
 
 /* Right Cluster: Combo & Controls */
 .hud-right-cluster {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .hud-combo-val {
@@ -805,15 +930,17 @@ html, body {
   align-items: center;
   gap: 4px;
   font-family: var(--font-hud);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 900;
-  color: #2b6cb0;
+  color: #2563eb;
+  text-shadow: 0 2px 0 #bfdbfe;
 }
 
 .combo-flame {
   display: inline-block;
-  font-size: 18px;
+  font-size: 20px;
   transition: all 0.2s;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
 }
 
 .combo-fire .combo-flame {
@@ -833,8 +960,8 @@ html, body {
 
 .hud-control-btn {
   background: #ffffff;
-  border: 2.5px solid #e2e8f0;
-  border-radius: 16px;
+  border: 3px solid #e2e8f0;
+  border-radius: 18px;
   font-size: 18px;
   width: 44px;
   height: 44px;
@@ -844,18 +971,18 @@ html, body {
   cursor: pointer;
   color: var(--text-main);
   transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 3px 0 #cbd5e1;
+  box-shadow: 0 4px 0 #cbd5e1, 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .hud-control-btn:hover {
   background: #fff8ef;
   border-color: #ff9f43;
   transform: translateY(-2px) scale(1.08);
-  box-shadow: 0 5px 0 #e67e22;
+  box-shadow: 0 6px 0 #ea580c;
 }
 
 .hud-control-btn:active {
-  transform: translateY(2px);
+  transform: translateY(3px);
   box-shadow: 0 1px 0 #cbd5e1;
 }
 
@@ -863,36 +990,38 @@ html, body {
    🧩 MAGICAL PUZZLE EQUATION CONSOLE (DOCK)
    ======================================================== */
 #equation-dock {
-  width: calc(100% - 28px);
-  max-width: 740px;
-  height: 90px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 3px solid #bae6fd;
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(69, 170, 242, 0.18), 0 4px 0 #93c5fd;
+  width: calc(100% - 32px);
+  max-width: 760px;
+  height: 96px;
+  background: #ffffff;
+  border: 3.5px solid #7dd3fc;
+  border-radius: 28px;
+  box-shadow: 0 8px 0 #38bdf8, 0 14px 28px rgba(56, 189, 248, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 15;
   position: relative;
-  margin: 10px auto 0 auto;
-  backdrop-filter: blur(10px);
+  margin: 12px auto 0 auto;
 }
 
 .dock-inner {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
 }
 
 .dock-mode-indicator {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #2ed573;
-  border-radius: 14px;
-  padding: 6px 12px;
-  box-shadow: 0 3px 0 #219653;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 16px;
+  padding: 6px 14px;
+  box-shadow: 0 3px 0 #059669;
 }
 
 .indicator-led {
@@ -915,31 +1044,34 @@ html, body {
   font-weight: 900;
   letter-spacing: 1px;
   color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .equation-slots-rig {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .slot-housing {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 
 .slot-label {
   font-family: var(--font-hud);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.5px;
-  color: #64748b;
+  color: #0284c7;
+  text-shadow: 0 1px 0 #e0f2fe;
 }
 
 .slot-label-gold {
-  color: #e67e22;
+  color: #ea580c;
+  text-shadow: 0 1px 0 #ffedd5;
 }
 
 .slot {
@@ -948,32 +1080,32 @@ html, body {
   justify-content: center;
   font-family: var(--font-hud);
   font-weight: 900;
-  border-radius: 18px;
+  border-radius: 20px;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .slot-operand {
-  width: 68px;
-  height: 54px;
-  background: #f8fafc;
-  border: 3.5px dashed #60a5fa;
-  color: #94a3b8;
-  font-size: 26px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 74px;
+  height: 58px;
+  background: #f0f9ff;
+  border: 3.5px dashed #38bdf8;
+  color: #0284c7;
+  font-size: 28px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06), 0 3px 0 #bae6fd;
   animation: questionPulse 2s infinite ease-in-out;
 }
 
 @keyframes questionPulse {
-  0%, 100% { border-color: #60a5fa; transform: scale(1); }
-  50% { border-color: #93c5fd; transform: scale(1.02); }
+  0%, 100% { border-color: #38bdf8; transform: scale(1); }
+  50% { border-color: #7dd3fc; transform: scale(1.03); }
 }
 
 /* Locked slot state */
 .slot-operand.locked {
   background: #ecfdf5;
-  border: 3.5px solid #2ed573;
-  color: #1e8449;
-  box-shadow: 0 4px 0 #219653, 0 0 16px rgba(46, 213, 115, 0.35);
+  border: 3.5px solid #10b981;
+  color: #047857;
+  box-shadow: 0 4px 0 #059669, 0 0 18px rgba(16, 185, 129, 0.4);
   transform: scale(1.08);
   animation: none;
 }
@@ -988,7 +1120,7 @@ html, body {
 
 .slot-operand.wrong-flash {
   background: #fee2e2 !important;
-  border-color: #fc5c65 !important;
+  border-color: #ef4444 !important;
   color: #991b1b !important;
   animation: slotShake 0.35s ease;
 }
@@ -1002,23 +1134,23 @@ html, body {
 
 .op-sign-badge, .eq-sign-badge {
   font-family: var(--font-hud);
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 900;
-  color: #ff6b8a;
-  margin-top: 14px;
-  text-shadow: 0 2px 0 rgba(255, 107, 138, 0.2);
+  color: #f43f5e;
+  margin-top: 16px;
+  text-shadow: 0 2px 0 #fecdd3;
 }
 
 .slot-target {
-  min-width: 80px;
-  height: 54px;
-  padding: 0 16px;
-  background: linear-gradient(135deg, #ffd093 0%, #ff9f43 50%, #e67e22 100%);
-  border: 3px solid #ffffff;
+  min-width: 90px;
+  height: 58px;
+  padding: 0 18px;
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+  border: 3.5px solid #ffffff;
   color: #ffffff;
-  font-size: 30px;
-  box-shadow: 0 5px 0 #cc6600, 0 8px 25px rgba(255, 159, 67, 0.4);
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  font-size: 32px;
+  box-shadow: 0 5px 0 #c2410c, 0 10px 24px rgba(234, 88, 12, 0.35);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   animation: targetPulse 2s infinite alternate;
 }
 
@@ -1145,20 +1277,6 @@ html, body {
   background-size: 36px 36px;
 }
 
-.river-stream-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    115deg,
-    transparent,
-    transparent 120px,
-    rgba(255, 255, 255, 0.05) 120px,
-    rgba(255, 255, 255, 0.05) 124px
-  );
-  animation: streamFlow 16s linear infinite;
-}
-
 /* ========================================================
    🍬 3D GLOSSY CANDY BUBBLE NUMBER PIECES
    Ultra-juicy candy spheres with dual specular shine,
@@ -1181,22 +1299,20 @@ html, body {
   will-change: left, top, transform;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  box-shadow: 
-    0 8px 0 rgba(0, 0, 0, 0.1),
-    0 14px 25px rgba(0, 0, 0, 0.12),
-    inset 0 -5px 10px rgba(0, 0, 0, 0.15),
-    inset 0 3px 6px rgba(255, 255, 255, 0.6);
+  border: 3.5px solid #1e293b;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15), 0 3px 0 rgba(30, 41, 59, 0.3);
 }
 
-/* Main Top Glass Highlight */
+/* Main Top Glass Highlight (Cartoon Style) */
 .bubble-shine {
   position: absolute;
-  top: 6px;
-  left: 12px;
-  width: 24px;
-  height: 15px;
+  top: 8px;
+  right: 12px;
+  width: 14px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.2) 100%);
+  transform: rotate(-30deg);
   pointer-events: none;
   z-index: 3;
 }
@@ -1210,79 +1326,53 @@ html, body {
   z-index: 4;
   letter-spacing: 0.5px;
   text-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.25),
-    0 0 10px rgba(255, 255, 255, 0.5);
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.5);
   pointer-events: none;
 }
 
 /* Hover Squish & Bounce */
 .orb-floater:hover {
-  transform: translateY(-8px) scale(1.2) !important;
+  transform: translateY(-6px) scale(1.12) !important;
   z-index: 10;
-  filter: brightness(1.1);
-  box-shadow: 
-    0 14px 0 rgba(0, 0, 0, 0.08),
-    0 22px 35px rgba(0, 0, 0, 0.15),
-    inset 0 -5px 10px rgba(0, 0, 0, 0.15),
-    inset 0 4px 8px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2), 0 4px 0 rgba(30, 41, 59, 0.35);
 }
 
 /* ── 1. Strawberry Bubble ── */
 .orb-amber {
-  background: radial-gradient(circle at 35% 30%, #ffc2d1 0%, #ff6b8a 50%, #e84865 85%, #c13055 100%);
-  border: 3.5px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 8px 0 rgba(193, 48, 85, 0.35),
-    0 14px 25px rgba(255, 107, 138, 0.35),
-    inset 0 -5px 10px rgba(150, 30, 60, 0.3);
+  background: #ff6b8a;
 }
 
 /* ── 2. Mint Green Bubble ── */
 .orb-emerald {
-  background: radial-gradient(circle at 35% 30%, #b2f5d0 0%, #2ed573 50%, #1e8449 85%, #145a32 100%);
-  border: 3.5px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 8px 0 rgba(20, 90, 50, 0.35),
-    0 14px 25px rgba(46, 213, 115, 0.35),
-    inset 0 -5px 10px rgba(10, 60, 30, 0.3);
+  background: #2ed573;
 }
 
 /* ── 3. Grape Purple Bubble ── */
 .orb-violet {
-  background: radial-gradient(circle at 35% 30%, #e3ccff 0%, #a55eea 50%, #7c3aed 85%, #5b21b6 100%);
-  border: 3.5px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 8px 0 rgba(91, 33, 182, 0.35),
-    0 14px 25px rgba(165, 94, 234, 0.35),
-    inset 0 -5px 10px rgba(60, 20, 120, 0.3);
+  background: #a55eea;
 }
 
 /* ── 4. Juicy Orange Bubble ── */
 .orb-coral {
-  background: radial-gradient(circle at 35% 30%, #ffe0b2 0%, #ff9f43 50%, #e67e22 85%, #cc6600 100%);
-  border: 3.5px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 8px 0 rgba(204, 102, 0, 0.35),
-    0 14px 25px rgba(255, 159, 67, 0.35),
-    inset 0 -5px 10px rgba(150, 70, 0, 0.3);
+  background: #ff9f43;
 }
 
 /* ── Selected State ── */
 .orb-selected {
-  transform: scale(1.25) !important;
+  transform: scale(1.22) !important;
   z-index: 15;
-  filter: brightness(1.15);
+  filter: brightness(1.1);
   animation: bubbleBounce 0.4s infinite alternate;
   border-color: #ffffff !important;
   box-shadow: 
-    0 10px 0 rgba(0, 0, 0, 0.12),
-    0 0 30px rgba(255, 255, 255, 0.8),
-    0 18px 35px rgba(0, 0, 0, 0.15) !important;
+    0 0 0 4px #ffffff,
+    0 8px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
 @keyframes bubbleBounce {
-  from { transform: scale(1.22) translateY(0); }
-  to   { transform: scale(1.3) translateY(-6px); }
+  from { transform: scale(1.18) translateY(0); }
+  to   { transform: scale(1.24) translateY(-5px); }
 }
 
 /* ── Correct Match Pop ── */
@@ -1292,14 +1382,14 @@ html, body {
   transition: all 0.28s ease-out;
   pointer-events: none;
   filter: brightness(1.6);
-  box-shadow: 0 0 50px rgba(46, 213, 115, 0.8) !important;
+  box-shadow: 0 0 0 6px #2ed573 !important;
 }
 
 /* ── Wrong Match Shake ── */
 .orb-wrong {
   animation: orbShake 0.35s ease;
   filter: saturate(1.6) brightness(0.95);
-  box-shadow: 0 0 35px rgba(252, 92, 101, 0.6) !important;
+  box-shadow: 0 0 0 6px #fc5c65 !important;
 }
 
 @keyframes orbShake {
@@ -1405,9 +1495,16 @@ html, body {
 }
 
 .pause-desc { 
-  font-size: 15px; 
-  font-weight: 700;
-  color: #64748b; 
+  font-size: 16px; 
+  font-weight: 800;
+  color: #0369a1; 
+}
+
+.pause-deco-row {
+  font-size: 20px;
+  letter-spacing: 8px;
+  margin: 10px 0;
+  animation: trophyWiggle 2s infinite ease-in-out;
 }
 
 .pause-actions {
@@ -1463,11 +1560,19 @@ html, body {
 
 .gameover-title {
   font-family: var(--font-hud);
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 900;
   letter-spacing: 1px;
   color: #d35400;
-  text-shadow: 0 2px 0 #ffe0b2;
+  text-shadow: 0 3px 0 #ffe0b2;
+  animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gameover-stars {
+  font-size: 24px;
+  letter-spacing: 4px;
+  margin: 4px 0;
+  animation: starTwinkle 1.5s infinite alternate;
 }
 
 .rank-badge {
@@ -1653,3 +1758,467 @@ html, body {
 
   .orb-floater { font-size: 19px; }
 }
+.theme-switcher-bar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 12px;
+  background: var(--bg-panel);
+  padding: 8px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px var(--border-subtle);
+  z-index: 100;
+}
+
+.theme-btn {
+  padding: 10px 20px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-hud);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-btn.active {
+  background: var(--candy-purple);
+  color: #fff;
+  border-color: var(--candy-purple);
+  box-shadow: 0 4px 0 rgba(165, 94, 234, 0.4);
+}
+
+/* ========================================================
+   🤖 CYBER ROBOTICS THEME
+   ======================================================== */
+body.theme-robotics {
+  --bg-deep:        #0a0e17;
+  --bg-surface:     #121826;
+  --bg-panel:       rgba(10, 14, 23, 0.92);
+  --border-subtle:  #1d283a;
+  --border-accent:  #00f2fe;
+
+  --candy-orange:   #ffaa00;
+  --candy-orange-l: #ffcc00;
+  --candy-orange-d: #cc8800;
+  --candy-orange-s: #996600;
+
+  --candy-pink:     #ff007f;
+  --candy-green:    #00ff88;
+  --candy-green-l:  #55ffaa;
+  --candy-blue:     #00f2fe;
+  --candy-purple:   #b000ff;
+  --candy-yellow:   #ffd200;
+  --candy-red:      #ff003c;
+  --candy-teal:     #00ffcc;
+  
+  --text-pure:      #ffffff;
+  --text-main:      #e2e8f0;
+  --text-dim:       #94a3b8;
+  --text-muted:     #475569;
+
+  --font-hud:       'Orbitron', monospace, sans-serif;
+  --font-retro:     'Rajdhani', monospace, sans-serif;
+  --font-body:      'Rajdhani', sans-serif;
+
+  color: var(--text-main);
+  background-color: var(--bg-deep);
+}
+
+body.theme-robotics #ambient-canvas {
+  opacity: 0.15;
+  filter: hue-rotate(180deg) brightness(1.5);
+}
+
+body.theme-robotics .river-sky-decor {
+  display: none;
+}
+
+body.theme-robotics .theme-btn[data-theme="kids"] {
+  background: transparent;
+  color: #94a3b8;
+  border-color: #334155;
+  box-shadow: none;
+}
+body.theme-robotics .theme-btn[data-theme="robotics"].active {
+  background: #00f2fe;
+  color: #0a0e17;
+  border-color: #00f2fe;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+}
+
+body.theme-robotics .arcade-card {
+  background: #121826;
+  border-color: #1d283a;
+  box-shadow: 0 4px 0 #0f141e, 0 0 10px rgba(0,242,254,0.1);
+  border-radius: 8px;
+}
+body.theme-robotics .arcade-card:hover {
+  border-color: #00f2fe;
+  box-shadow: 0 6px 0 #0f141e, 0 0 15px rgba(0,242,254,0.3);
+}
+body.theme-robotics .arcade-card.active {
+  background: #00f2fe;
+  color: #0a0e17;
+  border-color: #00f2fe;
+  box-shadow: 0 4px 0 #00b0ba, 0 0 20px rgba(0,242,254,0.5);
+}
+body.theme-robotics .arcade-card.active .card-pill { background: #00b0ba; color: #fff; }
+body.theme-robotics .arcade-card.active .card-name { color: #0a0e17; }
+body.theme-robotics .arcade-card.active .card-tagline { color: #1d283a; }
+
+body.theme-robotics .game-logo-3d span {
+  color: #00f2fe;
+  -webkit-text-stroke: 1px #0088aa;
+  text-shadow: 0 2px 0 #0088aa, 0 4px 0 #005577, 0 6px 0 #003344, 0 0 20px rgba(0,242,254,0.8);
+}
+body.theme-robotics .logo-subline {
+  color: #00ff88;
+  background: #121826;
+  border: 1.5px solid #00ff88;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+  text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+}
+
+body.theme-robotics #arcade-hud {
+  background: rgba(10, 14, 23, 0.95);
+  border-bottom: 2px solid #00f2fe;
+  border-radius: 0;
+}
+body.theme-robotics .hud-dashboard-box {
+  background: #121826;
+  border: 1px solid #1d283a;
+  box-shadow: inset 0 0 10px rgba(0,242,254,0.05);
+  border-radius: 4px;
+}
+body.theme-robotics .hud-number-digital {
+  font-family: var(--font-hud);
+  color: #00ff88;
+  text-shadow: 0 0 5px rgba(0,255,136,0.5);
+}
+body.theme-robotics .timer-orb-badge {
+  background: #121826;
+  border: 2px solid #ff007f;
+  box-shadow: 0 4px 0 #99004d, 0 0 15px rgba(255, 0, 127, 0.2);
+  border-radius: 6px;
+  color: #ff007f;
+}
+body.theme-robotics .timer-number {
+  color: #ff007f;
+  text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
+}
+body.theme-robotics .speed-meter-track {
+  background: #0a0e17;
+  border-color: #1d283a;
+}
+body.theme-robotics #speed-meter-bar {
+  background: linear-gradient(90deg, #00ff88 0%, #00f2fe 50%, #ff007f 100%);
+}
+body.theme-robotics .speed-meter-label {
+  color: #ff007f;
+  text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
+}
+
+body.theme-robotics #equation-dock {
+  background: rgba(18, 24, 38, 0.95);
+  border-top: 2px solid #00f2fe;
+  border-radius: 0;
+}
+body.theme-robotics .dock-inner {
+  border-radius: 0;
+}
+body.theme-robotics .slot-operand, body.theme-robotics .slot-target {
+  background: #0a0e17;
+  border: 2px solid #1d283a;
+  color: #00f2fe;
+  box-shadow: inset 0 0 8px rgba(0,242,254,0.2);
+  border-radius: 4px;
+  font-family: var(--font-hud);
+}
+body.theme-robotics .op-sign-badge, body.theme-robotics .eq-sign-badge {
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255,0,127,0.5);
+}
+
+body.theme-robotics .orb-floater {
+  font-family: var(--font-hud);
+  background: #121826;
+  border: 2px solid #00f2fe;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0,242,254,0.4), inset 0 0 15px rgba(0,242,254,0.2);
+  border-radius: 50%;
+}
+body.theme-robotics .orb-floater::after {
+  content: '';
+  position: absolute;
+  top: 5px; left: 5px; right: 5px; bottom: 5px;
+  border: 1px dashed #00f2fe;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: cyberSpin 4s linear infinite;
+}
+@keyframes cyberSpin { 100% { transform: rotate(360deg); } }
+
+body.theme-robotics .orb-selected {
+  background: #ff007f;
+  border-color: #ff007f;
+  box-shadow: 0 0 20px rgba(255,0,127,0.8), inset 0 0 20px rgba(255,0,127,0.5);
+}
+body.theme-robotics .orb-selected::after {
+  border-color: #fff;
+  animation-duration: 2s;
+}
+
+body.theme-robotics .arcade-play-button {
+  background: #00ff88;
+  color: #0a0e17;
+  border-radius: 8px;
+  box-shadow: 0 6px 0 #00cc6a, 0 12px 24px rgba(0, 255, 136, 0.25) !important;
+}
+body.theme-robotics .arcade-play-button:hover {
+  background: #33ff99;
+  box-shadow: 0 9px 0 #00cc6a, 0 16px 28px rgba(0, 255, 136, 0.4) !important;
+}
+body.theme-robotics .arcade-play-button:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #00cc6a !important;
+}
+body.theme-robotics .play-btn-bevel {
+  display: none;
+}
+body.theme-robotics .play-btn-content {
+  background: transparent;
+  color: #0a0e17;
+  box-shadow: none;
+}
+body.theme-robotics .arcade-play-button:hover .play-btn-content {
+  background: transparent;
+}
+
+/* Pause & Gameover Modals - Cyber Robotics Overrides */
+body.theme-robotics .pause-card {
+  background: rgba(18, 24, 38, 0.95);
+  border: 2px solid #00f2fe;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+  color: #fff;
+}
+body.theme-robotics .pause-title {
+  color: #00f2fe;
+  text-shadow: 0 2px 4px rgba(0,242,254,0.4);
+}
+body.theme-robotics .pause-desc {
+  color: #94a3b8;
+}
+
+body.theme-robotics #start-screen,
+body.theme-robotics #game-screen,
+body.theme-robotics #gameover-screen {
+  background: #0a0e17;
+  background-image: none;
+}
+body.theme-robotics .gameover-banner {
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255,0,127,0.5);
+}
+body.theme-robotics .gameover-title {
+  color: #00f2fe;
+  text-shadow: 0 3px 0 #005577, 0 0 15px rgba(0,242,254,0.5);
+}
+body.theme-robotics .gameover-stars {
+  color: #00ff88;
+  text-shadow: 0 0 10px rgba(0,255,136,0.6);
+}
+body.theme-robotics .stat-card.stat-main {
+  background: #121826;
+  border: 2px solid #ff007f;
+  box-shadow: 0 4px 0 #99004d, 0 8px 20px rgba(255,0,127,0.2);
+}
+body.theme-robotics .stat-sub {
+  color: #00f2fe;
+}
+body.theme-robotics .stat-big {
+  color: #00ff88;
+  text-shadow: 0 0 8px rgba(0,255,136,0.5);
+}
+body.theme-robotics .mini-stat {
+  background: #0a0e17;
+  border: 1px solid #1d283a;
+}
+body.theme-robotics .m-label {
+  color: #94a3b8;
+}
+body.theme-robotics .m-val {
+  color: #ffffff;
+}
+
+/* ─── NEW ROBOTICS OVERRIDES TO FIX LEFTOVERS ─── */
+body.theme-robotics #river {
+  background: #0a0e17;
+}
+
+body.theme-robotics .title-highscore-pill {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #00f2fe;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #005577;
+}
+
+body.theme-robotics .panel-header {
+  color: #00f2fe;
+  text-shadow: 0 2px 4px rgba(0, 242, 254, 0.4);
+}
+
+body.theme-robotics .pause-modal {
+  background: rgba(10, 14, 23, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+body.theme-robotics .arcade-secondary-btn {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #1d283a;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #0f141e;
+}
+body.theme-robotics .arcade-secondary-btn:hover {
+  background: #1a2235;
+  border-color: #00f2fe;
+}
+body.theme-robotics .arcade-secondary-btn:active {
+  box-shadow: 0 0 0 transparent;
+}
+
+body.theme-robotics .gameover-stage {
+  background: rgba(10, 14, 23, 0.92);
+  border: 2px solid #00f2fe;
+  box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+}
+
+body.theme-robotics .hud-tag {
+  background: #1d283a;
+  color: #00f2fe;
+}
+body.theme-robotics #hud-combo-box .hud-tag {
+  background: #1d283a;
+  color: #ff007f;
+}
+body.theme-robotics .hud-level-tag {
+  background: #00f2fe;
+  color: #0a0e17;
+}
+
+body.theme-robotics .slot-label {
+  color: #00f2fe;
+  text-shadow: 0 1px 0 #005577;
+}
+body.theme-robotics .slot-label-gold {
+  color: #ff007f;
+  text-shadow: 0 1px 0 #99004d;
+}
+
+/* Fix for Spacebar Prompt */
+body.theme-robotics .press-space-prompt kbd {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #00f2fe;
+  color: #00ff88;
+  box-shadow: 0 2px 0 #005577;
+}
+
+/* Force HUD font variable override globally under robotics theme */
+body.theme-robotics,
+body.theme-robotics * {
+  --font-hud: 'Orbitron', monospace, sans-serif !important;
+  --font-body: 'Rajdhani', sans-serif !important;
+}
+
+/* Inactive time-chips under Robotics (Both duration & difficulty) */
+body.theme-robotics .time-chip:not(.active) {
+  background: #121826 !important;
+  border-color: rgba(0, 242, 254, 0.15) !important;
+  box-shadow: 0 4px 0 #0f141e !important;
+}
+body.theme-robotics .time-chip:not(.active):hover {
+  background: #1a2235 !important;
+  border-color: rgba(0, 242, 254, 0.4) !important;
+}
+body.theme-robotics .time-chip:not(.active) .time-chip-val {
+  color: rgba(0, 242, 254, 0.5) !important;
+  text-shadow: none !important;
+}
+body.theme-robotics .time-chip:not(.active) .time-chip-label {
+  color: rgba(0, 242, 254, 0.3) !important;
+  text-shadow: none !important;
+}
+
+/* Active time-chips under Robotics (Both 30s/60s/90s/120s and Easy/Normal/Hard) */
+body.theme-robotics .time-chip.active {
+  background: rgba(0, 242, 254, 0.12) !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 4px 0 #005577, 0 0 16px rgba(0, 242, 254, 0.4) !important;
+}
+body.theme-robotics .time-chip.active .time-chip-val {
+  color: #00f2fe !important;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.6) !important;
+}
+body.theme-robotics .time-chip.active .time-chip-label {
+  color: #00ff88 !important;
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.4) !important;
+}
+
+/* Inactive Adventure Cards: Remove kids colors, use muted cyan theme */
+body.theme-robotics .arcade-card .card-name {
+  color: rgba(0, 242, 254, 0.6) !important;
+  text-shadow: none !important;
+}
+body.theme-robotics .arcade-card .card-tagline {
+  color: rgba(0, 242, 254, 0.4) !important;
+}
+body.theme-robotics .arcade-card .card-pill {
+  background: rgba(0, 242, 254, 0.08) !important;
+  color: rgba(0, 242, 254, 0.7) !important;
+  border: 1px solid rgba(0, 242, 254, 0.2) !important;
+}
+
+/* Selected active card pill should look clean */
+body.theme-robotics .arcade-card.active .card-name {
+  color: #0a0e17 !important;
+  text-shadow: none !important;
+}
+
+/* Fix for Streak Card (ID selector specificity fix) */
+body.theme-robotics #hud-combo-box {
+  background: #121826 !important;
+  border: 1px solid #1d283a !important;
+  box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.05) !important;
+  border-radius: 4px !important;
+}
+body.theme-robotics #hud-combo-box .hud-number-digital {
+  color: #00f2fe !important;
+  text-shadow: 0 0 5px rgba(0,242,254,0.5) !important;
+}
+
+/* HUD Control Buttons (Pause/Sound) */
+body.theme-robotics .hud-control-btn {
+  background: #121826 !important;
+  border: 2.5px solid #1d283a !important;
+  border-radius: 6px !important;
+  color: #00f2fe !important;
+  box-shadow: 0 4px 0 #0f141e, inset 0 0 10px rgba(0, 242, 254, 0.05) !important;
+}
+body.theme-robotics .hud-control-btn:hover {
+  background: rgba(0, 242, 254, 0.1) !important;
+  border-color: #00f2fe !important;
+  color: #00f2fe !important;
+  box-shadow: 0 6px 0 #005577, 0 0 15px rgba(0,242,254,0.3) !important;
+}
+body.theme-robotics .hud-control-btn:active {
+  transform: translateY(3px) !important;
+  box-shadow: 0 1px 0 #005577 !important;
+}
+
+
+
+

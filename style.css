@@ -128,10 +128,14 @@ html, body {
 
 .title-top-bar {
   width: 100%;
+  max-width: 680px;
   display: flex;
-  justify-content: center;
-  z-index: 5;
-  margin-top: 24px;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+  margin-bottom: 12px;
+  padding: 0 4px;
+  box-sizing: border-box;
 }
 
 .title-highscore-pill {
@@ -441,6 +445,10 @@ html, body {
 .mode-mix .card-glow-bg { background: radial-gradient(circle at 50% 30%, #eab308, transparent 70%); }
 
 @media (max-width: 580px) {
+  .title-top-bar {
+    flex-direction: column;
+    gap: 8px;
+  }
   .arcade-mode-selector {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1763,27 +1771,25 @@ html, body {
   .orb-floater { font-size: 19px; }
 }
 .theme-switcher-bar {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+  position: static;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   background: var(--bg-panel);
-  padding: 8px;
-  border-radius: 20px;
+  padding: 4px;
+  border-radius: 16px;
   box-shadow: 0 4px 15px var(--border-subtle);
-  z-index: 100;
+  z-index: 10;
 }
 
 .theme-btn {
-  padding: 10px 20px;
+  padding: 6px 14px;
   border: 2px solid transparent;
-  border-radius: 14px;
+  border-radius: 12px;
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-hud);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
 }

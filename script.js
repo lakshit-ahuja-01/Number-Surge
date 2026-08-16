@@ -887,11 +887,11 @@ if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
   showScreen('start');
 });
 
-// Mode Cartridges
+// Mode Cards
 dom.modeGrid.addEventListener('click', e => {
-  const card = e.target.closest('.arcade-cartridge, .mode-card');
+  const card = e.target.closest('.arcade-card, .arcade-cartridge, .mode-card');
   if (!card) return;
-  dom.modeGrid.querySelectorAll('.arcade-cartridge, .mode-card').forEach(c => {
+  dom.modeGrid.querySelectorAll('.arcade-card, .arcade-cartridge, .mode-card').forEach(c => {
     c.classList.remove('active');
     c.setAttribute('aria-pressed', 'false');
   });

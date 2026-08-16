@@ -48,30 +48,64 @@
           <div class="panel-header">CHOOSE GAME MODE</div>
           
           <div class="arcade-mode-selector" id="mode-grid" role="group" aria-label="Game mode selector">
-            <button class="arcade-cartridge active" data-mode="addition" aria-pressed="true">
-              <span class="cart-icon">➕</span>
-              <span class="cart-title">ADD</span>
-              <span class="cart-desc">_ + _ = Target</span>
+            <!-- Addition Card -->
+            <button class="arcade-card mode-add active" data-mode="addition" aria-pressed="true">
+              <div class="card-glow-bg"></div>
+              <div class="card-pill">SUMS</div>
+              <div class="card-glyph">➕</div>
+              <div class="card-info">
+                <span class="card-name">ADDITION</span>
+                <span class="card-tagline">Sum to Target</span>
+              </div>
+              <div class="card-check-tag">ACTIVE</div>
             </button>
-            <button class="arcade-cartridge" data-mode="subtraction" aria-pressed="false">
-              <span class="cart-icon">➖</span>
-              <span class="cart-title">SUB</span>
-              <span class="cart-desc">_ − _ = Target</span>
+
+            <!-- Subtraction Card -->
+            <button class="arcade-card mode-sub" data-mode="subtraction" aria-pressed="false">
+              <div class="card-glow-bg"></div>
+              <div class="card-pill">DIFF</div>
+              <div class="card-glyph">➖</div>
+              <div class="card-info">
+                <span class="card-name">SUBTRACT</span>
+                <span class="card-tagline">Find Difference</span>
+              </div>
+              <div class="card-check-tag">ACTIVE</div>
             </button>
-            <button class="arcade-cartridge" data-mode="multiplication" aria-pressed="false">
-              <span class="cart-icon">✖️</span>
-              <span class="cart-title">MULT</span>
-              <span class="cart-desc">_ × _ = Target</span>
+
+            <!-- Multiplication Card -->
+            <button class="arcade-card mode-mult" data-mode="multiplication" aria-pressed="false">
+              <div class="card-glow-bg"></div>
+              <div class="card-pill">FACTORS</div>
+              <div class="card-glyph">✖️</div>
+              <div class="card-info">
+                <span class="card-name">MULTIPLY</span>
+                <span class="card-tagline">Match Factors</span>
+              </div>
+              <div class="card-check-tag">ACTIVE</div>
             </button>
-            <button class="arcade-cartridge" data-mode="division" aria-pressed="false">
-              <span class="cart-icon">➗</span>
-              <span class="cart-title">DIV</span>
-              <span class="cart-desc">_ ÷ _ = Target</span>
+
+            <!-- Division Card -->
+            <button class="arcade-card mode-div" data-mode="division" aria-pressed="false">
+              <div class="card-glow-bg"></div>
+              <div class="card-pill">QUOTIENT</div>
+              <div class="card-glyph">➗</div>
+              <div class="card-info">
+                <span class="card-name">DIVISION</span>
+                <span class="card-tagline">Split & Divide</span>
+              </div>
+              <div class="card-check-tag">ACTIVE</div>
             </button>
-            <button class="arcade-cartridge cart-surge-mix" data-mode="mixed" aria-pressed="false">
-              <span class="cart-icon">⚡</span>
-              <span class="cart-title">SURGE MIX</span>
-              <span class="cart-desc">ALL OPERATORS</span>
+
+            <!-- Surge Mix Card -->
+            <button class="arcade-card mode-mix" data-mode="mixed" aria-pressed="false">
+              <div class="card-glow-bg"></div>
+              <div class="card-pill">ALL-OPS</div>
+              <div class="card-glyph">⚡</div>
+              <div class="card-info">
+                <span class="card-name">SURGE MIX</span>
+                <span class="card-tagline">Random Chaos</span>
+              </div>
+              <div class="card-check-tag">ACTIVE</div>
             </button>
           </div>
         </div>

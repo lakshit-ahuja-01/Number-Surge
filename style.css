@@ -220,66 +220,199 @@ html, body {
   margin-bottom: 10px;
 }
 
+/* ─── Vibrant Arcade Mode Cards ────────────────────────── */
 .arcade-mode-selector {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 12px;
   width: 100%;
 }
 
-.arcade-cartridge {
-  background: #141a24;
-  border: 2px solid #222c3d;
-  border-radius: 14px;
-  padding: 12px 6px;
+.arcade-card {
+  position: relative;
+  background: linear-gradient(180deg, #151b26 0%, #0d121b 100%);
+  border: 2px solid #253144;
+  border-radius: 16px;
+  padding: 14px 8px 12px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
-  position: relative;
-  box-shadow: 0 4px 0 #0b0f15, 0 8px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 6px 0 #080b10, 0 10px 20px rgba(0, 0, 0, 0.6);
+  min-height: 135px;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-.arcade-cartridge:hover {
-  background: #1c2433;
-  border-color: #3b4961;
-  color: var(--text-pure);
-  transform: translateY(-3px);
-  box-shadow: 0 7px 0 #0b0f15, 0 12px 20px rgba(0, 0, 0, 0.6);
+.card-glow-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
-.arcade-cartridge:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #0b0f15, 0 4px 10px rgba(0, 0, 0, 0.4);
+.card-pill {
+  font-family: var(--font-hud);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.arcade-cartridge.active {
-  background: #1e2638;
-  border-color: var(--amber-bright);
-  color: var(--text-pure);
-  box-shadow: 
-    0 4px 0 var(--amber-dark),
-    0 0 20px rgba(245, 158, 11, 0.25);
-  transform: translateY(-2px);
+.card-glyph {
+  font-size: 28px;
+  line-height: 1;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
 }
 
-.cart-icon { font-size: 22px; line-height: 1; }
-.cart-title { font-size: 13px; font-weight: 800; font-family: var(--font-hud); letter-spacing: 1px; }
-.cart-desc { font-size: 9px; color: var(--text-muted); }
-.arcade-cartridge.active .cart-desc { color: var(--amber-bright); }
-
-.cart-surge-mix {
-  grid-column: span 5;
-  flex-direction: row;
-  justify-content: center;
-  gap: 12px;
-  padding: 10px 16px;
+.card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
-@media (min-width: 520px) {
-  .cart-surge-mix { grid-column: span 1; flex-direction: column; padding: 12px 6px; }
+
+.card-name {
+  font-family: var(--font-hud);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--text-main);
+}
+
+.card-tagline {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.card-check-tag {
+  font-family: var(--font-hud);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.2s ease;
+}
+
+/* Hover lift */
+.arcade-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 0 #080b10, 0 16px 30px rgba(0, 0, 0, 0.7);
+}
+
+.arcade-card:hover .card-glyph {
+  transform: scale(1.18);
+}
+
+/* Active Pressed / Selected */
+.arcade-card.active {
+  transform: translateY(-3px) scale(1.02);
+  color: #ffffff;
+}
+
+.arcade-card.active .card-check-tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arcade-card.active .card-glow-bg {
+  opacity: 0.18;
+}
+
+/* ── 1. Addition (Emerald Jade) ── */
+.mode-add {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+.mode-add .card-glyph { color: #34d399; }
+.mode-add:hover { border-color: #34d399; }
+.mode-add.active {
+  border-color: #10b981;
+  box-shadow: 0 6px 0 #047857, 0 0 25px rgba(16, 185, 129, 0.4);
+}
+.mode-add.active .card-pill { background: rgba(16, 185, 129, 0.25); color: #34d399; border-color: #10b981; }
+.mode-add.active .card-tagline { color: #34d399; }
+.mode-add.active .card-check-tag { background: #10b981; color: #080b10; }
+.mode-add .card-glow-bg { background: radial-gradient(circle at 50% 30%, #10b981, transparent 70%); }
+
+/* ── 2. Subtraction (Sunset Amber) ── */
+.mode-sub {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+.mode-sub .card-glyph { color: #fbbf24; }
+.mode-sub:hover { border-color: #fbbf24; }
+.mode-sub.active {
+  border-color: #f59e0b;
+  box-shadow: 0 6px 0 #b45309, 0 0 25px rgba(245, 158, 11, 0.4);
+}
+.mode-sub.active .card-pill { background: rgba(245, 158, 11, 0.25); color: #fbbf24; border-color: #f59e0b; }
+.mode-sub.active .card-tagline { color: #fbbf24; }
+.mode-sub.active .card-check-tag { background: #f59e0b; color: #080b10; }
+.mode-sub .card-glow-bg { background: radial-gradient(circle at 50% 30%, #f59e0b, transparent 70%); }
+
+/* ── 3. Multiplication (Cosmic Violet) ── */
+.mode-mult {
+  border-color: rgba(168, 85, 247, 0.3);
+}
+.mode-mult .card-glyph { color: #c084fc; }
+.mode-mult:hover { border-color: #c084fc; }
+.mode-mult.active {
+  border-color: #a855f7;
+  box-shadow: 0 6px 0 #7c3aed, 0 0 25px rgba(168, 85, 247, 0.4);
+}
+.mode-mult.active .card-pill { background: rgba(168, 85, 247, 0.25); color: #c084fc; border-color: #a855f7; }
+.mode-mult.active .card-tagline { color: #c084fc; }
+.mode-mult.active .card-check-tag { background: #a855f7; color: #080b10; }
+.mode-mult .card-glow-bg { background: radial-gradient(circle at 50% 30%, #a855f7, transparent 70%); }
+
+/* ── 4. Division (Ruby Coral) ── */
+.mode-div {
+  border-color: rgba(244, 63, 94, 0.3);
+}
+.mode-div .card-glyph { color: #fb7185; }
+.mode-div:hover { border-color: #fb7185; }
+.mode-div.active {
+  border-color: #f43f5e;
+  box-shadow: 0 6px 0 #be123c, 0 0 25px rgba(244, 63, 94, 0.4);
+}
+.mode-div.active .card-pill { background: rgba(244, 63, 94, 0.25); color: #fb7185; border-color: #f43f5e; }
+.mode-div.active .card-tagline { color: #fb7185; }
+.mode-div.active .card-check-tag { background: #f43f5e; color: #080b10; }
+.mode-div .card-glow-bg { background: radial-gradient(circle at 50% 30%, #f43f5e, transparent 70%); }
+
+/* ── 5. Surge Mix (Electrified Gold) ── */
+.mode-mix {
+  border-color: rgba(251, 191, 36, 0.4);
+}
+.mode-mix .card-glyph { color: #fde047; animation: sparkPulse 0.9s infinite alternate; }
+.mode-mix:hover { border-color: #fde047; }
+.mode-mix.active {
+  border-color: #fbbf24;
+  box-shadow: 0 6px 0 #78350f, 0 0 30px rgba(251, 191, 36, 0.55);
+}
+.mode-mix.active .card-pill { background: rgba(251, 191, 36, 0.3); color: #fde047; border-color: #fbbf24; }
+.mode-mix.active .card-tagline { color: #fde047; }
+.mode-mix.active .card-check-tag { background: #fbbf24; color: #080b10; }
+.mode-mix .card-glow-bg { background: radial-gradient(circle at 50% 30%, #fbbf24, transparent 70%); }
+
+@media (max-width: 580px) {
+  .arcade-mode-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mode-mix { grid-column: span 2; }
 }
 
 /* Massive 3D Play Button */

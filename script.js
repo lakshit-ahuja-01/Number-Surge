@@ -33,8 +33,8 @@ const MODES = {
     badge:  'ADD',
     symbol: '+',
     generateQ(diff) {
-      const max = getMaxNumber(diff);
-      const target = randInt(6, Math.min(Math.floor(max * 1.8), 99));
+      const max = gameState.theme === 'robotics' ? getMaxNumber(diff) * 5 : getMaxNumber(diff);
+      const target = gameState.theme === 'robotics' ? randInt(10, Math.min(Math.floor(max * 1.8), 500)) : randInt(6, Math.min(Math.floor(max * 1.8), 99));
       const minA = Math.max(CONFIG.MIN_NUMBER, target - max);
       const maxA = Math.min(max, target - CONFIG.MIN_NUMBER);
       const a = minA > maxA ? Math.floor(target / 2) : randInt(minA, maxA);
@@ -47,8 +47,8 @@ const MODES = {
     badge:  'SUB',
     symbol: '−',
     generateQ(diff) {
-      const max = getMaxNumber(diff);
-      const target = randInt(2, Math.min(max - 2, 45));
+      const max = gameState.theme === 'robotics' ? getMaxNumber(diff) * 5 : getMaxNumber(diff);
+      const target = gameState.theme === 'robotics' ? randInt(10, Math.min(max - 2, 250)) : randInt(2, Math.min(max - 2, 45));
       const b = randInt(1, Math.min(max - target, max - 1));
       const a = target + b;
       return { target, pairA: a, pairB: b, check: (x, y) => Math.abs(x - y) === target };
@@ -59,7 +59,7 @@ const MODES = {
     badge:  'MUL',
     symbol: '×',
     generateQ(diff) {
-      const maxFactor = Math.min(3 + diff, 12);
+      const maxFactor = gameState.theme === 'robotics' ? Math.min(5 + diff * 2, 25) : Math.min(3 + diff, 12);
       const a = randInt(2, maxFactor);
       const b = randInt(2, maxFactor);
       const target = a * b;
@@ -71,7 +71,7 @@ const MODES = {
     badge:  'DIV',
     symbol: '÷',
     generateQ(diff) {
-      const maxFactor = Math.min(3 + diff, 12);
+      const maxFactor = gameState.theme === 'robotics' ? Math.min(5 + diff * 2, 25) : Math.min(3 + diff, 12);
       const b = randInt(2, maxFactor);
       const target = randInt(2, maxFactor);
       const a = target * b;
@@ -82,11 +82,29 @@ const MODES = {
     },
   },
 
+  powers: {
+    badge:  'POW',
+    symbol: '^',
+    generateQ(diff) {
+      const bases = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+      const a = bases[randInt(0, Math.min(bases.length - 1, 3 + diff))];
+      let maxExp = 2;
+      if (a === 2) maxExp = 6;
+      else if (a === 3) maxExp = 4;
+      else if (a <= 5) maxExp = 3;
+      
+      const b = randInt(2, maxExp);
+      const target = Math.pow(a, b);
+      return { target, pairA: a, pairB: b, check: (x, y) => Math.pow(x, y) === target || Math.pow(y, x) === target };
+    },
+  },
+
   mixed: {
     badge:  'MIX',
     symbol: '?',
     generateQ(diff) {
       const pool = ['addition', 'subtraction', 'multiplication', 'division'];
+      if (gameState.theme === 'robotics') pool.push('powers');
       const chosen = pool[randInt(0, pool.length - 1)];
       const q = MODES[chosen].generateQ(diff);
       q.chosenMode = chosen;
@@ -97,6 +115,7 @@ const MODES = {
 
 // ─── 3. STATE MANAGEMENT ─────────────────────────────────────
 const gameState = {
+  theme:           localStorage.getItem('number_surge_theme') || 'kids',
   phase:           'menu',       // 'menu' | 'playing' | 'gameover'
   mode:            'addition',
   score:           0,
@@ -667,6 +686,7 @@ function spawnEnergyParticles(refEl) {
 
 // ─── 14. COUNTDOWN TIMER ─────────────────────────────────────
 function startTimer() {
+  stopTimer(); // Ensure any existing timer interval is cleared to prevent leaks
   gameState.timeLeft = gameState.duration || CONFIG.GAME_DURATION;
   updateHUD();
 
@@ -687,8 +707,10 @@ function startTimer() {
 }
 
 function stopTimer() {
-  clearInterval(gameState.timerIntervalId);
-  gameState.timerIntervalId = null;
+  if (gameState.timerIntervalId) {
+    clearInterval(gameState.timerIntervalId);
+    gameState.timerIntervalId = null;
+  }
 }
 
 // ─── 15. MAIN PHYSICS GAME LOOP (rAF) ────────────────────────
@@ -726,22 +748,33 @@ function gameLoop(timestamp) {
 }
 
 function startGameLoop() {
+  stopGameLoop(); // Ensure any existing game loop is cancelled first
   gameState.lastFrameTime = 0;
   gameState.animFrameId = requestAnimationFrame(gameLoop);
 }
 
 function stopGameLoop() {
-  cancelAnimationFrame(gameState.animFrameId);
-  gameState.animFrameId = null;
+  if (gameState.animFrameId) {
+    cancelAnimationFrame(gameState.animFrameId);
+    gameState.animFrameId = null;
+  }
 }
 
 // ─── 16. GAME OVER & RANKING ─────────────────────────────────
 function calculateRank(score, accuracy) {
-  if (score >= 400 && accuracy >= 90) return { rank: '🌟 MATH LEGEND ⭐⭐⭐', color: '#ff9f43' };
-  if (score >= 250 && accuracy >= 80) return { rank: '🏆 SUPERSTAR ⭐⭐',    color: '#2ed573' };
-  if (score >= 120 && accuracy >= 60) return { rank: '🎉 GREAT JOB! ⭐',      color: '#45aaf2' };
-  if (score >= 50)                    return { rank: '🎈 GOOD EFFORT!',       color: '#a55eea' };
-  return { rank: '🌱 KEEP PRACTICING!', color: '#ff6b8a' };
+  if (gameState.theme === 'robotics') {
+    if (score >= 400 && accuracy >= 90) return { rank: '🌌 CYBER GOD 🦾', color: '#ff007f' };
+    if (score >= 250 && accuracy >= 80) return { rank: '⚡ SYSTEM ADMIN 🔧',    color: '#00f2fe' };
+    if (score >= 120 && accuracy >= 60) return { rank: '🔋 ELITE HACKER 💻',      color: '#00ff88' };
+    if (score >= 50)                    return { rank: '⚙️ APPRENTICE 🤖',       color: '#b000ff' };
+    return { rank: '🔌 NEED REBOOT 🔋', color: '#ff003c' };
+  } else {
+    if (score >= 400 && accuracy >= 90) return { rank: '🌟 MATH LEGEND ⭐⭐⭐', color: '#ff9f43' };
+    if (score >= 250 && accuracy >= 80) return { rank: '🏆 SUPERSTAR ⭐⭐',    color: '#2ed573' };
+    if (score >= 120 && accuracy >= 60) return { rank: '🎉 GREAT JOB! ⭐',      color: '#45aaf2' };
+    if (score >= 50)                    return { rank: '🎈 GOOD EFFORT!',       color: '#a55eea' };
+    return { rank: '🌱 KEEP PRACTICING!', color: '#ff6b8a' };
+  }
 }
 
 let gameoverAudioTimeout = null;
@@ -806,13 +839,15 @@ function playArcadeSound(type, comboLevel = 1) {
   try {
     const ctx = getAudioCtx();
     const now = ctx.currentTime;
+    const isRobotics = gameState.theme === 'robotics';
 
     if (type === 'select' || type === 'click') {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(type === 'select' ? 980 : 700, now);
-      gain.gain.setValueAtTime(0.06, now);
+      osc.type = isRobotics ? 'square' : 'sine';
+      osc.frequency.setValueAtTime(type === 'select' ? (isRobotics ? 600 : 980) : (isRobotics ? 400 : 700), now);
+      if (isRobotics && type === 'select') osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+      gain.gain.setValueAtTime(isRobotics ? 0.04 : 0.06, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
       osc.connect(gain);
       gain.connect(masterGainNode);
@@ -820,19 +855,29 @@ function playArcadeSound(type, comboLevel = 1) {
       osc.stop(now + 0.05);
     }
     else if (type === 'correct') {
-      // Dynamic cheerful rising musical chime!
       const semitone = Math.min(comboLevel - 1, 12);
-      const baseFreq = 523.25 * Math.pow(2, semitone / 12); // C5 upwards
-
-      const chord = [baseFreq, baseFreq * 1.25, baseFreq * 1.5];
+      const baseFreq = (isRobotics ? 440 : 523.25) * Math.pow(2, semitone / 12);
+      
+      const chord = isRobotics ? [baseFreq, baseFreq * 1.5, baseFreq * 2] : [baseFreq, baseFreq * 1.25, baseFreq * 1.5];
       chord.forEach((freq, i) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'triangle';
+        osc.type = isRobotics ? 'sawtooth' : 'triangle';
         osc.frequency.setValueAtTime(freq, now + i * 0.035);
-        gain.gain.setValueAtTime(0.12, now + i * 0.035);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3 + i * 0.035);
-        osc.connect(gain);
+        gain.gain.setValueAtTime(isRobotics ? 0.06 : 0.12, now + i * 0.035);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (isRobotics ? 0.2 : 0.3) + i * 0.035);
+        
+        if (isRobotics) {
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(2000, now);
+          filter.frequency.exponentialRampToValueAtTime(400, now + 0.2);
+          osc.connect(filter);
+          filter.connect(gain);
+        } else {
+          osc.connect(gain);
+        }
+        
         gain.connect(masterGainNode);
         osc.start(now + i * 0.035);
         osc.stop(now + 0.32 + i * 0.035);
@@ -841,21 +886,21 @@ function playArcadeSound(type, comboLevel = 1) {
     else if (type === 'wrong') {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(260, now);
-      osc.frequency.linearRampToValueAtTime(180, now + 0.15);
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc.type = isRobotics ? 'sawtooth' : 'sine';
+      osc.frequency.setValueAtTime(isRobotics ? 150 : 260, now);
+      osc.frequency.linearRampToValueAtTime(isRobotics ? 50 : 180, now + 0.15);
+      gain.gain.setValueAtTime(isRobotics ? 0.05 : 0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + (isRobotics ? 0.25 : 0.18));
       osc.connect(gain);
       gain.connect(masterGainNode);
       osc.start(now);
-      osc.stop(now + 0.18);
+      osc.stop(now + 0.3);
     }
     else if (type === 'tick_urgent') {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, now);
+      osc.type = isRobotics ? 'square' : 'sine';
+      osc.frequency.setValueAtTime(isRobotics ? 600 : 880, now);
       gain.gain.setValueAtTime(0.03, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
       osc.connect(gain);
@@ -864,21 +909,30 @@ function playArcadeSound(type, comboLevel = 1) {
       osc.stop(now + 0.03);
     }
     else if (type === 'gameover' || type === 'gameover_record') {
-      // Cheerful sparkling fanfare (C5, E5, G5, C6)
       const notes = type === 'gameover_record' 
         ? [523.25, 659.25, 783.99, 1046.50, 1318.51] 
         : [523.25, 659.25, 783.99, 1046.50];
       notes.forEach((f, idx) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(f, now + idx * 0.08);
-        gain.gain.setValueAtTime(0.12, now + idx * 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
-        osc.connect(gain);
+        osc.type = isRobotics ? 'square' : 'triangle';
+        osc.frequency.setValueAtTime(isRobotics ? f * 0.5 : f, now + idx * 0.08);
+        gain.gain.setValueAtTime(isRobotics ? 0.06 : 0.12, now + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + (isRobotics ? 0.4 : 0.25));
+        
+        if (isRobotics) {
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(1000, now);
+          osc.connect(filter);
+          filter.connect(gain);
+        } else {
+          osc.connect(gain);
+        }
+
         gain.connect(masterGainNode);
         osc.start(now + idx * 0.08);
-        osc.stop(now + idx * 0.08 + 0.28);
+        osc.stop(now + idx * 0.08 + 0.5);
       });
     }
   } catch (_) {}
@@ -886,6 +940,7 @@ function playArcadeSound(type, comboLevel = 1) {
 
 // ─── 18. GAME CONTROLS & FLOW ────────────────────────────────
 function startGame() {
+  if (gameState.phase === 'playing') return; // Prevent double initialization
   resetState();
   gameState.phase = 'playing';
   clearAllFloaters();
@@ -950,6 +1005,105 @@ if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
   showScreen('start');
 });
 
+// Theme Switcher
+const themeBtns = document.querySelectorAll('.theme-btn');
+const powModeBtn = document.querySelector('.mode-pow');
+
+const themeTranslations = {
+  kids: {
+    '.logo-deco-left': '🌟', '.logo-deco-right': '🌟', '.logo-subline': '🍭 FUN MATH FOR KIDS! 🍭', '.logo-emoji-row': '🌈 ➕ ➖ ✖️ ➗ 🌈',
+    '.mode-add .card-pill': '🍏 PLUS!', '.mode-add .card-tagline': '🤝 Add Together!',
+    '.mode-sub .card-pill': '🍊 MINUS!', '.mode-sub .card-tagline': '✂️ Take Away!',
+    '.mode-mult .card-pill': '🍇 TIMES!', '.mode-mult .card-tagline': '🚀 Power Up!',
+    '.mode-div .card-pill': '🍓 SHARE!', '.mode-div .card-tagline': '🍕 Share It!',
+    '.mode-mix .card-pill': '🎉 ALL MIX!', '.mode-mix .card-tagline': '🌈 Wild Surprise!',
+    '.card-check-tag': '⭐ LET\'S GO!',
+    '[data-time="30"] .time-chip-icon': '⚡', '[data-time="30"] .time-chip-label': '⚡ SPEEDY!',
+    '[data-time="60"] .time-chip-icon': '⏰', '[data-time="60"] .time-chip-label': '🌟 CLASSIC!',
+    '[data-time="90"] .time-chip-icon': '⏳', '[data-time="90"] .time-chip-label': '🏃 LONG GO!',
+    '[data-time="120"] .time-chip-icon': '🦸', '[data-time="120"] .time-chip-label': '🦸 HERO!',
+    '[data-diff="0"] .time-chip-icon': '🌱', '[data-diff="0"] .time-chip-label': 'RELAXED',
+    '[data-diff="3"] .time-chip-icon': '🌟', '[data-diff="3"] .time-chip-label': 'CLASSIC',
+    '[data-diff="6"] .time-chip-icon': '🔥', '[data-diff="6"] .time-chip-label': 'FAST!',
+    '.pause-icon': '⏸️ 🍦', '.pause-title': 'TAKING A BREAK! 😊', '.pause-desc': 'Game is resting! 💤 Come back soon!',
+    '#resume-btn .play-btn-content': '🚀 KEEP PLAYING!', '#pause-menu-btn span': '🏠 GO HOME',
+    '.gameover-banner': '🎊 ROUND COMPLETE! 🎊', '.gameover-title': 'YOU DID IT! 🎉', '.gameover-stars': '⭐ ⭐ ⭐',
+    '#play-again-btn .play-btn-content span': '🚀 PLAY AGAIN!', '#menu-btn span': '🏠 HOME MENU',
+    '.press-space-prompt': '<span class="blink-dot">🎯</span> PRESS <kbd>SPACEBAR</kbd> TO START!',
+    '.play-arrow': '🚀',
+    '.timer-dial-icon': '⏰'
+  },
+  robotics: {
+    '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': '🦾 SYSTEM OVERRIDE 🦾', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
+    '.mode-add .card-pill': '➕ ADD', '.mode-add .card-tagline': '🔋 System Sum',
+    '.mode-sub .card-pill': '➖ SUB', '.mode-sub .card-tagline': '🔧 Drain Core',
+    '.mode-mult .card-pill': '✖️ MULT', '.mode-mult .card-tagline': '🚀 Overclock',
+    '.mode-div .card-pill': '➗ DIV', '.mode-div .card-tagline': '📡 Split Signal',
+    '.mode-mix .card-pill': '🎲 MIX', '.mode-mix .card-tagline': '⚠️ Chaos Mode',
+    '.card-check-tag': '⚡ ENGAGE',
+    '[data-time="30"] .time-chip-icon': '⏱️', '[data-time="30"] .time-chip-label': 'BLITZ',
+    '[data-time="60"] .time-chip-icon': '⏲️', '[data-time="60"] .time-chip-label': 'STANDARD',
+    '[data-time="90"] .time-chip-icon': '⌛', '[data-time="90"] .time-chip-label': 'EXTENDED',
+    '[data-time="120"] .time-chip-icon': '🔋', '[data-time="120"] .time-chip-label': 'ENDURANCE',
+    '[data-diff="0"] .time-chip-icon': '🟢', '[data-diff="0"] .time-chip-label': 'ROOKIE',
+    '[data-diff="3"] .time-chip-icon': '🟡', '[data-diff="3"] .time-chip-label': 'VETERAN',
+    '[data-diff="6"] .time-chip-icon': '🔴', '[data-diff="6"] .time-chip-label': 'NIGHTMARE',
+    '.pause-icon': '⏸️ 🔋', '.pause-title': 'SYSTEM PAUSED 🛑', '.pause-desc': 'Awaiting command input... ⏳',
+    '#resume-btn .play-btn-content': '⚡ RESUME SYSTEM', '#pause-menu-btn span': '🔌 ABORT',
+    '.gameover-banner': '⚠️ SIMULATION ENDED ⚠️', '.gameover-title': 'MISSION LOGGED', '.gameover-stars': '⚡ ⚡ ⚡',
+    '#play-again-btn .play-btn-content span': '⚡ REBOOT SYS!', '#menu-btn span': '🔌 MAIN MENU',
+    '.press-space-prompt': '<span class="blink-dot">⚠️</span> PRESS <kbd>SPACEBAR</kbd> TO INITIATE!',
+    '.play-arrow': '⚡',
+    '.timer-dial-icon': '⏲️'
+  }
+};
+
+function applyTheme(theme) {
+  gameState.theme = theme;
+  localStorage.setItem('number_surge_theme', theme);
+  
+  if (theme === 'robotics') {
+    document.body.classList.add('theme-robotics');
+    if (powModeBtn) powModeBtn.style.display = 'flex';
+  } else {
+    document.body.classList.remove('theme-robotics');
+    if (powModeBtn) powModeBtn.style.display = 'none';
+    if (gameState.mode === 'powers') {
+      gameState.mode = 'addition';
+      document.querySelector('.mode-add').click();
+    }
+  }
+
+  const trans = themeTranslations[theme];
+  if (trans) {
+    for (const selector in trans) {
+      document.querySelectorAll(selector).forEach(el => {
+        if (selector === '.press-space-prompt') {
+          el.innerHTML = trans[selector];
+        } else {
+          el.textContent = trans[selector];
+        }
+      });
+    }
+  }
+  
+  if (dom.playBtnLabel) {
+    dom.playBtnLabel.textContent = theme === 'robotics' ? `SYSTEM START (${gameState.duration || 60}s)` : `LET'S PLAY! (${gameState.duration || 60}s)`;
+  }
+
+  themeBtns.forEach(btn => {
+    if (btn.dataset.theme === theme) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+}
+
+themeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    applyTheme(btn.dataset.theme);
+    playArcadeSound('click');
+  });
+});
+
 // Mode Cards
 dom.modeGrid.addEventListener('click', e => {
   const card = e.target.closest('.arcade-card, .arcade-cartridge, .mode-card');
@@ -977,7 +1131,7 @@ if (dom.timeGrid) {
     chip.setAttribute('aria-pressed', 'true');
     gameState.duration = parseInt(chip.dataset.time, 10);
     if (dom.playBtnLabel) {
-      dom.playBtnLabel.textContent = `START SURGE (${gameState.duration}s)`;
+      dom.playBtnLabel.textContent = gameState.theme === 'robotics' ? `SYSTEM START (${gameState.duration}s)` : `LET'S PLAY! (${gameState.duration}s)`;
     }
     playArcadeSound('click');
   });
@@ -1043,4 +1197,5 @@ function randInt(min, max) {
 initAmbientCanvas();
 renderAmbientParticles();
 loadHighScore();
+applyTheme(gameState.theme);
 showScreen('start');

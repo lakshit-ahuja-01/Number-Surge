@@ -8,7 +8,7 @@
   <title>🎉 Number Surge — Kids Math Adventure! 🌈</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800;900&family=Outfit:wght@500;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800;900&family=Outfit:wght@500;700;800;900&family=Press+Start+2P&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,6 +21,12 @@
     <!-- ===== START SCREEN (AUTHENTIC ARCADE TITLE SCREEN) ===== -->
     <div id="start-screen" class="screen active">
       
+      <!-- Theme Switcher -->
+      <div class="theme-switcher-bar">
+        <button class="theme-btn active" data-theme="kids">🍭 KIDS CANDY</button>
+        <button class="theme-btn" data-theme="robotics">🤖 CYBER ROBOTICS</button>
+      </div>
+
       <!-- Top Title Screen Bar -->
       <div class="title-top-bar">
         <div class="title-highscore-pill">
@@ -107,6 +113,18 @@
               <div class="card-info">
                 <span class="card-name">SURGE MIX</span>
                 <span class="card-tagline">🌈 Wild Surprise!</span>
+              </div>
+              <div class="card-check-tag">⭐ LET'S GO!</div>
+            </button>
+
+            <!-- Powers Card (Robotics Mode Only) -->
+            <button class="arcade-card mode-pow" data-mode="powers" aria-pressed="false" style="display: none;">
+              <div class="card-glow-bg"></div>
+              <div class="card-pill">⚡ POWERS!</div>
+              <div class="card-glyph">A<sup>B</sup></div>
+              <div class="card-info">
+                <span class="card-name">POWERS</span>
+                <span class="card-tagline">🔋 Exponents!</span>
               </div>
               <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>

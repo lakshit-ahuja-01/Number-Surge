@@ -109,9 +109,10 @@ html, body {
    ======================================================== */
 #start-screen {
   display: none;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 16px;
+  padding-top: 32px;
   background: 
     radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 214, 109, 0.35) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 20% 80%, rgba(255, 107, 138, 0.2) 0%, transparent 50%),
@@ -130,6 +131,7 @@ html, body {
   display: flex;
   justify-content: center;
   z-index: 5;
+  margin-top: 24px;
 }
 
 .title-highscore-pill {
@@ -1756,3 +1758,486 @@ html, body {
 
   .orb-floater { font-size: 19px; }
 }
+.theme-switcher-bar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 12px;
+  background: var(--bg-panel);
+  padding: 8px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px var(--border-subtle);
+  z-index: 100;
+}
+
+.theme-btn {
+  padding: 10px 20px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-hud);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-btn.active {
+  background: var(--candy-purple);
+  color: #fff;
+  border-color: var(--candy-purple);
+  box-shadow: 0 4px 0 rgba(165, 94, 234, 0.4);
+}
+
+/* ========================================================
+   🤖 CYBER ROBOTICS THEME
+   ======================================================== */
+body.theme-robotics {
+  --bg-deep:        #0a0e17;
+  --bg-surface:     #121826;
+  --bg-panel:       rgba(10, 14, 23, 0.92);
+  --border-subtle:  #1d283a;
+  --border-accent:  #00f2fe;
+
+  --candy-orange:   #ffaa00;
+  --candy-orange-l: #ffcc00;
+  --candy-orange-d: #cc8800;
+  --candy-orange-s: #996600;
+
+  --candy-pink:     #ff007f;
+  --candy-green:    #00ff88;
+  --candy-green-l:  #55ffaa;
+  --candy-blue:     #00f2fe;
+  --candy-purple:   #b000ff;
+  --candy-yellow:   #ffd200;
+  --candy-red:      #ff003c;
+  --candy-teal:     #00ffcc;
+  
+  --text-pure:      #ffffff;
+  --text-main:      #e2e8f0;
+  --text-dim:       #94a3b8;
+  --text-muted:     #475569;
+
+  --font-hud:       'Orbitron', monospace, sans-serif;
+  --font-retro:     'Rajdhani', monospace, sans-serif;
+  --font-body:      'Rajdhani', sans-serif;
+
+  color: var(--text-main);
+  background-color: var(--bg-deep);
+}
+
+body.theme-robotics #ambient-canvas {
+  opacity: 0.15;
+  filter: hue-rotate(180deg) brightness(1.5);
+}
+
+body.theme-robotics .river-sky-decor {
+  display: none;
+}
+
+body.theme-robotics .theme-btn[data-theme="kids"] {
+  background: transparent;
+  color: #94a3b8;
+  border-color: #334155;
+  box-shadow: none;
+}
+body.theme-robotics .theme-btn[data-theme="robotics"].active {
+  background: #00f2fe;
+  color: #0a0e17;
+  border-color: #00f2fe;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+}
+
+body.theme-robotics .arcade-card {
+  background: #121826;
+  border-color: #1d283a;
+  box-shadow: 0 4px 0 #0f141e, 0 0 10px rgba(0,242,254,0.1);
+  border-radius: 8px;
+}
+body.theme-robotics .arcade-card:hover {
+  border-color: #00f2fe;
+  box-shadow: 0 6px 0 #0f141e, 0 0 15px rgba(0,242,254,0.3);
+}
+body.theme-robotics .arcade-card.active {
+  background: #00f2fe;
+  color: #0a0e17;
+  border-color: #00f2fe;
+  box-shadow: 0 4px 0 #00b0ba, 0 0 20px rgba(0,242,254,0.5);
+}
+body.theme-robotics .arcade-card.active .card-pill { background: #00b0ba; color: #fff; }
+body.theme-robotics .arcade-card.active .card-name { color: #0a0e17; }
+body.theme-robotics .arcade-card.active .card-tagline { color: #1d283a; }
+
+body.theme-robotics .game-logo-3d span {
+  color: #00f2fe;
+  -webkit-text-stroke: 1px #0088aa;
+  text-shadow: 0 2px 0 #0088aa, 0 4px 0 #005577, 0 6px 0 #003344, 0 0 20px rgba(0,242,254,0.8);
+}
+body.theme-robotics .logo-subline {
+  color: #00ff88;
+  background: #121826;
+  border: 1.5px solid #00ff88;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+  text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+}
+
+body.theme-robotics #arcade-hud {
+  background: rgba(10, 14, 23, 0.95);
+  border-bottom: 2px solid #00f2fe;
+  border-radius: 0;
+}
+body.theme-robotics .hud-dashboard-box {
+  background: #121826;
+  border: 1px solid #1d283a;
+  box-shadow: inset 0 0 10px rgba(0,242,254,0.05);
+  border-radius: 4px;
+}
+body.theme-robotics .hud-number-digital {
+  font-family: var(--font-hud);
+  color: #00ff88;
+  text-shadow: 0 0 5px rgba(0,255,136,0.5);
+}
+body.theme-robotics .timer-orb-badge {
+  background: #121826;
+  border: 2px solid #ff007f;
+  box-shadow: 0 4px 0 #99004d, 0 0 15px rgba(255, 0, 127, 0.2);
+  border-radius: 6px;
+  color: #ff007f;
+}
+body.theme-robotics .timer-number {
+  color: #ff007f;
+  text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
+}
+body.theme-robotics .speed-meter-track {
+  background: #0a0e17;
+  border-color: #1d283a;
+}
+body.theme-robotics #speed-meter-bar {
+  background: linear-gradient(90deg, #00ff88 0%, #00f2fe 50%, #ff007f 100%);
+}
+body.theme-robotics .speed-meter-label {
+  color: #ff007f;
+  text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
+}
+
+body.theme-robotics #equation-dock {
+  background: rgba(18, 24, 38, 0.95);
+  border-top: 2px solid #00f2fe;
+  border-radius: 0;
+}
+body.theme-robotics .dock-inner {
+  border-radius: 0;
+}
+body.theme-robotics .slot-operand, body.theme-robotics .slot-target {
+  background: #0a0e17;
+  border: 2px solid #1d283a;
+  color: #00f2fe;
+  box-shadow: inset 0 0 8px rgba(0,242,254,0.2);
+  border-radius: 4px;
+  font-family: var(--font-hud);
+}
+body.theme-robotics .op-sign-badge, body.theme-robotics .eq-sign-badge {
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255,0,127,0.5);
+}
+
+body.theme-robotics .orb-floater {
+  font-family: var(--font-hud);
+  background: #121826;
+  border: 2px solid #00f2fe;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0,242,254,0.4), inset 0 0 15px rgba(0,242,254,0.2);
+  border-radius: 50%;
+}
+body.theme-robotics .orb-floater::after {
+  content: '';
+  position: absolute;
+  top: 5px; left: 5px; right: 5px; bottom: 5px;
+  border: 1px dashed #00f2fe;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: cyberSpin 4s linear infinite;
+}
+@keyframes cyberSpin { 100% { transform: rotate(360deg); } }
+
+body.theme-robotics .orb-selected {
+  background: #ff007f;
+  border-color: #ff007f;
+  box-shadow: 0 0 20px rgba(255,0,127,0.8), inset 0 0 20px rgba(255,0,127,0.5);
+}
+body.theme-robotics .orb-selected::after {
+  border-color: #fff;
+  animation-duration: 2s;
+}
+
+body.theme-robotics .arcade-play-button {
+  background: #00ff88;
+  color: #0a0e17;
+  border-radius: 8px;
+  box-shadow: 0 6px 0 #00cc6a, 0 12px 24px rgba(0, 255, 136, 0.25) !important;
+}
+body.theme-robotics .arcade-play-button:hover {
+  background: #33ff99;
+  box-shadow: 0 9px 0 #00cc6a, 0 16px 28px rgba(0, 255, 136, 0.4) !important;
+}
+body.theme-robotics .arcade-play-button:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #00cc6a !important;
+}
+body.theme-robotics .play-btn-bevel {
+  display: none;
+}
+body.theme-robotics .play-btn-content {
+  background: transparent;
+  color: #0a0e17;
+  box-shadow: none;
+}
+body.theme-robotics .arcade-play-button:hover .play-btn-content {
+  background: transparent;
+}
+
+/* Pause & Gameover Modals - Cyber Robotics Overrides */
+body.theme-robotics .pause-card {
+  background: rgba(18, 24, 38, 0.95);
+  border: 2px solid #00f2fe;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+  color: #fff;
+}
+body.theme-robotics .pause-title {
+  color: #00f2fe;
+  text-shadow: 0 2px 4px rgba(0,242,254,0.4);
+}
+body.theme-robotics .pause-desc {
+  color: #94a3b8;
+}
+
+body.theme-robotics #start-screen,
+body.theme-robotics #game-screen,
+body.theme-robotics #gameover-screen {
+  background: #0a0e17;
+  background-image: none;
+}
+body.theme-robotics .gameover-banner {
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255,0,127,0.5);
+}
+body.theme-robotics .gameover-title {
+  color: #00f2fe;
+  text-shadow: 0 3px 0 #005577, 0 0 15px rgba(0,242,254,0.5);
+}
+body.theme-robotics .gameover-stars {
+  color: #00ff88;
+  text-shadow: 0 0 10px rgba(0,255,136,0.6);
+}
+body.theme-robotics .stat-card.stat-main {
+  background: #121826;
+  border: 2px solid #ff007f;
+  box-shadow: 0 4px 0 #99004d, 0 8px 20px rgba(255,0,127,0.2);
+}
+body.theme-robotics .stat-sub {
+  color: #00f2fe;
+}
+body.theme-robotics .stat-big {
+  color: #00ff88;
+  text-shadow: 0 0 8px rgba(0,255,136,0.5);
+}
+body.theme-robotics .mini-stat {
+  background: #0a0e17;
+  border: 1px solid #1d283a;
+}
+body.theme-robotics .m-label {
+  color: #94a3b8;
+}
+body.theme-robotics .m-val {
+  color: #ffffff;
+}
+
+/* ─── NEW ROBOTICS OVERRIDES TO FIX LEFTOVERS ─── */
+body.theme-robotics #river {
+  background: #0a0e17;
+}
+
+body.theme-robotics .title-highscore-pill {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #00f2fe;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #005577;
+}
+
+body.theme-robotics .panel-header {
+  color: #00f2fe;
+  text-shadow: 0 2px 4px rgba(0, 242, 254, 0.4);
+}
+
+body.theme-robotics .time-chip {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #1d283a;
+  color: #94a3b8;
+  box-shadow: 0 4px 0 #0f141e;
+}
+body.theme-robotics .time-chip:hover {
+  background: #1a2235;
+}
+body.theme-robotics .time-chip.active {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: #00f2fe;
+  box-shadow: 0 4px 0 #005577, 0 0 15px rgba(0,242,254,0.3);
+}
+body.theme-robotics .time-chip.active .time-chip-val {
+  color: #00f2fe;
+}
+body.theme-robotics .time-chip.active .time-chip-label {
+  color: #00ff88;
+}
+
+body.theme-robotics .pause-modal {
+  background: rgba(10, 14, 23, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+body.theme-robotics .arcade-secondary-btn {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #1d283a;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #0f141e;
+}
+body.theme-robotics .arcade-secondary-btn:hover {
+  background: #1a2235;
+  border-color: #00f2fe;
+}
+body.theme-robotics .arcade-secondary-btn:active {
+  box-shadow: 0 0 0 transparent;
+}
+
+body.theme-robotics .gameover-stage {
+  background: rgba(10, 14, 23, 0.92);
+  border: 2px solid #00f2fe;
+  box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+}
+
+body.theme-robotics .hud-tag {
+  background: #1d283a;
+  color: #00f2fe;
+}
+body.theme-robotics #hud-combo-box .hud-tag {
+  background: #1d283a;
+  color: #ff007f;
+}
+body.theme-robotics .hud-level-tag {
+  background: #00f2fe;
+  color: #0a0e17;
+}
+
+body.theme-robotics .slot-label {
+  color: #00f2fe;
+  text-shadow: 0 1px 0 #005577;
+}
+body.theme-robotics .slot-label-gold {
+  color: #ff007f;
+  text-shadow: 0 1px 0 #99004d;
+}
+
+/* Fix for active difficulty chips overriding standard active class */
+body.theme-robotics .diff-grid .time-chip.active {
+  background: rgba(0, 242, 254, 0.1) !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 4px 0 #005577, 0 0 15px rgba(0,242,254,0.3) !important;
+}
+body.theme-robotics .diff-grid .time-chip.active .time-chip-val {
+  color: #00f2fe !important;
+  text-shadow: none !important;
+}
+
+/* Fix for Spacebar Prompt */
+body.theme-robotics .press-space-prompt kbd {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #00f2fe;
+  color: #00ff88;
+  box-shadow: 0 2px 0 #005577;
+}
+
+
+
+/* Force HUD font variable override globally under robotics theme */
+body.theme-robotics,
+body.theme-robotics * {
+  --font-hud: 'Orbitron', monospace, sans-serif !important;
+  --font-body: 'Rajdhani', sans-serif !important;
+}
+
+/* Inactive time-chips: Use a muted, low-opacity glowing cyan instead of flat gray */
+body.theme-robotics .time-chip {
+  background: #121826 !important;
+  border-color: rgba(0, 242, 254, 0.15) !important;
+  box-shadow: 0 4px 0 #0f141e !important;
+}
+body.theme-robotics .time-chip:hover {
+  background: #1a2235 !important;
+  border-color: rgba(0, 242, 254, 0.4) !important;
+}
+body.theme-robotics .time-chip-val {
+  color: rgba(0, 242, 254, 0.5) !important;
+  text-shadow: none !important;
+}
+body.theme-robotics .time-chip-label {
+  color: rgba(0, 242, 254, 0.3) !important;
+  text-shadow: none !important;
+}
+
+/* Inactive Adventure Cards: Remove kids colors, use muted cyan theme */
+body.theme-robotics .arcade-card .card-name {
+  color: rgba(0, 242, 254, 0.6) !important;
+  text-shadow: none !important;
+}
+body.theme-robotics .arcade-card .card-tagline {
+  color: rgba(0, 242, 254, 0.4) !important;
+}
+body.theme-robotics .arcade-card .card-pill {
+  background: rgba(0, 242, 254, 0.08) !important;
+  color: rgba(0, 242, 254, 0.7) !important;
+  border: 1px solid rgba(0, 242, 254, 0.2) !important;
+}
+
+/* Selected active card pill should look clean */
+body.theme-robotics .arcade-card.active .card-name {
+  color: #0a0e17 !important;
+  text-shadow: none !important;
+}
+
+/* Fix for Streak Card (ID selector specificity fix) */
+body.theme-robotics #hud-combo-box {
+  background: #121826 !important;
+  border: 1px solid #1d283a !important;
+  box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.05) !important;
+  border-radius: 4px !important;
+}
+body.theme-robotics #hud-combo-box .hud-number-digital {
+  color: #00f2fe !important;
+  text-shadow: 0 0 5px rgba(0,242,254,0.5) !important;
+}
+
+/* HUD Control Buttons (Pause/Sound) */
+body.theme-robotics .hud-control-btn {
+  background: #121826 !important;
+  border: 2.5px solid #1d283a !important;
+  border-radius: 6px !important;
+  color: #00f2fe !important;
+  box-shadow: 0 4px 0 #0f141e, inset 0 0 10px rgba(0, 242, 254, 0.05) !important;
+}
+body.theme-robotics .hud-control-btn:hover {
+  background: rgba(0, 242, 254, 0.1) !important;
+  border-color: #00f2fe !important;
+  color: #00f2fe !important;
+  box-shadow: 0 6px 0 #005577, 0 0 15px rgba(0,242,254,0.3) !important;
+}
+body.theme-robotics .hud-control-btn:active {
+  transform: translateY(3px) !important;
+  box-shadow: 0 1px 0 #005577 !important;
+}
+
+
+
+

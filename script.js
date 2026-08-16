@@ -722,11 +722,11 @@ function stopGameLoop() {
 
 // ─── 16. GAME OVER & RANKING ─────────────────────────────────
 function calculateRank(score, accuracy) {
-  if (score >= 400 && accuracy >= 90) return { rank: 'RANK S+', color: '#fbbf24' };
-  if (score >= 300 && accuracy >= 80) return { rank: 'RANK S',  color: '#38bdf8' };
-  if (score >= 200 && accuracy >= 70) return { rank: 'RANK A',  color: '#10b981' };
-  if (score >= 100) return { rank: 'RANK B', color: '#a855f7' };
-  return { rank: 'RANK C', color: '#94a3b8' };
+  if (score >= 400 && accuracy >= 90) return { rank: '🌟 MATH LEGEND ⭐⭐⭐', color: '#ff9f43' };
+  if (score >= 250 && accuracy >= 80) return { rank: '🏆 SUPERSTAR ⭐⭐',    color: '#2ed573' };
+  if (score >= 120 && accuracy >= 60) return { rank: '🎉 GREAT JOB! ⭐',      color: '#45aaf2' };
+  if (score >= 50)                    return { rank: '🎈 GOOD EFFORT!',       color: '#a55eea' };
+  return { rank: '🌱 KEEP PRACTICING!', color: '#ff6b8a' };
 }
 
 function endGame() {
@@ -743,11 +743,11 @@ function endGame() {
   dom.rankBadge.textContent = rankInfo.rank;
   dom.rankBadge.style.background = rankInfo.color;
 
-  dom.finalScore.textContent    = gameState.score;
+  dom.finalScore.textContent    = `${gameState.score} PTS`;
   dom.finalSolved.textContent   = gameState.solved;
   dom.finalAccuracy.textContent = `${accuracy}%`;
-  dom.finalCombo.textContent    = `x${gameState.bestCombo}`;
-  dom.finalSpeed.textContent    = `+${gameState.bestSpeedBonus}`;
+  dom.finalCombo.textContent    = `${gameState.bestCombo}x`;
+  dom.finalSpeed.textContent    = `+${gameState.bestSpeedBonus} PTS`;
 
   if (isNewRecord && gameState.score > 0) {
     dom.newRecordBadge.classList.add('show');
@@ -757,7 +757,7 @@ function endGame() {
     playArcadeSound('gameover');
   }
 
-  setTimeout(() => showScreen('gameover'), 450);
+  setTimeout(() => showScreen('gameover'), 350);
 }
 
 // ─── 17. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────
@@ -788,42 +788,42 @@ function playArcadeSound(type, comboLevel = 1) {
       osc.stop(now + 0.05);
     }
     else if (type === 'correct') {
-      // Dynamic musical scale based on combo level!
-      const semitone = Math.min(comboLevel - 1, 14);
-      const baseFreq = 440 * Math.pow(2, semitone / 12); // Rising pitch
+      // Dynamic cheerful rising musical chime!
+      const semitone = Math.min(comboLevel - 1, 12);
+      const baseFreq = 523.25 * Math.pow(2, semitone / 12); // C5 upwards
 
       const chord = [baseFreq, baseFreq * 1.25, baseFreq * 1.5];
       chord.forEach((freq, i) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, now + i * 0.04);
-        gain.gain.setValueAtTime(0.12, now + i * 0.04);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35 + i * 0.04);
+        osc.frequency.setValueAtTime(freq, now + i * 0.035);
+        gain.gain.setValueAtTime(0.12, now + i * 0.035);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3 + i * 0.035);
         osc.connect(gain);
         gain.connect(ctx.destination);
-        osc.start(now + i * 0.04);
-        osc.stop(now + 0.38 + i * 0.04);
+        osc.start(now + i * 0.035);
+        osc.stop(now + 0.32 + i * 0.035);
       });
     }
     else if (type === 'wrong') {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(140, now);
-      osc.frequency.linearRampToValueAtTime(90, now + 0.22);
-      gain.gain.setValueAtTime(0.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(260, now);
+      osc.frequency.linearRampToValueAtTime(180, now + 0.15);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(now);
-      osc.stop(now + 0.25);
+      osc.stop(now + 0.18);
     }
     else if (type === 'tick_urgent') {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(1100, now);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, now);
       gain.gain.setValueAtTime(0.03, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
       osc.connect(gain);
@@ -832,18 +832,21 @@ function playArcadeSound(type, comboLevel = 1) {
       osc.stop(now + 0.03);
     }
     else if (type === 'gameover' || type === 'gameover_record') {
-      const notes = type === 'gameover_record' ? [523, 659, 784, 1046] : [440, 392, 349, 293];
+      // Cheerful sparkling fanfare (C5, E5, G5, C6)
+      const notes = type === 'gameover_record' 
+        ? [523.25, 659.25, 783.99, 1046.50, 1318.51] 
+        : [523.25, 659.25, 783.99, 1046.50];
       notes.forEach((f, idx) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(f, now + idx * 0.12);
-        gain.gain.setValueAtTime(0.14, now + idx * 0.12);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + (idx + 1) * 0.22);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, now + idx * 0.08);
+        gain.gain.setValueAtTime(0.12, now + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
         osc.connect(gain);
         gain.connect(ctx.destination);
-        osc.start(now + idx * 0.12);
-        osc.stop(now + (idx + 1) * 0.22);
+        osc.start(now + idx * 0.08);
+        osc.stop(now + idx * 0.08 + 0.28);
       });
     }
   } catch (_) {}
@@ -853,7 +856,7 @@ function playArcadeSound(type, comboLevel = 1) {
 function startGame() {
   resetState();
   gameState.phase = 'playing';
-  dom.river.innerHTML = '<div class="river-stream-overlay"></div>';
+  clearAllFloaters();
   dom.timerBadge.classList.remove('timer-low');
   dom.hudComboBox.classList.remove('combo-fire');
   showScreen('game');

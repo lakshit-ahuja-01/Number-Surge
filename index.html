@@ -272,15 +272,15 @@
       <!-- PAUSE OVERLAY MODAL -->
       <div id="pause-modal" class="pause-modal">
         <div class="pause-card">
-          <div class="pause-icon">⏸️</div>
-          <h3 class="pause-title">GAME PAUSED</h3>
-          <p class="pause-desc">Take a breather. The surge is waiting.</p>
+          <div class="pause-icon">⏸️ 🍦</div>
+          <h3 class="pause-title">TAKE A BREAK! ✨</h3>
+          <p class="pause-desc">Game is paused. Catch your breath or stretch!</p>
           <div class="pause-actions">
             <button id="resume-btn" class="arcade-play-button">
-              <span class="play-btn-content">▶ RESUME SURGE</span>
+              <span class="play-btn-content">▶ CONTINUE PLAYING</span>
             </button>
             <button id="pause-menu-btn" class="arcade-secondary-btn">
-              <span>🏠 QUIT TO MENU</span>
+              <span>🏠 BACK TO MENU</span>
             </button>
           </div>
         </div>
@@ -288,14 +288,14 @@
 
     </div>
 
-    <!-- ===== GAME OVER SCREEN ===== -->
+    <!-- ===== GAME OVER SCREEN (CHEERFUL RESULTS STAGE) ===== -->
     <div id="gameover-screen" class="screen">
       <div class="gameover-stage">
 
         <div class="go-header">
-          <div class="gameover-banner">ROUND COMPLETE</div>
-          <h2 class="gameover-title">SURGE RESULTS</h2>
-          <div id="rank-badge" class="rank-badge">RANK S</div>
+          <div class="gameover-banner">🎉 ROUND FINISHED!</div>
+          <h2 class="gameover-title">GREAT EFFORT! 🌟</h2>
+          <div id="rank-badge" class="rank-badge">🌟 SUPERSTAR ⭐⭐</div>
         </div>
 
         <!-- Stats Breakdown Matrix -->
@@ -304,10 +304,10 @@
           <div class="stat-card stat-main">
             <div class="stat-icon">🏆</div>
             <div class="stat-data">
-              <div class="stat-sub">FINAL SCORE</div>
-              <div class="stat-big" id="final-score">0</div>
+              <div class="stat-sub">TOTAL SCORE</div>
+              <div class="stat-big" id="final-score">0 PTS</div>
             </div>
-            <div id="new-record-badge" class="new-record-pill">NEW RECORD!</div>
+            <div id="new-record-badge" class="new-record-pill">⭐ NEW RECORD! ⭐</div>
           </div>
 
           <div class="stats-mini-grid">
@@ -317,19 +317,19 @@
               <span class="m-val" id="final-accuracy">0%</span>
             </div>
             <div class="mini-stat">
-              <span class="m-icon">✅</span>
+              <span class="m-icon">⭐</span>
               <span class="m-label">SOLVED</span>
               <span class="m-val" id="final-solved">0</span>
             </div>
             <div class="mini-stat">
               <span class="m-icon">🔥</span>
-              <span class="m-label">MAX COMBO</span>
-              <span class="m-val" id="final-combo">0</span>
+              <span class="m-label">BEST STREAK</span>
+              <span class="m-val" id="final-combo">0x</span>
             </div>
             <div class="mini-stat">
               <span class="m-icon">⚡</span>
-              <span class="m-label">TOP SPEED</span>
-              <span class="m-val" id="final-speed">+0</span>
+              <span class="m-label">SPEED BONUS</span>
+              <span class="m-val" id="final-speed">+0 PTS</span>
             </div>
           </div>
 
@@ -340,11 +340,12 @@
           <button id="play-again-btn" class="arcade-play-button">
             <span class="play-btn-bevel"></span>
             <span class="play-btn-content">
-              <span>🔄 PLAY AGAIN</span>
+              <span>🔄 PLAY AGAIN!</span>
             </span>
           </button>
+          
           <button id="menu-btn" class="arcade-secondary-btn">
-            <span>🏠 MAIN MENU</span>
+            <span>🏠 HOME MENU</span>
           </button>
         </div>
 

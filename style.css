@@ -108,15 +108,16 @@ html, body {
    🌈 PLAYFUL KIDS TITLE SCREEN
    ======================================================== */
 #start-screen {
-  justify-content: center;
-  gap: 16px;
-  padding: 24px 20px;
+  justify-content: space-evenly;
+  gap: 4px;
+  padding: 8px 12px;
   background: 
     radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 214, 109, 0.3) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 20% 80%, rgba(255, 107, 138, 0.15) 0%, transparent 50%),
     radial-gradient(ellipse 50% 40% at 80% 70%, rgba(69, 170, 242, 0.15) 0%, transparent 50%),
     linear-gradient(180deg, #c8e6ff 0%, #e8f4fd 35%, #fff5e6 70%, #ffe8d6 100%);
-  overflow-y: auto;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .title-top-bar {
@@ -125,34 +126,36 @@ html, body {
   display: flex;
   justify-content: center;
   z-index: 5;
-  margin-bottom: -4px;
+  margin-bottom: 0;
 }
 
 .title-highscore-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: rgba(255, 255, 255, 0.85);
   border: 2px solid rgba(255, 159, 67, 0.4);
   border-radius: 24px;
-  padding: 6px 18px;
+  padding: 2px 12px;
   font-family: var(--font-hud);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
   box-shadow: 0 4px 15px rgba(255, 159, 67, 0.2);
 }
 
-.trophy-icon { font-size: 16px; }
+.trophy-icon { font-size: 14px; }
 .hs-txt { color: var(--text-dim); letter-spacing: 1px; }
 .hs-num { color: var(--candy-orange); font-weight: 900; }
 
 .arcade-title-stage {
   width: 100%;
   max-width: 680px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 4px;
   z-index: 5;
 }
 
@@ -178,7 +181,7 @@ html, body {
 .game-logo-3d {
   font-family: var(--font-hud);
   font-weight: 900;
-  font-size: clamp(3rem, 9vw, 5rem);
+  font-size: clamp(1.6rem, 3.5vh, 2.4rem);
   line-height: 0.95;
   letter-spacing: 2px;
 }
@@ -187,56 +190,40 @@ html, body {
   display: block;
   color: #ff6b8a;
   text-shadow: 
-    0 3px 0 #e84865,
-    0 6px 0 #c13055,
-    0 8px 18px rgba(255, 107, 138, 0.4);
+    0 2px 0 #e84865,
+    0 4px 0 #c13055;
 }
 
 .logo-row-2 {
   display: block;
   color: var(--candy-orange);
   text-shadow: 
-    0 3px 0 var(--candy-orange-d),
-    0 6px 0 var(--candy-orange-s),
-    0 10px 24px rgba(255, 159, 67, 0.4);
+    0 2px 0 var(--candy-orange-d),
+    0 4px 0 var(--candy-orange-s);
 }
 
 .logo-subline {
   font-family: var(--font-hud);
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: var(--candy-orange-s);
-  margin-top: 6px;
+  margin-top: 2px;
   background: #ffedd5;
-  padding: 4px 16px;
+  padding: 2px 10px;
   border-radius: 20px;
-  border: 2px solid #fdba74;
+  border: 1.5px solid #fdba74;
 }
 
 .logo-deco {
-  position: absolute;
-  font-size: 32px;
-  animation: floatDeco 2s infinite alternate;
-}
-.logo-deco-left { top: 20px; left: -20px; }
-.logo-deco-right { top: 20px; right: -20px; animation-delay: 1s; }
-
-@keyframes floatDeco {
-  0% { transform: translateY(0) scale(0.9) rotate(-10deg); }
-  100% { transform: translateY(-10px) scale(1.1) rotate(10deg); }
+  display: none;
 }
 
 .logo-emoji-row {
-  font-size: 20px;
-  margin-top: 10px;
-  letter-spacing: 4px;
+  font-size: 12px;
+  margin-top: 2px;
+  letter-spacing: 2px;
   animation: emojiWobble 3s infinite alternate;
-}
-
-@keyframes emojiWobble {
-  0% { transform: scale(1) rotate(-2deg); }
-  100% { transform: scale(1.1) rotate(2deg); }
 }
 
 /* Mode Selector */
@@ -246,12 +233,12 @@ html, body {
 
 .panel-header {
   font-family: var(--font-hud);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: var(--text-dim);
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
 }
 
 /* ─── Ultra-Cartoonish 3D Kids Mode Cards ────────────────── */
@@ -265,83 +252,50 @@ html, body {
 .arcade-card {
   position: relative;
   background: #ffffff;
-  border: 3.5px solid #e2e8f0;
-  border-radius: 24px;
-  padding: 10px 4px 8px 4px;
+  border: 2.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 4px 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 1px;
   cursor: pointer;
   transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
-  box-shadow: 0 8px 0 #cbd5e1, 0 12px 24px rgba(0, 0, 0, 0.08);
-  min-height: 110px;
-  justify-content: space-between;
+  box-shadow: 0 3px 0 #cbd5e1, 0 4px 8px rgba(0, 0, 0, 0.06);
+  min-height: 60px;
+  justify-content: center;
   overflow: hidden;
 }
 
-.card-glow-bg {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-.card-pill {
-  font-family: var(--font-hud);
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  padding: 2px 6px;
-  border-radius: 12px;
-  background: #f1f5f9;
-  color: #64748b;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
-}
+.card-pill { display: none; }
 
 .card-glyph {
-  font-size: 28px;
+  font-size: 20px;
   line-height: 1;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
 }
 
 .card-info {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 0;
 }
 
 .card-name {
   font-family: var(--font-hud);
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.5px;
   color: #2d3436;
 }
 
 .card-tagline {
-  font-size: 9px;
-  font-weight: 700;
-  color: #94a3b8;
-  white-space: nowrap;
+  display: none;
 }
 
-.card-check-tag {
-  font-family: var(--font-hud);
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  padding: 2px 6px;
-  border-radius: 10px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.1);
-}
+.card-check-tag { display: none; }
 
 /* Playful Hover Bounce & Wobble */
 .arcade-card:hover {
@@ -481,63 +435,40 @@ html, body {
 .time-chips-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 6px;
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
 }
 
 .diff-grid {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 400px;
+  max-width: 360px;
 }
 
 .time-chip {
   background: #ffffff;
-  border: 3px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 8px 4px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 4px 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 1px;
   cursor: pointer;
   transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
-  box-shadow: 0 6px 0 #cbd5e1, 0 8px 16px rgba(0, 0, 0, 0.06);
-}
-
-.time-chip:hover {
-  background: #fffdfa;
-  border-color: #fed7aa;
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 10px 0 #fdba74, 0 14px 22px rgba(255, 159, 67, 0.2);
-}
-
-.time-chip:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #cbd5e1;
-}
-
-.time-chip.active {
-  background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
-  border-color: #ff9f43;
-  color: var(--text-main);
-  box-shadow: 
-    0 4px 0 #ea580c,
-    0 0 20px rgba(255, 159, 67, 0.35);
-  transform: translateY(2px);
+  box-shadow: 0 3px 0 #cbd5e1;
 }
 
 .time-chip-icon { 
-  font-size: 16px; 
+  font-size: 12px; 
   line-height: 1; 
-  animation: clockWiggle 3s infinite ease-in-out;
 }
 
 .time-chip-val { 
   font-family: var(--font-hud); 
-  font-size: 14px; 
+  font-size: 11px; 
   font-weight: 900; 
   letter-spacing: 0.5px; 
   color: #2d3436; 
@@ -545,9 +476,9 @@ html, body {
 
 .time-chip-label { 
   font-family: var(--font-hud); 
-  font-size: 9px; 
+  font-size: 7px; 
   font-weight: 900; 
-  letter-spacing: 1px; 
+  letter-spacing: 0.5px; 
   color: #94a3b8; 
 }
 
@@ -559,27 +490,34 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 4px;
   width: 100%;
 }
 
 .arcade-play-button {
   position: relative;
   width: 100%;
-  max-width: 380px;
-  height: 52px;
+  max-width: 320px;
+  height: 40px;
   background: linear-gradient(180deg, #ffb347 0%, #ff9f43 50%, #e67e22 100%);
   border: none;
-  border-radius: 20px;
+  border-radius: 16px;
   cursor: pointer;
   box-shadow: 
-    0 5px 0 #cc6600,
-    0 10px 24px rgba(255, 159, 67, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    0 4px 0 #cc6600,
+    0 6px 16px rgba(255, 159, 67, 0.35);
   transition: all 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.play-arrow { font-size: 14px; margin-right: 4px; }
+.play-label { font-size: 12px; font-weight: 900; }
+
+.press-space-prompt {
+  font-size: 9px;
+  margin-top: 0;
 }
 
 .arcade-play-button:hover {

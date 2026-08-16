@@ -922,7 +922,7 @@ if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
   gameState.isPaused = false;
   resetState();
   loadHighScore();
-  dom.river.innerHTML = '<div class="river-stream-overlay"></div>';
+  clearAllFloaters();
   cancelAnimationFrame(speedMeterLoopId);
   showScreen('start');
 });
@@ -966,7 +966,7 @@ dom.playAgainBtn.addEventListener('click', startGame);
 dom.menuBtn.addEventListener('click', () => {
   resetState();
   loadHighScore();
-  dom.river.innerHTML = '<div class="river-stream-overlay"></div>';
+  clearAllFloaters();
   cancelAnimationFrame(speedMeterLoopId);
   showScreen('start');
 });

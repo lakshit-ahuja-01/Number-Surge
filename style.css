@@ -1174,20 +1174,6 @@ html, body {
   background-size: 36px 36px;
 }
 
-.river-stream-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    115deg,
-    transparent,
-    transparent 120px,
-    rgba(255, 255, 255, 0.05) 120px,
-    rgba(255, 255, 255, 0.05) 124px
-  );
-  animation: streamFlow 16s linear infinite;
-}
-
 /* ========================================================
    🍬 3D GLOSSY CANDY BUBBLE NUMBER PIECES
    Ultra-juicy candy spheres with dual specular shine,

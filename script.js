@@ -400,7 +400,7 @@ function createOrbFloater(value) {
 }
 
 function clearAllFloaters() {
-  gameState.floaters.forEach(f => f.el.parentNode && f.el.parentNode.removeChild(f.el));
+  document.querySelectorAll('.orb-floater').forEach(el => el.remove());
   gameState.floaters = [];
   gameState.selected = [];
 }

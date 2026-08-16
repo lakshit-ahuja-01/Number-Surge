@@ -2020,8 +2020,12 @@ body.theme-robotics .pause-desc {
 }
 
 body.theme-robotics #start-screen,
-body.theme-robotics #game-screen,
 body.theme-robotics #gameover-screen {
+  background: #0a0e17 !important;
+  background-image: none !important;
+}
+
+body.theme-robotics #game-screen {
   background: transparent !important;
   background-image: none !important;
 }

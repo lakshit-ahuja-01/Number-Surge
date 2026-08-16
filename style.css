@@ -487,6 +487,11 @@ html, body {
   margin: 0 auto;
 }
 
+.diff-grid {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 400px;
+}
+
 .time-chip {
   background: #ffffff;
   border: 3px solid #e2e8f0;

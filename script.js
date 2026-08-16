@@ -114,6 +114,7 @@ const gameState = {
   animFrameId:     null,
   timerIntervalId: null,
   lastFrameTime:   0,
+  startingDifficulty: 0,
   difficultyLevel: 0,
   isMuted:         false,
   questionStartMs: 0,
@@ -138,6 +139,7 @@ const dom = {
   soundIcon:       document.getElementById('sound-icon'),
   modeGrid:        document.getElementById('mode-grid'),
   timeGrid:        document.getElementById('time-grid'),
+  diffGrid:        document.getElementById('diff-grid'),
 
   scoreDisplay:    document.getElementById('score-display'),
   hudScoreBox:     document.getElementById('hud-score-box'),
@@ -335,16 +337,26 @@ function buildNumberPool(q, diff) {
 function createOrbFloater(value) {
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
-  const m = CONFIG.SPAWN_MARGIN;
   const sz = CONFIG.ORB_SIZE;
+  
+  // Dynamic margin so balls don't spawn out of bounds on very narrow mobile screens
+  const m = Math.min(CONFIG.SPAWN_MARGIN, Math.floor(rw / 4), Math.floor(rh / 4));
 
   const x = randInt(m, Math.max(m + 1, rw - sz - m));
   const y = randInt(m, Math.max(m + 1, rh - sz - m));
 
   const speed = getCurrentSpeed();
   const angle = Math.random() * Math.PI * 2;
-  const vx = Math.cos(angle) * speed * (0.6 + Math.random() * 0.6);
-  const vy = Math.sin(angle) * speed * (0.6 + Math.random() * 0.6);
+  
+  // Guarantee a minimum velocity so balls don't appear "stuck" if angle is near 0/90 degrees
+  const minV = speed * 0.35;
+  let vx = Math.cos(angle) * speed;
+  let vy = Math.sin(angle) * speed;
+  if (Math.abs(vx) < minV) vx = (vx >= 0 ? 1 : -1) * minV;
+  if (Math.abs(vy) < minV) vy = (vy >= 0 ? 1 : -1) * minV;
+  
+  vx *= (0.6 + Math.random() * 0.6);
+  vy *= (0.6 + Math.random() * 0.6);
 
   const el = document.createElement('div');
   const theme = CONFIG.ORB_THEMES[randInt(0, CONFIG.ORB_THEMES.length - 1)];
@@ -481,11 +493,14 @@ function handleCorrect(f1, f2) {
   if (speedBonus > gameState.bestSpeedBonus) gameState.bestSpeedBonus = speedBonus;
 
   const comboBonus = Math.max(0, gameState.combo - 1) * CONFIG.COMBO_BONUS;
+  dom.comboNum.textContent = `${gameState.combo}x`;
+  
+  if (gameState.combo > gameState.bestCombo) gameState.bestCombo = gameState.combo;
+  gameState.solved++;
+  gameState.difficultyLevel = gameState.startingDifficulty + Math.floor(gameState.solved / CONFIG.DIFFICULTY_INTERVAL);
+
   const points = CONFIG.POINTS_CORRECT + comboBonus + speedBonus;
   gameState.score += points;
-  gameState.solved++;
-
-  gameState.difficultyLevel = Math.floor(gameState.solved / CONFIG.DIFFICULTY_INTERVAL);
 
   // Visual slot feedback
   dom.slotA.className = 'slot slot-operand success-flash';
@@ -891,7 +906,7 @@ function resetState() {
   gameState.animFrameId     = null;
   gameState.timerIntervalId = null;
   gameState.lastFrameTime   = 0;
-  gameState.difficultyLevel = 0;
+  gameState.difficultyLevel = gameState.startingDifficulty;
   gameState.questionStartMs = 0;
   gameState.bestSpeedBonus  = 0;
   
@@ -956,6 +971,22 @@ if (dom.timeGrid) {
     if (dom.playBtnLabel) {
       dom.playBtnLabel.textContent = `START SURGE (${gameState.duration}s)`;
     }
+    playArcadeSound('click');
+  });
+}
+
+// Difficulty Chips
+if (dom.diffGrid) {
+  dom.diffGrid.addEventListener('click', e => {
+    const chip = e.target.closest('.time-chip');
+    if (!chip) return;
+    dom.diffGrid.querySelectorAll('.time-chip').forEach(c => {
+      c.classList.remove('active');
+      c.setAttribute('aria-pressed', 'false');
+    });
+    chip.classList.add('active');
+    chip.setAttribute('aria-pressed', 'true');
+    gameState.startingDifficulty = parseInt(chip.dataset.diff, 10);
     playArcadeSound('click');
   });
 }

@@ -181,37 +181,54 @@ function initAmbientCanvas() {
   if (!ambientCanvas) return;
   ambientCanvas.width = window.innerWidth;
   ambientCanvas.height = window.innerHeight;
+  
+  const colors = [
+    'rgba(255, 107, 138, 0.45)', // Pink
+    'rgba(255, 159, 67, 0.45)',  // Orange
+    'rgba(69, 170, 242, 0.45)',  // Sky Blue
+    'rgba(46, 213, 115, 0.45)',  // Mint Green
+    'rgba(165, 94, 234, 0.45)',  // Lavender
+    'rgba(254, 211, 48, 0.45)',  // Sunny Yellow
+  ];
+
   ambientParticles = [];
-  for (let i = 0; i < 45; i++) {
+  for (let i = 0; i < 30; i++) {
     ambientParticles.push({
       x: Math.random() * ambientCanvas.width,
       y: Math.random() * ambientCanvas.height,
-      radius: Math.random() * 2 + 0.5,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: -Math.random() * 0.5 - 0.2,
-      alpha: Math.random() * 0.6 + 0.2,
+      radius: Math.random() * 12 + 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -(Math.random() * 0.45 + 0.15),
+      alpha: Math.random() * 0.5 + 0.3,
     });
   }
 }
 
 function renderAmbientParticles() {
-  if (!ambientCtx) return;
+  if (!ambientCtx || !ambientCanvas) return;
   ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-  ambientCtx.fillStyle = '#f59e0b';
 
   ambientParticles.forEach(p => {
     p.x += p.vx;
     p.y += p.vy;
-    if (p.y < 0) { p.y = ambientCanvas.height; p.x = Math.random() * ambientCanvas.width; }
-    if (p.x < 0) p.x = ambientCanvas.width;
-    if (p.x > ambientCanvas.width) p.x = 0;
+    if (p.y + p.radius < 0) { p.y = ambientCanvas.height + p.radius; p.x = Math.random() * ambientCanvas.width; }
+    if (p.x + p.radius < 0) p.x = ambientCanvas.width + p.radius;
+    if (p.x - p.radius > ambientCanvas.width) p.x = -p.radius;
 
-    ambientCtx.globalAlpha = p.alpha;
+    // Pastel Bubble
     ambientCtx.beginPath();
     ambientCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ambientCtx.fillStyle = p.color;
+    ambientCtx.fill();
+
+    // Bubble shine
+    ambientCtx.beginPath();
+    ambientCtx.arc(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.28, 0, Math.PI * 2);
+    ambientCtx.fillStyle = 'rgba(255, 255, 255, 0.65)';
     ambientCtx.fill();
   });
-  ambientCtx.globalAlpha = 1;
+
   requestAnimationFrame(renderAmbientParticles);
 }
 
@@ -961,72 +978,9 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ─── AMBIENT BACKGROUND CANVAS ───────────────────────────────
-const ambientCanvas = document.getElementById('ambient-canvas');
-let ambientCtx = null;
-let ambientParticles = [];
-
-function initAmbientCanvas() {
-  if (!ambientCanvas) return;
-  ambientCtx = ambientCanvas.getContext('2d');
-  resizeAmbientCanvas();
-  window.addEventListener('resize', resizeAmbientCanvas);
-
-  const colors = [
-    'rgba(255, 107, 138, 0.45)', // Pink
-    'rgba(255, 159, 67, 0.45)',  // Orange
-    'rgba(69, 170, 242, 0.45)',  // Sky Blue
-    'rgba(46, 213, 115, 0.45)',  // Mint Green
-    'rgba(165, 94, 234, 0.45)',  // Lavender
-    'rgba(254, 211, 48, 0.45)',  // Sunny Yellow
-  ];
-
-  ambientParticles = Array.from({ length: 30 }, () => ({
-    x: Math.random() * (ambientCanvas.width || window.innerWidth),
-    y: Math.random() * (ambientCanvas.height || window.innerHeight),
-    r: Math.random() * 16 + 8,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    speedY: -(Math.random() * 0.45 + 0.15),
-    speedX: (Math.random() - 0.5) * 0.3,
-    pulseSpeed: Math.random() * 0.02 + 0.01,
-  }));
-}
-
-function resizeAmbientCanvas() {
-  if (!ambientCanvas) return;
-  ambientCanvas.width = window.innerWidth;
-  ambientCanvas.height = window.innerHeight;
-}
-
-function renderAmbientParticles() {
-  if (!ambientCtx || !ambientCanvas) return;
-  ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-
-  ambientParticles.forEach(p => {
-    p.y += p.speedY;
-    p.x += p.speedX;
-
-    if (p.y + p.r < 0) {
-      p.y = ambientCanvas.height + p.r;
-      p.x = Math.random() * ambientCanvas.width;
-    }
-    if (p.x - p.r > ambientCanvas.width) p.x = -p.r;
-    if (p.x + p.r < 0) p.x = ambientCanvas.width + p.r;
-
-    // Outer gentle bubble
-    ambientCtx.beginPath();
-    ambientCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ambientCtx.fillStyle = p.color;
-    ambientCtx.fill();
-
-    // Bubble highlight shine
-    ambientCtx.beginPath();
-    ambientCtx.arc(p.x - p.r * 0.32, p.y - p.r * 0.32, p.r * 0.28, 0, Math.PI * 2);
-    ambientCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    ambientCtx.fill();
-  });
-
-  requestAnimationFrame(renderAmbientParticles);
+// Utility
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // ─── INITIALIZATION ──────────────────────────────────────────

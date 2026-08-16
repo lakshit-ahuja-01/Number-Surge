@@ -12,54 +12,132 @@
 
   <!-- ===== Start Screen ===== -->
   <div id="start-screen" class="screen active">
-    <h1 class="game-title">Math River</h1>
-    <p class="tagline">How many can you solve in 60 seconds?</p>
-    <button id="start-btn" class="btn btn-primary">Start Game</button>
+    <div class="start-inner">
+      <div class="title-block">
+        <h1 class="game-title">Math River</h1>
+        <p class="tagline">How many can you solve in 60 seconds?</p>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="mode-section">
+        <p class="mode-label">Choose Mode</p>
+        <div class="mode-grid" id="mode-grid" role="group" aria-label="Game mode selector">
+          <button class="mode-card active" data-mode="addition"       aria-pressed="true">
+            <span class="mode-icon">➕</span>
+            <span class="mode-name">Addition</span>
+            <span class="mode-example">_ + _ = ?</span>
+          </button>
+          <button class="mode-card" data-mode="subtraction"  aria-pressed="false">
+            <span class="mode-icon">➖</span>
+            <span class="mode-name">Subtraction</span>
+            <span class="mode-example">_ − _ = ?</span>
+          </button>
+          <button class="mode-card" data-mode="multiplication" aria-pressed="false">
+            <span class="mode-icon">✖️</span>
+            <span class="mode-name">Multiply</span>
+            <span class="mode-example">_ × _ = ?</span>
+          </button>
+          <button class="mode-card" data-mode="division"    aria-pressed="false">
+            <span class="mode-icon">➗</span>
+            <span class="mode-name">Division</span>
+            <span class="mode-example">_ ÷ _ = ?</span>
+          </button>
+          <button class="mode-card mode-card--mixed" data-mode="mixed" aria-pressed="false">
+            <span class="mode-icon">🔀</span>
+            <span class="mode-name">Mixed</span>
+            <span class="mode-example">All ops!</span>
+          </button>
+        </div>
+      </div>
+
+      <button id="start-btn" class="btn btn-primary btn-large">▶ Start Game</button>
+
+      <div class="tips">
+        <span class="tip-item">⚡ Faster answers = more points</span>
+        <span class="tip-sep">·</span>
+        <span class="tip-item">🔥 Build combos for bonus</span>
+      </div>
+    </div>
   </div>
 
   <!-- ===== Game Screen ===== -->
   <div id="game-screen" class="screen">
 
-    <!-- HUD (heads-up display) -->
+    <!-- HUD -->
     <header id="hud">
-      <div class="hud-item">
+      <div class="hud-item" id="hud-score">
         <span class="hud-label">Score</span>
         <span id="score-display" class="hud-value">0</span>
       </div>
-      <div class="hud-item">
-        <span class="hud-label">Time</span>
-        <span id="timer-display" class="hud-value">60</span>
+
+      <div class="hud-center">
+        <div class="hud-item">
+          <span class="hud-label">Time</span>
+          <span id="timer-display" class="hud-value">60</span>
+        </div>
+        <div id="speed-bar-wrap" title="Speed bonus bar — answer fast!">
+          <div id="speed-bar"></div>
+        </div>
       </div>
-      <div class="hud-item">
+
+      <div class="hud-item" id="hud-combo">
         <span class="hud-label">Combo</span>
-        <span id="combo-display" class="hud-value">0</span>
+        <span id="combo-display" class="hud-value">×0</span>
       </div>
       <button id="sound-toggle" class="hud-sound-btn" aria-label="Toggle sound" title="Toggle sound">🔊</button>
     </header>
 
     <!-- Target equation -->
     <div id="equation-bar">
-      <span id="equation-text">_ + _ = ?</span>
+      <div id="equation-wrap">
+        <span id="mode-badge"></span>
+        <span id="equation-text">_ + _ = ?</span>
+      </div>
     </div>
 
-    <!-- River / game area where numbers float -->
-    <div id="river">
-      <!-- Floating number elements are injected here by script.js -->
+    <!-- Speed bonus flash -->
+    <div id="speed-bonus-toast" class="speed-toast" aria-live="polite"></div>
+
+    <!-- River -->
+    <div id="river" role="application" aria-label="Math River game area">
+      <!-- Floating number buttons injected by script.js -->
     </div>
 
   </div>
 
   <!-- ===== Game Over Screen ===== -->
   <div id="gameover-screen" class="screen">
-    <h2 class="gameover-title">Game Over</h2>
-    <div id="final-stats">
-      <p>Score: <span id="final-score">0</span></p>
-      <p>Solved: <span id="final-solved">0</span></p>
-      <p>Accuracy: <span id="final-accuracy">0%</span></p>
-      <p>Best Combo: <span id="final-combo">0</span></p>
+    <div class="gameover-inner">
+      <h2 class="gameover-title">Game Over!</h2>
+
+      <div id="final-stats">
+        <div class="stat-row">
+          <span class="stat-label">🏆 Score</span>
+          <span id="final-score" class="stat-value highlight">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">✅ Solved</span>
+          <span id="final-solved" class="stat-value">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">🎯 Accuracy</span>
+          <span id="final-accuracy" class="stat-value">0%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">🔥 Best Combo</span>
+          <span id="final-combo" class="stat-value">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">⚡ Best Speed Bonus</span>
+          <span id="final-speed" class="stat-value">+0</span>
+        </div>
+      </div>
+
+      <div id="gameover-actions">
+        <button id="play-again-btn" class="btn btn-primary">▶ Play Again</button>
+        <button id="menu-btn" class="btn btn-secondary">🏠 Main Menu</button>
+      </div>
     </div>
-    <button id="play-again-btn" class="btn btn-primary">Play Again</button>
-    <button id="menu-btn" class="btn btn-secondary">Main Menu</button>
   </div>
 
   <script src="script.js"></script>

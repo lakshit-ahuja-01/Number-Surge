@@ -326,10 +326,15 @@ function createOrbFloater(value) {
   const vx = Math.cos(angle) * speed * (0.6 + Math.random() * 0.6);
   const vy = Math.sin(angle) * speed * (0.6 + Math.random() * 0.6);
 
-  const el = document.createElement('button');
+  const el = document.createElement('div');
   const theme = CONFIG.ORB_THEMES[randInt(0, CONFIG.ORB_THEMES.length - 1)];
   el.className = `orb-floater ${theme}`;
-  el.textContent = value;
+  el.innerHTML = `
+    <div class="chip-stripes"></div>
+    <div class="chip-inner-rim">
+      <span class="chip-num">${value}</span>
+    </div>
+  `;
   el.setAttribute('aria-label', `Number ${value}`);
   el.style.left = `${x}px`;
   el.style.top = `${y}px`;

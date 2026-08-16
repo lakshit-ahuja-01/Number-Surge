@@ -565,7 +565,7 @@ function showSpeedToast(val) {
 // ─── 13. HUD & SCREEN FX ─────────────────────────────────────
 function updateHUD() {
   if (dom.scoreDisplay) {
-    dom.scoreDisplay.textContent = String(gameState.score).padStart(6, '0');
+    dom.scoreDisplay.textContent = `${gameState.score} PTS`;
   }
   if (dom.levelIndicator) {
     dom.levelIndicator.textContent = `LVL ${gameState.difficultyLevel + 1}`;
@@ -574,7 +574,7 @@ function updateHUD() {
     dom.timerDisplay.textContent = gameState.timeLeft;
   }
   if (dom.comboNum) {
-    dom.comboNum.textContent = `x${gameState.combo}`;
+    dom.comboNum.textContent = `${gameState.combo}x`;
   }
 
   if (gameState.combo >= 3) {

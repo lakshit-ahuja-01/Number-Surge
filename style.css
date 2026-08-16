@@ -565,35 +565,43 @@ html, body {
 }
 
 /* ========================================================
-   🌤️ FRIENDLY IN-GAME HUD (PLAYGROUND SCOREBOARD)
+   🌤️ PLAYGROUND SCOREBOARD HUD (FRIENDLY & COLORFUL)
    ======================================================== */
 #game-screen {
   justify-content: flex-start;
+  background: #dcf0ff;
 }
 
 #arcade-hud {
   width: 100%;
-  height: var(--hud-height);
-  background: linear-gradient(180deg, #ffffff 0%, #f0f7ff 100%);
-  border-bottom: 2.5px solid rgba(69, 170, 242, 0.25);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  height: 74px;
+  background: linear-gradient(180deg, #ffffff 0%, #f4faff 100%);
+  border-bottom: 3.5px solid #d4ebfc;
+  box-shadow: 0 6px 20px rgba(69, 170, 242, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 20px;
   z-index: 20;
+  border-radius: 0 0 24px 24px;
 }
 
 /* Dashboard Box */
 .hud-dashboard-box {
-  background: #f8fbff;
-  border: 2px solid rgba(69, 170, 242, 0.2);
-  border-radius: 14px;
+  background: linear-gradient(135deg, #fffaf2 0%, #fff2e0 100%);
+  border: 2.5px solid #ffcc80;
+  border-radius: 18px;
   padding: 6px 14px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  min-width: 110px;
+  box-shadow: 0 3px 0 #f5a623, 0 6px 16px rgba(255, 159, 67, 0.15);
+  min-width: 115px;
+}
+
+#hud-combo-box {
+  background: linear-gradient(135deg, #f0f7ff 0%, #e1effe 100%);
+  border: 2.5px solid #90cdf4;
+  box-shadow: 0 3px 0 #63b3ed, 0 6px 16px rgba(66, 153, 225, 0.15);
 }
 
 .hud-subhead {
@@ -605,38 +613,43 @@ html, body {
 
 .hud-tag {
   font-family: var(--font-hud);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #e67e22;
+}
+
+#hud-combo-box .hud-tag {
+  color: #3182ce;
 }
 
 .hud-level-tag {
   font-family: var(--font-hud);
-  font-size: 9px;
-  font-weight: 800;
-  color: #27ae60;
-  background: rgba(46, 213, 115, 0.15);
-  padding: 1px 6px;
-  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 900;
+  color: #ffffff;
+  background: #2ed573;
+  padding: 2px 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 0 #219653;
 }
 
 .hud-number-digital {
   font-family: var(--font-hud);
   font-size: 24px;
   font-weight: 900;
-  letter-spacing: 1.5px;
-  color: var(--text-main);
+  letter-spacing: 0.5px;
+  color: #d35400;
 }
 
 #hud-score-box.score-pop .hud-number-digital {
-  animation: scoreBounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--candy-green);
+  animation: scoreBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #27ae60;
 }
 
 @keyframes scoreBounce {
   0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
+  50% { transform: scale(1.3) rotate(-3deg); }
   100% { transform: scale(1); }
 }
 
@@ -651,38 +664,55 @@ html, body {
 .timer-orb-badge {
   display: flex;
   align-items: center;
-  gap: 5px;
-  background: #fff8ef;
-  border: 2px solid rgba(255, 159, 67, 0.35);
-  border-radius: 14px;
-  padding: 3px 14px;
-  box-shadow: 0 2px 8px rgba(255, 159, 67, 0.12);
+  gap: 6px;
+  background: linear-gradient(135deg, #ffffff 0%, #fff9f0 100%);
+  border: 3px solid #ff9f43;
+  border-radius: 20px;
+  padding: 3px 18px;
+  box-shadow: 0 4px 0 #e67e22, 0 6px 18px rgba(255, 159, 67, 0.25);
+  animation: timerFloat 2s infinite ease-in-out;
+}
+
+@keyframes timerFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.timer-dial-icon {
+  font-size: 18px;
+  animation: clockWiggle 2s infinite ease-in-out;
+}
+
+@keyframes clockWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
 }
 
 .timer-number {
   font-family: var(--font-hud);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 900;
-  color: var(--text-main);
+  color: #2d3436;
   min-width: 28px;
   text-align: center;
 }
 
 .timer-unit {
   font-family: var(--font-hud);
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 900;
+  color: #ff9f43;
 }
 
 .timer-low .timer-number {
-  color: var(--candy-red) !important;
-  animation: timerPanic 0.4s ease infinite alternate;
+  color: #fc5c65 !important;
+  animation: timerPanic 0.35s ease infinite alternate;
 }
 
 @keyframes timerPanic {
   from { transform: scale(1); }
-  to   { transform: scale(1.15); }
+  to   { transform: scale(1.25); }
 }
 
 .speed-surge-meter {
@@ -693,36 +723,36 @@ html, body {
 }
 
 .speed-meter-track {
-  width: 110px;
-  height: 6px;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 6px;
+  width: 120px;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1.5px solid #cbd5e1;
 }
 
 #speed-meter-bar {
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, var(--candy-green) 0%, var(--candy-yellow) 60%, var(--candy-red) 100%);
-  border-radius: 6px;
+  background: linear-gradient(90deg, #2ed573 0%, #fed330 50%, #ff6b8a 100%);
+  border-radius: 10px;
   transform-origin: left;
   transition: width 0.1s linear;
 }
 
 .speed-meter-label {
   font-family: var(--font-hud);
-  font-size: 8px;
-  font-weight: 800;
+  font-size: 9px;
+  font-weight: 900;
   letter-spacing: 1px;
-  color: var(--text-muted);
+  color: #ff9f43;
 }
 
 /* Right Cluster: Combo & Controls */
 .hud-right-cluster {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .hud-combo-val {
@@ -730,67 +760,78 @@ html, body {
   align-items: center;
   gap: 4px;
   font-family: var(--font-hud);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
-  color: var(--candy-orange);
+  color: #2b6cb0;
 }
 
 .combo-flame {
   display: inline-block;
-  opacity: 0.35;
-  transform: scale(0.9);
+  font-size: 18px;
   transition: all 0.2s;
 }
 
 .combo-fire .combo-flame {
-  opacity: 1;
-  transform: scale(1.2);
   animation: flameBounce 0.4s ease infinite alternate;
 }
 
 @keyframes flameBounce {
-  from { transform: scale(1.1) rotate(-5deg); }
-  to   { transform: scale(1.35) rotate(5deg); }
+  from { transform: scale(1.1) rotate(-8deg); }
+  to   { transform: scale(1.4) rotate(8deg); }
 }
 
 .hud-btn-group {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .hud-control-btn {
   background: #ffffff;
-  border: 2px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  font-size: 15px;
-  padding: 6px 10px;
+  border: 2.5px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 18px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   color: var(--text-main);
-  transition: all 0.15s;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04);
+  transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 3px 0 #cbd5e1;
 }
 
 .hud-control-btn:hover {
   background: #fff8ef;
-  border-color: var(--candy-orange);
-  transform: scale(1.08);
+  border-color: #ff9f43;
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 5px 0 #e67e22;
+}
+
+.hud-control-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #cbd5e1;
 }
 
 /* ========================================================
-   🧩 PLAYFUL EQUATION CONSOLE (DOCK)
+   🧩 MAGICAL PUZZLE EQUATION CONSOLE (DOCK)
    ======================================================== */
 #equation-dock {
-  width: 100%;
-  height: var(--dock-height);
-  background: linear-gradient(180deg, #f8fbff 0%, #eef5fd 100%);
-  border-bottom: 2.5px solid rgba(69, 170, 242, 0.15);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  width: calc(100% - 28px);
+  max-width: 740px;
+  height: 90px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid #bae6fd;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(69, 170, 242, 0.18), 0 4px 0 #93c5fd;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 15;
   position: relative;
+  margin: 10px auto 0 auto;
+  backdrop-filter: blur(10px);
 }
 
 .dock-inner {
@@ -803,38 +844,38 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #ffffff;
-  border: 2px solid rgba(46, 213, 115, 0.3);
-  border-radius: 12px;
-  padding: 5px 10px;
+  background: #2ed573;
+  border-radius: 14px;
+  padding: 6px 12px;
+  box-shadow: 0 3px 0 #219653;
 }
 
 .indicator-led {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--candy-green);
-  box-shadow: 0 0 8px var(--candy-green);
-  animation: ledPulse 1.5s infinite alternate;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+  animation: ledPulse 1.2s infinite alternate;
 }
 
 @keyframes ledPulse {
-  from { opacity: 0.4; }
-  to   { opacity: 1; }
+  from { opacity: 0.5; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1.2); }
 }
 
 .mode-badge-pill {
   font-family: var(--font-hud);
   font-size: 11px;
   font-weight: 900;
-  letter-spacing: 1.5px;
-  color: #27ae60;
+  letter-spacing: 1px;
+  color: #ffffff;
 }
 
 .equation-slots-rig {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .slot-housing {
@@ -846,14 +887,14 @@ html, body {
 
 .slot-label {
   font-family: var(--font-hud);
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--text-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #64748b;
 }
 
 .slot-label-gold {
-  color: var(--candy-orange);
+  color: #e67e22;
 }
 
 .slot {
@@ -862,68 +903,83 @@ html, body {
   justify-content: center;
   font-family: var(--font-hud);
   font-weight: 900;
-  border-radius: 14px;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 18px;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .slot-operand {
-  width: 62px;
-  height: 50px;
-  background: #ffffff;
-  border: 2.5px dashed rgba(69, 170, 242, 0.35);
-  color: var(--text-dim);
-  font-size: 24px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  width: 68px;
+  height: 54px;
+  background: #f8fafc;
+  border: 3.5px dashed #60a5fa;
+  color: #94a3b8;
+  font-size: 26px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  animation: questionPulse 2s infinite ease-in-out;
+}
+
+@keyframes questionPulse {
+  0%, 100% { border-color: #60a5fa; transform: scale(1); }
+  50% { border-color: #93c5fd; transform: scale(1.02); }
 }
 
 /* Locked slot state */
 .slot-operand.locked {
-  background: rgba(46, 213, 115, 0.12);
-  border: 2.5px solid var(--candy-green);
-  color: var(--text-main);
-  box-shadow: 0 0 12px rgba(46, 213, 115, 0.25);
-  transform: scale(1.06);
+  background: #ecfdf5;
+  border: 3.5px solid #2ed573;
+  color: #1e8449;
+  box-shadow: 0 4px 0 #219653, 0 0 16px rgba(46, 213, 115, 0.35);
+  transform: scale(1.08);
+  animation: none;
 }
 
 .slot-operand.success-flash {
-  background: rgba(46, 213, 115, 0.3) !important;
-  border-color: var(--candy-green) !important;
-  color: var(--text-main) !important;
-  box-shadow: 0 0 20px rgba(46, 213, 115, 0.5) !important;
-  transform: scale(1.12) !important;
+  background: #d1fae5 !important;
+  border-color: #10b981 !important;
+  color: #065f46 !important;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.6) !important;
+  transform: scale(1.15) !important;
 }
 
 .slot-operand.wrong-flash {
-  background: rgba(252, 92, 101, 0.2) !important;
-  border-color: var(--candy-red) !important;
-  color: var(--text-main) !important;
+  background: #fee2e2 !important;
+  border-color: #fc5c65 !important;
+  color: #991b1b !important;
   animation: slotShake 0.35s ease;
 }
 
 @keyframes slotShake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-7px); }
-  50% { transform: translateX(7px); }
+  25% { transform: translateX(-8px) rotate(-3deg); }
+  50% { transform: translateX(8px) rotate(3deg); }
   75% { transform: translateX(-4px); }
 }
 
 .op-sign-badge, .eq-sign-badge {
   font-family: var(--font-hud);
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 900;
-  color: var(--candy-orange);
-  margin-top: 12px;
+  color: #ff6b8a;
+  margin-top: 14px;
+  text-shadow: 0 2px 0 rgba(255, 107, 138, 0.2);
 }
 
 .slot-target {
-  min-width: 72px;
-  height: 50px;
-  padding: 0 14px;
-  background: linear-gradient(135deg, rgba(255, 159, 67, 0.15) 0%, rgba(255, 159, 67, 0.25) 100%);
-  border: 2.5px solid var(--candy-orange);
-  color: var(--text-main);
-  font-size: 26px;
-  box-shadow: 0 0 14px rgba(255, 159, 67, 0.2);
+  min-width: 80px;
+  height: 54px;
+  padding: 0 16px;
+  background: linear-gradient(135deg, #ffd093 0%, #ff9f43 50%, #e67e22 100%);
+  border: 3px solid #ffffff;
+  color: #ffffff;
+  font-size: 30px;
+  box-shadow: 0 5px 0 #cc6600, 0 8px 25px rgba(255, 159, 67, 0.4);
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  animation: targetPulse 2s infinite alternate;
+}
+
+@keyframes targetPulse {
+  from { transform: scale(1); }
+  to   { transform: scale(1.04); }
 }
 
 /* Speed Toast */
@@ -932,27 +988,28 @@ html, body {
   top: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(8px);
-  background: var(--candy-orange);
+  background: linear-gradient(135deg, #ff9f43 0%, #e67e22 100%);
   color: #ffffff;
   font-family: var(--font-hud);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 900;
-  padding: 4px 14px;
-  border-radius: 16px;
+  padding: 6px 18px;
+  border-radius: 20px;
   pointer-events: none;
   opacity: 0;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 12px rgba(255, 159, 67, 0.35);
+  box-shadow: 0 6px 16px rgba(255, 159, 67, 0.4);
   white-space: nowrap;
+  border: 2px solid #ffffff;
 }
 
 .speed-toast.pop {
   opacity: 1;
-  transform: translateX(-50%) translateY(14px) scale(1.08);
+  transform: translateX(-50%) translateY(14px) scale(1.1);
 }
 
 /* ========================================================
-   🌈 PLAYGROUND GAME ARENA & BOUNCY CANDY BUBBLES
+   🌈 PLAYGROUND RIVER ARENA (ANIMATED SKY & WAVES)
    ======================================================== */
 #river {
   position: relative;
@@ -960,8 +1017,78 @@ html, body {
   width: 100%;
   overflow: hidden;
   background: 
-    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(69, 170, 242, 0.08) 0%, transparent 60%),
-    linear-gradient(180deg, #e8f4fd 0%, #d4ecff 50%, #c8e6ff 100%);
+    radial-gradient(ellipse 100% 70% at 50% 10%, rgba(255, 255, 255, 0.6) 0%, transparent 60%),
+    linear-gradient(180deg, #dcf0ff 0%, #cbe7ff 40%, #b8deff 75%, #a4d4ff 100%);
+}
+
+/* Sky Cartoon Clouds */
+.river-sky-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sky-cloud {
+  position: absolute;
+  font-size: 42px;
+  opacity: 0.75;
+  filter: drop-shadow(0 4px 8px rgba(69, 170, 242, 0.15));
+}
+
+.cloud-1 { top: 12%; left: 8%; animation: cloudFloat1 18s ease-in-out infinite alternate; }
+.cloud-2 { top: 35%; right: 10%; font-size: 50px; animation: cloudFloat2 24s ease-in-out infinite alternate; }
+.cloud-3 { top: 65%; left: 14%; font-size: 36px; animation: cloudFloat1 20s ease-in-out infinite alternate-reverse; }
+
+@keyframes cloudFloat1 {
+  from { transform: translateX(0) translateY(0); }
+  to   { transform: translateX(45px) translateY(-10px); }
+}
+
+@keyframes cloudFloat2 {
+  from { transform: translateX(0) translateY(0); }
+  to   { transform: translateX(-50px) translateY(12px); }
+}
+
+/* Twinkle Stars */
+.sky-star {
+  position: absolute;
+  font-size: 22px;
+  animation: starTwinkle 2.5s ease-in-out infinite alternate;
+}
+
+.star-1 { top: 18%; right: 25%; color: #ffd093; animation-delay: 0.2s; }
+.star-2 { top: 52%; left: 30%; color: #fed330; font-size: 28px; animation-delay: 1.1s; }
+.star-3 { top: 78%; right: 20%; color: #a0f0c5; animation-delay: 0.7s; }
+
+@keyframes starTwinkle {
+  0% { transform: scale(0.7) rotate(0deg); opacity: 0.3; }
+  50% { transform: scale(1.3) rotate(45deg); opacity: 1; }
+  100% { transform: scale(0.8) rotate(90deg); opacity: 0.4; }
+}
+
+/* Animated Water Waves at Bottom */
+.river-bottom-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 38px;
+  pointer-events: none;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.2) 0px,
+    rgba(255, 255, 255, 0.35) 40px,
+    rgba(255, 255, 255, 0.15) 80px
+  );
+  border-radius: 20px 20px 0 0;
+  animation: waveRoll 12s linear infinite;
+}
+
+@keyframes waveRoll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 .river-grid-bg {
@@ -969,8 +1096,8 @@ html, body {
   inset: 0;
   pointer-events: none;
   background-image: 
-    radial-gradient(circle, rgba(69, 170, 242, 0.08) 1px, transparent 1px);
-  background-size: 30px 30px;
+    radial-gradient(circle, rgba(69, 170, 242, 0.12) 1.5px, transparent 1.5px);
+  background-size: 36px 36px;
 }
 
 .river-stream-overlay {
@@ -980,22 +1107,17 @@ html, body {
   background: repeating-linear-gradient(
     115deg,
     transparent,
-    transparent 100px,
-    rgba(69, 170, 242, 0.03) 100px,
-    rgba(69, 170, 242, 0.03) 102px
+    transparent 120px,
+    rgba(255, 255, 255, 0.05) 120px,
+    rgba(255, 255, 255, 0.05) 124px
   );
-  animation: streamFlow 14s linear infinite;
-}
-
-@keyframes streamFlow {
-  from { background-position: 0 0; }
-  to   { background-position: 200px 100px; }
+  animation: streamFlow 16s linear infinite;
 }
 
 /* ========================================================
-   🍬 CANDY BUBBLE NUMBER PIECES (KIDS STYLE)
-   Soft bouncy spheres with cheerful colors,
-   friendly face-like highlights, and jelly physics.
+   🍬 3D GLOSSY CANDY BUBBLE NUMBER PIECES
+   Ultra-juicy candy spheres with dual specular shine,
+   vibrant colors, and bouncy jelly physics.
    ======================================================== */
 .orb-floater {
   position: absolute;
@@ -1015,122 +1137,124 @@ html, body {
   outline: none;
   -webkit-tap-highlight-color: transparent;
   box-shadow: 
-    0 6px 0 rgba(0, 0, 0, 0.08),
-    0 10px 20px rgba(0, 0, 0, 0.1),
-    inset 0 -4px 8px rgba(0, 0, 0, 0.08);
+    0 8px 0 rgba(0, 0, 0, 0.1),
+    0 14px 25px rgba(0, 0, 0, 0.12),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.15),
+    inset 0 3px 6px rgba(255, 255, 255, 0.6);
 }
 
-/* Cute top shine */
+/* Main Top Glass Highlight */
 .bubble-shine {
   position: absolute;
   top: 6px;
   left: 12px;
-  width: 22px;
-  height: 14px;
+  width: 24px;
+  height: 15px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.2) 100%);
   pointer-events: none;
   z-index: 3;
 }
 
-/* Number text */
+/* Crisp Central Number Glyph */
 .bubble-num {
   font-family: var(--font-hud);
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 900;
   color: #ffffff;
   z-index: 4;
   letter-spacing: 0.5px;
   text-shadow: 
-    0 2px 3px rgba(0, 0, 0, 0.2),
-    0 0 8px rgba(255, 255, 255, 0.4);
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 0 10px rgba(255, 255, 255, 0.5);
   pointer-events: none;
 }
 
-/* Hover bounce */
+/* Hover Squish & Bounce */
 .orb-floater:hover {
-  transform: translateY(-6px) scale(1.18) !important;
+  transform: translateY(-8px) scale(1.2) !important;
   z-index: 10;
-  filter: brightness(1.08);
+  filter: brightness(1.1);
   box-shadow: 
-    0 12px 0 rgba(0, 0, 0, 0.06),
-    0 18px 30px rgba(0, 0, 0, 0.12);
+    0 14px 0 rgba(0, 0, 0, 0.08),
+    0 22px 35px rgba(0, 0, 0, 0.15),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.15),
+    inset 0 4px 8px rgba(255, 255, 255, 0.8);
 }
 
-/* ── 1. Strawberry Pink Bubble ── */
+/* ── 1. Strawberry Bubble ── */
 .orb-amber {
-  background: radial-gradient(circle at 35% 30%, #ffb3c6 0%, #ff6b8a 50%, #e84865 100%);
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  background: radial-gradient(circle at 35% 30%, #ffc2d1 0%, #ff6b8a 50%, #e84865 85%, #c13055 100%);
+  border: 3.5px solid rgba(255, 255, 255, 0.6);
   box-shadow: 
-    0 6px 0 rgba(232, 72, 101, 0.3),
-    0 10px 20px rgba(255, 107, 138, 0.25),
-    inset 0 -4px 8px rgba(200, 40, 70, 0.2);
+    0 8px 0 rgba(193, 48, 85, 0.35),
+    0 14px 25px rgba(255, 107, 138, 0.35),
+    inset 0 -5px 10px rgba(150, 30, 60, 0.3);
 }
 
-/* ── 2. Minty Green Bubble ── */
+/* ── 2. Mint Green Bubble ── */
 .orb-emerald {
-  background: radial-gradient(circle at 35% 30%, #a0f0c5 0%, #2ed573 50%, #1e8449 100%);
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  background: radial-gradient(circle at 35% 30%, #b2f5d0 0%, #2ed573 50%, #1e8449 85%, #145a32 100%);
+  border: 3.5px solid rgba(255, 255, 255, 0.6);
   box-shadow: 
-    0 6px 0 rgba(30, 132, 73, 0.3),
-    0 10px 20px rgba(46, 213, 115, 0.25),
-    inset 0 -4px 8px rgba(20, 100, 50, 0.2);
+    0 8px 0 rgba(20, 90, 50, 0.35),
+    0 14px 25px rgba(46, 213, 115, 0.35),
+    inset 0 -5px 10px rgba(10, 60, 30, 0.3);
 }
 
 /* ── 3. Grape Purple Bubble ── */
 .orb-violet {
-  background: radial-gradient(circle at 35% 30%, #d4b3ff 0%, #a55eea 50%, #7c3aed 100%);
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  background: radial-gradient(circle at 35% 30%, #e3ccff 0%, #a55eea 50%, #7c3aed 85%, #5b21b6 100%);
+  border: 3.5px solid rgba(255, 255, 255, 0.6);
   box-shadow: 
-    0 6px 0 rgba(124, 58, 237, 0.3),
-    0 10px 20px rgba(165, 94, 234, 0.25),
-    inset 0 -4px 8px rgba(90, 40, 180, 0.2);
+    0 8px 0 rgba(91, 33, 182, 0.35),
+    0 14px 25px rgba(165, 94, 234, 0.35),
+    inset 0 -5px 10px rgba(60, 20, 120, 0.3);
 }
 
-/* ── 4. Sunny Orange Bubble ── */
+/* ── 4. Juicy Orange Bubble ── */
 .orb-coral {
-  background: radial-gradient(circle at 35% 30%, #ffd093 0%, #ff9f43 50%, #e67e22 100%);
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  background: radial-gradient(circle at 35% 30%, #ffe0b2 0%, #ff9f43 50%, #e67e22 85%, #cc6600 100%);
+  border: 3.5px solid rgba(255, 255, 255, 0.6);
   box-shadow: 
-    0 6px 0 rgba(230, 126, 34, 0.3),
-    0 10px 20px rgba(255, 159, 67, 0.25),
-    inset 0 -4px 8px rgba(180, 100, 20, 0.2);
+    0 8px 0 rgba(204, 102, 0, 0.35),
+    0 14px 25px rgba(255, 159, 67, 0.35),
+    inset 0 -5px 10px rgba(150, 70, 0, 0.3);
 }
 
 /* ── Selected State ── */
 .orb-selected {
-  transform: scale(1.22) !important;
+  transform: scale(1.25) !important;
   z-index: 15;
-  filter: brightness(1.1);
-  animation: bubbleBounce 0.45s infinite alternate;
-}
-
-.orb-selected .bubble-shine {
-  width: 26px;
-  height: 16px;
-  background: rgba(255, 255, 255, 0.85);
+  filter: brightness(1.15);
+  animation: bubbleBounce 0.4s infinite alternate;
+  border-color: #ffffff !important;
+  box-shadow: 
+    0 10px 0 rgba(0, 0, 0, 0.12),
+    0 0 30px rgba(255, 255, 255, 0.8),
+    0 18px 35px rgba(0, 0, 0, 0.15) !important;
 }
 
 @keyframes bubbleBounce {
-  from { transform: scale(1.18) translateY(0); }
-  to   { transform: scale(1.26) translateY(-4px); }
+  from { transform: scale(1.22) translateY(0); }
+  to   { transform: scale(1.3) translateY(-6px); }
 }
 
 /* ── Correct Match Pop ── */
 .orb-correct {
-  transform: scale(1.6) !important;
+  transform: scale(1.65) !important;
   opacity: 0;
   transition: all 0.28s ease-out;
   pointer-events: none;
-  filter: brightness(1.5);
-  box-shadow: 0 0 40px rgba(46, 213, 115, 0.6) !important;
+  filter: brightness(1.6);
+  box-shadow: 0 0 50px rgba(46, 213, 115, 0.8) !important;
 }
 
 /* ── Wrong Match Shake ── */
 .orb-wrong {
   animation: orbShake 0.35s ease;
-  filter: saturate(1.5) brightness(0.95);
-  box-shadow: 0 0 30px rgba(252, 92, 101, 0.5) !important;
+  filter: saturate(1.6) brightness(0.95);
+  box-shadow: 0 0 35px rgba(252, 92, 101, 0.6) !important;
 }
 
 @keyframes orbShake {

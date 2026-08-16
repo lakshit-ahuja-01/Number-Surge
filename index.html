@@ -160,24 +160,24 @@
     <!-- ===== MAIN GAMEPLAY SCREEN ===== -->
     <div id="game-screen" class="screen">
 
-      <!-- TOP ARCADE COCKPIT HUD -->
+      <!-- TOP PLAYGROUND SCOREBOARD HUD -->
       <header id="arcade-hud">
         
         <!-- Left: Score Panel with Level Pill -->
         <div class="hud-dashboard-box" id="hud-score-box">
           <div class="hud-subhead">
-            <span class="hud-tag">SCORE</span>
+            <span class="hud-tag">⭐ SCORE</span>
             <span class="hud-level-tag" id="level-indicator">LVL 1</span>
           </div>
-          <div class="hud-number-digital" id="score-display">000000</div>
+          <div class="hud-number-digital" id="score-display">0 PTS</div>
         </div>
 
         <!-- Center: Round Timer & Speed Surge Bar -->
         <div class="hud-center-console">
           <div class="timer-orb-badge" id="timer-badge">
-            <span class="timer-dial-icon">⏱️</span>
+            <span class="timer-dial-icon">⏰</span>
             <span class="timer-number" id="timer-display">60</span>
-            <span class="timer-unit">SEC</span>
+            <span class="timer-unit">s</span>
           </div>
           
           <div class="speed-surge-meter">
@@ -192,11 +192,11 @@
         <div class="hud-right-cluster">
           <div class="hud-dashboard-box" id="hud-combo-box">
             <div class="hud-subhead">
-              <span class="hud-tag">STREAK</span>
+              <span class="hud-tag">🔥 STREAK</span>
             </div>
             <div class="hud-combo-val" id="combo-display">
-              <span id="combo-flame" class="combo-flame">🔥</span>
-              <span id="combo-num">x0</span>
+              <span id="combo-flame" class="combo-flame">⭐</span>
+              <span id="combo-num">0x</span>
             </div>
           </div>
 
@@ -210,7 +210,7 @@
 
       </header>
 
-      <!-- DYNAMIC EQUATION CONSOLE (TACTILE MECHANICAL SLOTS) -->
+      <!-- DYNAMIC EQUATION CONSOLE (PLAYFUL PUZZLE MACHINE) -->
       <div id="equation-dock">
         <div class="dock-inner">
           
@@ -222,7 +222,7 @@
           <div class="equation-slots-rig">
             <!-- Operand Slot 1 -->
             <div class="slot-housing">
-              <div class="slot-label">SLOT A</div>
+              <div class="slot-label">BUBBLE 1</div>
               <div class="slot slot-operand" id="slot-a" data-slot="A">?</div>
             </div>
 
@@ -231,7 +231,7 @@
 
             <!-- Operand Slot 2 -->
             <div class="slot-housing">
-              <div class="slot-label">SLOT B</div>
+              <div class="slot-label">BUBBLE 2</div>
               <div class="slot slot-operand" id="slot-b" data-slot="B">?</div>
             </div>
 
@@ -240,7 +240,7 @@
 
             <!-- Target Goal Display -->
             <div class="slot-housing slot-housing-target">
-              <div class="slot-label slot-label-gold">TARGET GOAL</div>
+              <div class="slot-label slot-label-gold">⭐ TARGET GOAL</div>
               <div class="slot slot-target" id="slot-target">40</div>
             </div>
           </div>
@@ -252,6 +252,18 @@
 
       <!-- RIVER / GAME AREA -->
       <main id="river" role="application" aria-label="Number Surge live river">
+        <div class="river-sky-decor">
+          <div class="sky-cloud cloud-1">☁️</div>
+          <div class="sky-cloud cloud-2">☁️</div>
+          <div class="sky-cloud cloud-3">☁️</div>
+          <div class="sky-star star-1">✨</div>
+          <div class="sky-star star-2">⭐</div>
+          <div class="sky-star star-3">✨</div>
+        </div>
+        <div class="river-bottom-waves">
+          <div class="wave wave-1"></div>
+          <div class="wave wave-2"></div>
+        </div>
         <div class="river-grid-bg"></div>
         <div class="river-stream-overlay"></div>
         <!-- Floating orbs injected by script.js -->

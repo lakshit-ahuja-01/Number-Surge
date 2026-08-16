@@ -691,7 +691,7 @@ function startTimer() {
   updateHUD();
 
   gameState.timerIntervalId = setInterval(() => {
-    if (gameState.isPaused) return;
+    if (gameState.phase !== 'playing' || gameState.isPaused) return;
     gameState.timeLeft--;
     updateHUD();
 
@@ -701,6 +701,7 @@ function startTimer() {
     }
 
     if (gameState.timeLeft <= 0) {
+      stopTimer();
       endGame();
     }
   }, 1000);
@@ -780,6 +781,7 @@ function calculateRank(score, accuracy) {
 let gameoverAudioTimeout = null;
 
 function endGame() {
+  if (gameState.phase !== 'playing') return;
   gameState.phase = 'gameover';
   stopTimer();
   stopGameLoop();
@@ -954,9 +956,18 @@ function startGame() {
 }
 
 function resetState() {
+  stopTimer();
+  stopGameLoop();
+  if (typeof cancelAnimationFrame === 'function' && speedMeterLoopId) {
+    cancelAnimationFrame(speedMeterLoopId);
+    speedMeterLoopId = null;
+  }
+  clearAllFloaters();
+
   gameState.phase           = 'menu';
+  gameState.isPaused        = false;
   gameState.score           = 0;
-  gameState.timeLeft        = CONFIG.GAME_DURATION;
+  gameState.timeLeft        = gameState.duration || CONFIG.GAME_DURATION;
   gameState.combo           = 0;
   gameState.bestCombo       = 0;
   gameState.solved          = 0;
@@ -973,6 +984,10 @@ function resetState() {
   gameState.questionStartMs = 0;
   gameState.bestSpeedBonus  = 0;
   
+  if (dom.pauseModal) dom.pauseModal.classList.remove('active');
+  if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
+  if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
+
   if (gameoverAudioTimeout) {
     clearTimeout(gameoverAudioTimeout);
     gameoverAudioTimeout = null;

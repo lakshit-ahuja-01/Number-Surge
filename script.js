@@ -24,7 +24,7 @@ const CONFIG = Object.freeze({
   ORB_SIZE:             62,     // Diameter px
   SPAWN_MARGIN:         40,
   DIFFICULTY_INTERVAL:  3,      // Solved questions per difficulty level
-  ORB_THEMES: ['orb-blue', 'orb-purple', 'orb-teal', 'orb-pink'],
+  ORB_THEMES: ['orb-amber', 'orb-emerald', 'orb-violet', 'orb-coral'],
 });
 
 // ─── 2. GAME MODES ───────────────────────────────────────────
@@ -187,7 +187,7 @@ function initAmbientCanvas() {
 function renderAmbientParticles() {
   if (!ambientCtx) return;
   ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-  ambientCtx.fillStyle = '#00e5ff';
+  ambientCtx.fillStyle = '#f59e0b';
 
   ambientParticles.forEach(p => {
     p.x += p.vx;
@@ -577,7 +577,7 @@ function spawnEnergyParticles(refEl) {
   const rRect = dom.river.getBoundingClientRect();
   const cx = rect.left - rRect.left + rect.width / 2;
   const cy = rect.top - rRect.top + rect.height / 2;
-  const colors = ['#00e5ff', '#38bdf8', '#fbbf24', '#10b981', '#ffffff'];
+  const colors = ['#f59e0b', '#10b981', '#a855f7', '#f43f5e', '#ffffff'];
 
   for (let i = 0; i < 12; i++) {
     const p = document.createElement('div');

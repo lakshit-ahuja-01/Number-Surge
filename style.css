@@ -1,30 +1,30 @@
 /* ========================================================
-   Number Surge — Authentic Game Theme
-   Curated palette inspired by top-tier modern arcade & indie games.
-   Crisp contrast, refined aquatic-arcade depth, zero tacky AI glows.
+   Number Surge — Warm Obsidian & Amber-Jade Master Theme
+   Curated non-blue palette: Warm Obsidian Charcoal, Radiant Amber,
+   Emerald Jade, and Amethyst Violet.
    ======================================================== */
 
 /* ─── Curated Color System ─────────────────────────────── */
 :root {
-  /* Rich Midnight & Marine Abyss Backdrops */
-  --bg-deep:        #080e1a;
-  --bg-surface:     #0e172a;
-  --bg-panel:       rgba(15, 26, 48, 0.88);
-  --border-subtle:  rgba(148, 163, 184, 0.14);
-  --border-active:  #38bdf8;
+  /* Rich Dark Obsidian & Warm Charcoal Backdrops (Zero Blue) */
+  --bg-deep:        #0c0f14;
+  --bg-surface:     #131720;
+  --bg-panel:       rgba(20, 25, 34, 0.92);
+  --border-subtle:  rgba(255, 255, 255, 0.08);
+  --border-active:  #f59e0b;
 
-  /* Controlled Game Accents */
-  --color-primary:  #0284c7;   /* Electric Marine */
-  --color-accent:   #38bdf8;   /* Sky Cyan */
-  --color-amber:    #f59e0b;   /* Warm Gold / Combo */
-  --color-emerald:  #10b981;   /* Correct / Health Green */
+  /* Controlled Non-Blue Accents */
+  --color-primary:  #f59e0b;   /* Radiant Amber Gold */
+  --color-accent:   #10b981;   /* Emerald Jade */
+  --color-amber:    #fbbf24;   /* Warm Gold / Combo */
+  --color-violet:   #8b5cf6;   /* Amethyst */
   --color-coral:    #f43f5e;   /* Danger / Mistake Red */
   
   /* Text & Labels */
   --text-pure:      #ffffff;
-  --text-main:      #f1f5f9;
-  --text-dim:       #94a3b8;
-  --text-muted:     #64748b;
+  --text-main:      #f8fafc;
+  --text-dim:       #a1a1aa;
+  --text-muted:     #71717a;
 
   /* Typography */
   --font-hud:       'Chakra Petch', 'Segoe UI', monospace;
@@ -108,7 +108,7 @@ html, body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.55),
+    0 15px 35px rgba(0, 0, 0, 0.65),
     0 0 1px rgba(255, 255, 255, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   display: flex;
@@ -117,16 +117,16 @@ html, body {
   gap: 18px;
 }
 
-/* ─── Arcade Title & Logo ──────────────────────────────── */
+/* ─── Arcade Title & Logo (Warm Gold & White) ──────────── */
 .badge-pill {
   display: inline-block;
   font-family: var(--font-hud);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  color: var(--color-accent);
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: var(--color-primary);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.28);
   border-radius: 20px;
   padding: 4px 14px;
   margin-bottom: 6px;
@@ -148,8 +148,8 @@ html, body {
 
 .logo-bot {
   display: block;
-  color: var(--color-accent);
-  text-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+  color: var(--color-primary);
+  text-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
 }
 
 .tagline {
@@ -164,7 +164,7 @@ html, body {
   align-items: center;
   gap: 8px;
   background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.22);
+  border: 1px solid rgba(245, 158, 11, 0.25);
   border-radius: 10px;
   padding: 7px 16px;
   font-family: var(--font-hud);
@@ -198,7 +198,7 @@ html, body {
 }
 
 .mode-card {
-  background: rgba(18, 30, 53, 0.65);
+  background: rgba(25, 31, 42, 0.7);
   border: 1.5px solid var(--border-subtle);
   border-radius: 12px;
   padding: 10px 4px;
@@ -212,23 +212,23 @@ html, body {
 }
 
 .mode-card:hover {
-  background: rgba(26, 44, 76, 0.85);
-  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(35, 43, 58, 0.9);
+  border-color: rgba(245, 158, 11, 0.4);
   color: var(--text-pure);
   transform: translateY(-2px);
 }
 
 .mode-card.active {
-  background: rgba(2, 132, 199, 0.2);
-  border-color: var(--color-accent);
+  background: rgba(245, 158, 11, 0.15);
+  border-color: var(--color-primary);
   color: var(--text-pure);
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
 }
 
 .mode-icon { font-size: 20px; line-height: 1; }
 .mode-name { font-size: 12px; font-weight: 700; font-family: var(--font-hud); }
 .mode-hint { font-size: 9px; color: var(--text-muted); }
-.mode-card.active .mode-hint { color: var(--color-accent); }
+.mode-card.active .mode-hint { color: var(--color-primary); }
 
 .mode-mixed {
   grid-column: span 5;
@@ -241,7 +241,7 @@ html, body {
   .mode-mixed { grid-column: span 1; flex-direction: column; padding: 10px 4px; }
 }
 
-/* ─── Action Buttons ───────────────────────────────────── */
+/* ─── Action Buttons (Golden Amber) ────────────────────── */
 .arcade-btn {
   position: relative;
   font-family: var(--font-hud);
@@ -259,19 +259,19 @@ html, body {
 }
 
 .arcade-btn-play {
-  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-  color: #081120;
+  background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+  color: #0c0f14;
   box-shadow: 
-    0 4px 14px rgba(2, 132, 199, 0.35),
-    0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    0 4px 14px rgba(217, 119, 6, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.4) inset;
 }
 
 .arcade-btn-play:hover {
-  background: linear-gradient(180deg, #7dd3fc 0%, #0369a1 100%);
+  background: linear-gradient(180deg, #fde047 0%, #b45309 100%);
   transform: translateY(-2px);
   box-shadow: 
-    0 6px 20px rgba(2, 132, 199, 0.5),
-    0 1px 0 rgba(255, 255, 255, 0.4) inset;
+    0 6px 20px rgba(217, 119, 6, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.5) inset;
 }
 
 .arcade-btn-play:active {
@@ -279,15 +279,15 @@ html, body {
 }
 
 .arcade-btn-secondary {
-  background: rgba(18, 30, 53, 0.8);
+  background: rgba(25, 31, 42, 0.85);
   border: 1.5px solid var(--border-subtle);
   color: var(--text-dim);
 }
 
 .arcade-btn-secondary:hover {
-  background: rgba(28, 48, 82, 0.9);
+  background: rgba(35, 43, 58, 0.95);
   color: var(--text-pure);
-  border-color: var(--color-accent);
+  border-color: var(--color-primary);
   transform: translateY(-1px);
 }
 
@@ -318,7 +318,7 @@ html, body {
 #arcade-hud {
   width: 100%;
   height: var(--hud-height);
-  background: rgba(8, 14, 26, 0.94);
+  background: rgba(12, 15, 20, 0.96);
   border-bottom: 1.5px solid var(--border-subtle);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -353,7 +353,7 @@ html, body {
 
 #hud-score-box.score-pop .hud-number {
   animation: scoreBounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--color-emerald);
+  color: var(--color-accent);
 }
 
 @keyframes scoreBounce {
@@ -374,7 +374,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: rgba(18, 30, 53, 0.8);
+  background: rgba(25, 31, 42, 0.85);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 2px 12px;
@@ -449,7 +449,7 @@ html, body {
 }
 
 .sound-chip {
-  background: rgba(18, 30, 53, 0.7);
+  background: rgba(25, 31, 42, 0.8);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   font-size: 15px;
@@ -458,7 +458,7 @@ html, body {
   color: var(--text-pure);
   transition: all 0.15s;
 }
-.sound-chip:hover { border-color: var(--color-accent); transform: scale(1.05); }
+.sound-chip:hover { border-color: var(--color-primary); transform: scale(1.05); }
 
 /* ========================================================
    DYNAMIC EQUATION DOCK (INTERACTIVE SLOTS)
@@ -466,9 +466,9 @@ html, body {
 #equation-dock {
   width: 100%;
   height: var(--dock-height);
-  background: rgba(11, 20, 37, 0.96);
+  background: rgba(16, 20, 27, 0.98);
   border-bottom: 1.5px solid var(--border-subtle);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -488,8 +488,8 @@ html, body {
   font-weight: 900;
   letter-spacing: 1.5px;
   color: var(--color-accent);
-  background: rgba(56, 189, 248, 0.12);
-  border: 1.5px solid rgba(56, 189, 248, 0.3);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1.5px solid rgba(16, 185, 129, 0.35);
   border-radius: 8px;
   padding: 4px 10px;
 }
@@ -513,31 +513,31 @@ html, body {
 .slot-operand {
   width: 58px;
   height: 50px;
-  background: rgba(18, 30, 53, 0.85);
-  border: 2px dashed rgba(148, 163, 184, 0.3);
+  background: rgba(25, 31, 42, 0.9);
+  border: 2px dashed rgba(255, 255, 255, 0.18);
   color: var(--text-dim);
   font-size: 24px;
 }
 
 /* Locked slot */
 .slot-operand.locked {
-  background: rgba(2, 132, 199, 0.25);
+  background: rgba(16, 185, 129, 0.22);
   border: 2px solid var(--color-accent);
   color: var(--text-pure);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
   transform: scale(1.05);
 }
 
 .slot-operand.success-flash {
-  background: rgba(16, 185, 129, 0.45) !important;
-  border-color: var(--color-emerald) !important;
+  background: rgba(16, 185, 129, 0.5) !important;
+  border-color: var(--color-accent) !important;
   color: var(--text-pure) !important;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.6) !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.7) !important;
   transform: scale(1.1) !important;
 }
 
 .slot-operand.wrong-flash {
-  background: rgba(244, 63, 94, 0.45) !important;
+  background: rgba(244, 63, 94, 0.5) !important;
   border-color: var(--color-coral) !important;
   color: var(--text-pure) !important;
   animation: slotShake 0.35s ease;
@@ -554,15 +554,15 @@ html, body {
   font-family: var(--font-hud);
   font-size: 24px;
   font-weight: 900;
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .slot-target {
   min-width: 68px;
   height: 50px;
   padding: 0 12px;
-  background: rgba(245, 158, 11, 0.15);
-  border: 2px solid var(--color-amber);
+  background: rgba(245, 158, 11, 0.18);
+  border: 2px solid var(--color-primary);
   color: var(--text-pure);
   font-size: 25px;
 }
@@ -574,7 +574,7 @@ html, body {
   left: 50%;
   transform: translateX(-50%) translateY(6px);
   background: var(--color-amber);
-  color: #081120;
+  color: #0c0f14;
   font-family: var(--font-hud);
   font-size: 12px;
   font-weight: 900;
@@ -593,14 +593,14 @@ html, body {
 }
 
 /* ========================================================
-   RIVER GAME AREA & NATURAL NUMBER TILES / ORBS
+   RIVER GAME AREA (Dark Obsidian & Warm Charcoal)
    ======================================================== */
 #river {
   position: relative;
   flex: 1;
   width: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #091224 0%, #050b16 100%);
+  background: linear-gradient(180deg, #12161f 0%, #080a0e 100%);
 }
 
 .river-stream-overlay {
@@ -611,12 +611,12 @@ html, body {
     115deg,
     transparent,
     transparent 90px,
-    rgba(56, 189, 248, 0.015) 90px,
-    rgba(56, 189, 248, 0.015) 92px
+    rgba(245, 158, 11, 0.015) 90px,
+    rgba(245, 158, 11, 0.015) 92px
   );
 }
 
-/* ─── Clean, Grounded Number Tiles ─────────────────────── */
+/* ─── Grounded Non-Blue Game Orbs ──────────────────────── */
 .orb-floater {
   position: absolute;
   width: var(--orb-size);
@@ -656,28 +656,28 @@ html, body {
 .orb-floater:hover {
   transform: scale(1.12) !important;
   z-index: 10;
-  border-color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.85);
 }
 
-/* Tasteful Orb Colors */
-.orb-blue {
-  background: linear-gradient(145deg, #0284c7 0%, #0369a1 100%);
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+/* Tasteful Non-Blue Orb Colors */
+.orb-amber {
+  background: linear-gradient(145deg, #d97706 0%, #92400e 100%);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
 }
 
-.orb-purple {
-  background: linear-gradient(145deg, #4f46e5 0%, #3730a3 100%);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+.orb-emerald {
+  background: linear-gradient(145deg, #059669 0%, #065f46 100%);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
 }
 
-.orb-teal {
-  background: linear-gradient(145deg, #059669 0%, #047857 100%);
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+.orb-violet {
+  background: linear-gradient(145deg, #7c3aed 0%, #5b21b6 100%);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
 }
 
-.orb-pink {
-  background: linear-gradient(145deg, #d97706 0%, #b45309 100%);
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+.orb-coral {
+  background: linear-gradient(145deg, #e11d48 0%, #9f1239 100%);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4);
 }
 
 /* Selected Orb */
@@ -685,8 +685,8 @@ html, body {
   transform: scale(1.18) !important;
   border: 2.5px solid #ffffff !important;
   box-shadow: 
-    0 0 20px rgba(56, 189, 248, 0.6),
-    0 4px 16px rgba(0, 0, 0, 0.4) !important;
+    0 0 20px rgba(245, 158, 11, 0.65),
+    0 4px 16px rgba(0, 0, 0, 0.5) !important;
   z-index: 12;
 }
 
@@ -703,9 +703,9 @@ html, body {
 
 /* Wrong Shake Orb */
 .orb-wrong {
-  background: #ef4444 !important;
+  background: #f43f5e !important;
   border-color: #ffffff !important;
-  box-shadow: 0 0 25px rgba(239, 68, 68, 0.6) !important;
+  box-shadow: 0 0 25px rgba(244, 63, 94, 0.6) !important;
   animation: orbShake 0.35s ease;
 }
 
@@ -791,7 +791,7 @@ html, body {
   font-weight: 900;
   letter-spacing: 1.5px;
   background: var(--color-amber);
-  color: #081120;
+  color: #0c0f14;
   padding: 4px 16px;
   border-radius: 16px;
   margin-top: 4px;
@@ -806,8 +806,8 @@ html, body {
 }
 
 .stat-card.stat-main {
-  background: rgba(2, 132, 199, 0.12);
-  border: 1.5px solid rgba(56, 189, 248, 0.4);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1.5px solid rgba(245, 158, 11, 0.4);
   border-radius: 14px;
   padding: 14px 18px;
   display: flex;
@@ -817,7 +817,7 @@ html, body {
 }
 
 .stat-card .stat-icon { font-size: 30px; }
-.stat-sub { font-family: var(--font-hud); font-size: 11px; font-weight: 700; color: var(--color-accent); letter-spacing: 1px; }
+.stat-sub { font-family: var(--font-hud); font-size: 11px; font-weight: 700; color: var(--color-primary); letter-spacing: 1px; }
 .stat-big { font-family: var(--font-hud); font-size: 34px; font-weight: 900; color: var(--text-pure); }
 
 .new-record-pill {
@@ -826,7 +826,7 @@ html, body {
   right: 16px;
   top: 16px;
   background: var(--color-amber);
-  color: #081120;
+  color: #0c0f14;
   font-family: var(--font-hud);
   font-size: 11px;
   font-weight: 900;
@@ -843,7 +843,7 @@ html, body {
 }
 
 .mini-stat {
-  background: rgba(18, 30, 53, 0.7);
+  background: rgba(25, 31, 42, 0.75);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 10px 14px;

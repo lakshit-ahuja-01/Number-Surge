@@ -991,11 +991,6 @@ function resetState() {
   if (dom.pauseModal) dom.pauseModal.classList.remove('active');
   if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
   if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
-
-  if (gameoverAudioTimeout) {
-    clearTimeout(gameoverAudioTimeout);
-    gameoverAudioTimeout = null;
-  }
 }
 
 function togglePause() {

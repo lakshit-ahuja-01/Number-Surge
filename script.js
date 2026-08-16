@@ -751,6 +751,7 @@ function endGame() {
   stopTimer();
   stopGameLoop();
   cancelAnimationFrame(speedMeterLoopId);
+  clearAllFloaters();
 
   const totalAttempts = gameState.solved + gameState.wrongAnswers;
   const accuracy = totalAttempts > 0 ? Math.round(gameState.solved / totalAttempts * 100) : 0;
@@ -778,18 +779,25 @@ function endGame() {
 
   if (gameoverAudioTimeout) clearTimeout(gameoverAudioTimeout);
   gameoverAudioTimeout = setTimeout(() => {
-    if (audioCtx && audioCtx.state === 'running') {
-      audioCtx.suspend();
+    if (masterGainNode && audioCtx) {
+      masterGainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
     }
   }, 3000);
 }
 
 // ─── 17. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────
 let audioCtx = null;
+let masterGainNode = null;
 
 function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGainNode = audioCtx.createGain();
+    masterGainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+    masterGainNode.connect(audioCtx.destination);
+  }
   if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (masterGainNode) masterGainNode.gain.setValueAtTime(1, audioCtx.currentTime);
   return audioCtx;
 }
 
@@ -807,7 +815,7 @@ function playArcadeSound(type, comboLevel = 1) {
       gain.gain.setValueAtTime(0.06, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
       osc.connect(gain);
-      gain.connect(ctx.destination);
+      gain.connect(masterGainNode);
       osc.start(now);
       osc.stop(now + 0.05);
     }
@@ -825,7 +833,7 @@ function playArcadeSound(type, comboLevel = 1) {
         gain.gain.setValueAtTime(0.12, now + i * 0.035);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3 + i * 0.035);
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(masterGainNode);
         osc.start(now + i * 0.035);
         osc.stop(now + 0.32 + i * 0.035);
       });
@@ -839,7 +847,7 @@ function playArcadeSound(type, comboLevel = 1) {
       gain.gain.setValueAtTime(0.08, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
       osc.connect(gain);
-      gain.connect(ctx.destination);
+      gain.connect(masterGainNode);
       osc.start(now);
       osc.stop(now + 0.18);
     }
@@ -851,7 +859,7 @@ function playArcadeSound(type, comboLevel = 1) {
       gain.gain.setValueAtTime(0.03, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
       osc.connect(gain);
-      gain.connect(ctx.destination);
+      gain.connect(masterGainNode);
       osc.start(now);
       osc.stop(now + 0.03);
     }
@@ -868,7 +876,7 @@ function playArcadeSound(type, comboLevel = 1) {
         gain.gain.setValueAtTime(0.12, now + idx * 0.08);
         gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(masterGainNode);
         osc.start(now + idx * 0.08);
         osc.stop(now + idx * 0.08 + 0.28);
       });

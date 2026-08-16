@@ -1238,18 +1238,18 @@ html, body {
   will-change: left, top, transform;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  border: 4px solid #1e293b;
-  box-shadow: -4px 6px 0 rgba(30, 41, 59, 1);
+  border: 3.5px solid #1e293b;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15), 0 3px 0 rgba(30, 41, 59, 0.3);
 }
 
 /* Main Top Glass Highlight (Cartoon Style) */
 .bubble-shine {
   position: absolute;
-  top: 10px;
-  right: 14px;
+  top: 8px;
+  right: 12px;
   width: 14px;
   height: 8px;
-  background: white;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 50%;
   transform: rotate(-30deg);
   pointer-events: none;
@@ -1265,19 +1265,16 @@ html, body {
   z-index: 4;
   letter-spacing: 0.5px;
   text-shadow: 
-    -2px -2px 0 #1e293b,
-     2px -2px 0 #1e293b,
-    -2px  2px 0 #1e293b,
-     2px  2px 0 #1e293b,
-     0px  4px 0 #1e293b;
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.5);
   pointer-events: none;
 }
 
 /* Hover Squish & Bounce */
 .orb-floater:hover {
-  transform: translateY(-8px) scale(1.15) !important;
+  transform: translateY(-6px) scale(1.12) !important;
   z-index: 10;
-  box-shadow: -6px 10px 0 rgba(30, 41, 59, 1);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2), 0 4px 0 rgba(30, 41, 59, 0.35);
 }
 
 /* ── 1. Strawberry Bubble ── */
@@ -1302,17 +1299,19 @@ html, body {
 
 /* ── Selected State ── */
 .orb-selected {
-  transform: scale(1.25) !important;
+  transform: scale(1.22) !important;
   z-index: 15;
-  filter: brightness(1.15);
+  filter: brightness(1.1);
   animation: bubbleBounce 0.4s infinite alternate;
   border-color: #ffffff !important;
-  box-shadow: -6px 10px 0 rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 
+    0 0 0 4px #ffffff,
+    0 8px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
 @keyframes bubbleBounce {
-  from { transform: scale(1.22) translateY(0); }
-  to   { transform: scale(1.3) translateY(-6px); }
+  from { transform: scale(1.18) translateY(0); }
+  to   { transform: scale(1.24) translateY(-5px); }
 }
 
 /* ── Correct Match Pop ── */

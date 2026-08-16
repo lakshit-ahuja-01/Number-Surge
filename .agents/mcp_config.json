@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "stitch": {
+      "command": "npx",
+      "args": ["-y", "@_davideast/stitch-mcp", "proxy", "-p", "number-surge"],
+      "env": {
+        "PROJECT_ID": "number-surge"
+      }
+    }
+  }
+}

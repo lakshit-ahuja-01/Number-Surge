@@ -1,6 +1,6 @@
 /* ========================================================
-   Number Surge — CSS 1 & CSS 2.1 Stylesheet
-   Compliant with CSS Level 1 and CSS Level 2.1 Specifications
+   Number Surge — Enhanced Cyber-Arcade Theme (CSS1 & CSS2.1)
+   100% Valid CSS Level 1 and CSS Level 2.1
    ======================================================== */
 
 /* ─── Global Reset & Base (CSS1/CSS2) ──────────────────── */
@@ -10,9 +10,9 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #070f1e;
+  background-color: #040914;
   color: #e2e8f0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
   font-size: 16px;
 }
 
@@ -24,14 +24,14 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #070f1e;
+  background-color: #040914;
 }
 
 .screen.active {
   display: block;
 }
 
-/* Table layout for perfect vertical & horizontal centering */
+/* Table layout for vertical & horizontal centering */
 .screen-table {
   display: table;
   width: 100%;
@@ -42,46 +42,48 @@ html, body {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
 }
 
 .start-inner, .gameover-inner {
   display: inline-block;
   width: 100%;
-  max-width: 540px;
+  max-width: 520px;
   text-align: center;
-  background-color: #0e1c33;
-  border: 1px solid #1e3356;
-  padding: 30px 20px;
+  background-color: #0c1626;
+  border: 2px solid #1a3254;
+  padding: 28px 20px;
 }
 
 /* ─── Typography (CSS1/CSS2) ────────────────────────────── */
 .game-title {
-  margin: 0 0 10px 0;
-  font-size: 42px;
-  font-weight: bold;
+  margin: 0 0 8px 0;
+  font-size: 46px;
+  font-weight: 900;
   color: #38bdf8;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .tagline {
-  margin: 0 0 24px 0;
-  font-size: 16px;
+  margin: 0 0 22px 0;
+  font-size: 15px;
   color: #94a3b8;
+  letter-spacing: 1px;
 }
 
 /* ─── Mode Selector (CSS2 Display / Inline-Block) ───────── */
 .mode-section {
-  margin: 0 0 25px 0;
+  margin: 0 0 22px 0;
 }
 
 .mode-label {
   margin: 0 0 10px 0;
   font-size: 12px;
   font-weight: bold;
-  color: #64748b;
+  color: #38bdf8;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 .mode-grid {
@@ -91,46 +93,47 @@ html, body {
 .mode-card {
   display: inline-block;
   vertical-align: top;
-  width: 90px;
+  width: 88px;
   margin: 4px;
-  padding: 10px 4px;
-  background-color: #14243e;
-  border: 1px solid #233a60;
+  padding: 12px 4px;
+  background-color: #101e34;
+  border: 2px solid #1d3353;
   color: #94a3b8;
   cursor: pointer;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
   text-align: center;
 }
 
 .mode-card:hover {
-  background-color: #1a2f52;
+  background-color: #162945;
   color: #ffffff;
   border-color: #38bdf8;
 }
 
 .mode-card.active {
-  background-color: #1b3a66;
-  border: 1px solid #38bdf8;
+  background-color: #16365c;
+  border: 2px solid #38bdf8;
   color: #ffffff;
   font-weight: bold;
 }
 
 .mode-icon {
   display: block;
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 4px;
 }
 
 .mode-name {
   display: block;
   font-size: 12px;
+  font-weight: bold;
 }
 
 .mode-example {
   display: block;
   font-size: 11px;
   color: #64748b;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .mode-card.active .mode-example {
@@ -141,51 +144,55 @@ html, body {
 .btn {
   display: inline-block;
   padding: 12px 28px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   text-align: center;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .btn-large {
-  padding: 14px 38px;
+  padding: 14px 42px;
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .btn-primary {
   background-color: #38bdf8;
-  color: #070f1e;
+  color: #040914;
   border-color: #38bdf8;
 }
 
 .btn-primary:hover {
   background-color: #7dd3fc;
-  border-color: #7dd3fc;
+  border-color: #ffffff;
+  color: #040914;
 }
 
 .btn-secondary {
-  background-color: #14243e;
+  background-color: #101e34;
   color: #94a3b8;
-  border-color: #233a60;
+  border-color: #1d3353;
 }
 
 .btn-secondary:hover {
-  background-color: #1a2f52;
+  background-color: #162945;
   color: #ffffff;
   border-color: #94a3b8;
 }
 
 .tips {
-  margin-top: 15px;
+  margin-top: 14px;
   font-size: 13px;
   color: #64748b;
 }
 
 .tip-sep {
-  padding: 0 6px;
+  padding: 0 8px;
+  color: #38bdf8;
 }
 
 /* ========================================================
@@ -198,9 +205,9 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 52px;
-  background-color: #0b182b;
-  border-bottom: 1px solid #1e3356;
+  height: 56px;
+  background-color: #081220;
+  border-bottom: 2px solid #1a3254;
   text-align: center;
   line-height: 20px;
 }
@@ -208,14 +215,14 @@ html, body {
 .hud-item {
   display: inline-block;
   vertical-align: middle;
-  padding: 6px 18px;
+  padding: 8px 22px;
   text-align: center;
 }
 
 .hud-center {
   display: inline-block;
   vertical-align: middle;
-  padding: 6px 18px;
+  padding: 8px 22px;
   text-align: center;
 }
 
@@ -225,13 +232,13 @@ html, body {
   font-weight: bold;
   color: #64748b;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 .hud-value {
   display: block;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 900;
   color: #ffffff;
 }
 
@@ -245,14 +252,15 @@ html, body {
 
 /* Speed Bar (CSS2 Block/Width) */
 #speed-bar-wrap {
-  width: 80px;
-  height: 4px;
-  background-color: #1e3356;
-  margin: 3px auto 0 auto;
+  width: 90px;
+  height: 5px;
+  background-color: #1a3254;
+  margin: 4px auto 0 auto;
+  border: 1px solid #254673;
 }
 
 #speed-bar {
-  height: 4px;
+  height: 5px;
   width: 100%;
   background-color: #34d399;
 }
@@ -260,31 +268,32 @@ html, body {
 /* Sound Button */
 .hud-sound-btn {
   position: absolute;
-  right: 15px;
+  right: 16px;
   top: 10px;
-  background-color: #14243e;
-  border: 1px solid #233a60;
+  background-color: #101e34;
+  border: 2px solid #1d3353;
   color: #ffffff;
   font-size: 16px;
-  padding: 5px 8px;
+  padding: 6px 10px;
   cursor: pointer;
 }
 
 .hud-sound-btn:hover {
-  background-color: #1a2f52;
+  background-color: #162945;
+  border-color: #38bdf8;
 }
 
 /* ─── Equation Bar (CSS2 Absolute Layout) ───────────────── */
 #equation-bar {
   position: absolute;
-  top: 52px;
+  top: 56px;
   left: 0;
   width: 100%;
-  height: 60px;
-  background-color: #0e1c33;
-  border-bottom: 1px solid #1e3356;
+  height: 64px;
+  background-color: #0c1626;
+  border-bottom: 2px solid #1a3254;
   text-align: center;
-  line-height: 60px;
+  line-height: 64px;
 }
 
 #equation-wrap {
@@ -296,37 +305,38 @@ html, body {
 #mode-badge {
   display: inline-block;
   vertical-align: middle;
-  padding: 3px 8px;
-  background-color: #1b3a66;
-  border: 1px solid #38bdf8;
+  padding: 4px 10px;
+  background-color: #16365c;
+  border: 2px solid #38bdf8;
   color: #38bdf8;
-  font-size: 12px;
-  font-weight: bold;
-  margin-right: 10px;
+  font-size: 13px;
+  font-weight: 900;
+  margin-right: 12px;
+  letter-spacing: 1px;
 }
 
 #equation-text {
   display: inline-block;
   vertical-align: middle;
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 34px;
+  font-weight: 900;
   color: #38bdf8;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 /* Speed Bonus Notice */
 .speed-toast {
   display: none;
   position: absolute;
-  top: 120px;
+  top: 128px;
   left: 50%;
-  margin-left: -90px;
-  width: 180px;
+  margin-left: -100px;
+  width: 200px;
   text-align: center;
-  background-color: #1b3a66;
-  border: 1px solid #fbbf24;
+  background-color: #16365c;
+  border: 2px solid #fbbf24;
   color: #fbbf24;
-  padding: 5px;
+  padding: 6px 10px;
   font-size: 13px;
   font-weight: bold;
   z-index: 30;
@@ -339,55 +349,56 @@ html, body {
 /* ─── River Area (CSS2 Absolute Layout) ─────────────────── */
 #river {
   position: absolute;
-  top: 112px;
+  top: 120px;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #081729;
+  background-color: #060e1c;
   overflow: hidden;
 }
 
 /* ─── Floating Number Bubbles (CSS2 Position/Colors) ───── */
 .floater {
   position: absolute;
-  width: 56px;
-  height: 56px;
-  line-height: 56px;
+  width: 58px;
+  height: 58px;
+  line-height: 58px;
   text-align: center;
-  background-color: #102744;
+  background-color: #0e1c33;
   color: #ffffff;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  border: 2px solid #254a78;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  border: 3px solid #1a3c68;
   cursor: pointer;
   z-index: 5;
 }
 
 .floater:hover {
-  background-color: #183b68;
+  background-color: #142a4c;
   border-color: #38bdf8;
+  color: #38bdf8;
 }
 
 /* Selected state (CSS2) */
 .floater-selected {
   background-color: #38bdf8 !important;
-  color: #070f1e !important;
-  border: 2px solid #ffffff !important;
+  color: #040914 !important;
+  border: 3px solid #ffffff !important;
 }
 
 /* Correct state (CSS2) */
 .floater-correct {
   background-color: #34d399 !important;
-  color: #070f1e !important;
-  border: 2px solid #ffffff !important;
+  color: #040914 !important;
+  border: 3px solid #ffffff !important;
 }
 
 /* Wrong state (CSS2) */
 .floater-wrong {
   background-color: #f87171 !important;
   color: #ffffff !important;
-  border: 2px solid #ffffff !important;
+  border: 3px solid #ffffff !important;
 }
 
 /* Color variations */
@@ -399,8 +410,8 @@ html, body {
 /* ─── Score Popup & Burst (CSS2) ────────────────────────── */
 .score-popup {
   position: absolute;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 900;
   z-index: 25;
 }
 
@@ -409,8 +420,8 @@ html, body {
 
 .particle {
   position: absolute;
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background-color: #34d399;
   z-index: 15;
 }
@@ -419,22 +430,24 @@ html, body {
    GAME OVER SCREEN (CSS2)
    ======================================================== */
 .gameover-title {
-  margin: 0 0 20px 0;
-  font-size: 36px;
-  font-weight: bold;
+  margin: 0 0 18px 0;
+  font-size: 38px;
+  font-weight: 900;
   color: #f87171;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 #final-stats {
   width: 100%;
-  margin: 0 0 25px 0;
-  background-color: #14243e;
-  border: 1px solid #233a60;
+  margin: 0 0 22px 0;
+  background-color: #101e34;
+  border: 2px solid #1d3353;
 }
 
 .stat-row {
-  padding: 10px 15px;
-  border-bottom: 1px solid #1e3356;
+  padding: 12px 18px;
+  border-bottom: 1px solid #1a3254;
   text-align: left;
 }
 
@@ -445,22 +458,23 @@ html, body {
 .stat-label {
   display: inline-block;
   width: 60%;
-  font-size: 14px;
+  font-size: 15px;
   color: #94a3b8;
+  font-weight: bold;
 }
 
 .stat-value {
   display: inline-block;
   width: 38%;
   text-align: right;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 900;
   color: #ffffff;
 }
 
 .stat-value.highlight {
   color: #38bdf8;
-  font-size: 18px;
+  font-size: 22px;
 }
 
 #gameover-actions {

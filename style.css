@@ -203,11 +203,40 @@ html, body {
 
 .logo-subline {
   font-family: var(--font-hud);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--candy-orange-s);
   margin-top: 6px;
+  background: #ffedd5;
+  padding: 4px 16px;
+  border-radius: 20px;
+  border: 2px solid #fdba74;
+}
+
+.logo-deco {
+  position: absolute;
+  font-size: 32px;
+  animation: floatDeco 2s infinite alternate;
+}
+.logo-deco-left { top: 20px; left: -20px; }
+.logo-deco-right { top: 20px; right: -20px; animation-delay: 1s; }
+
+@keyframes floatDeco {
+  0% { transform: translateY(0) scale(0.9) rotate(-10deg); }
+  100% { transform: translateY(-10px) scale(1.1) rotate(10deg); }
+}
+
+.logo-emoji-row {
+  font-size: 20px;
+  margin-top: 10px;
+  letter-spacing: 4px;
+  animation: emojiWobble 3s infinite alternate;
+}
+
+@keyframes emojiWobble {
+  0% { transform: scale(1) rotate(-2deg); }
+  100% { transform: scale(1.1) rotate(2deg); }
 }
 
 /* Mode Selector */
@@ -1405,9 +1434,16 @@ html, body {
 }
 
 .pause-desc { 
-  font-size: 15px; 
-  font-weight: 700;
-  color: #64748b; 
+  font-size: 16px; 
+  font-weight: 800;
+  color: #0369a1; 
+}
+
+.pause-deco-row {
+  font-size: 20px;
+  letter-spacing: 8px;
+  margin: 10px 0;
+  animation: trophyWiggle 2s infinite ease-in-out;
 }
 
 .pause-actions {
@@ -1463,11 +1499,19 @@ html, body {
 
 .gameover-title {
   font-family: var(--font-hud);
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 900;
   letter-spacing: 1px;
   color: #d35400;
-  text-shadow: 0 2px 0 #ffe0b2;
+  text-shadow: 0 3px 0 #ffe0b2;
+  animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gameover-stars {
+  font-size: 24px;
+  letter-spacing: 4px;
+  margin: 4px 0;
+  animation: starTwinkle 1.5s infinite alternate;
 }
 
 .rank-badge {

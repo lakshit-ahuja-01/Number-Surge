@@ -729,6 +729,8 @@ function calculateRank(score, accuracy) {
   return { rank: '🌱 KEEP PRACTICING!', color: '#ff6b8a' };
 }
 
+let gameoverAudioTimeout = null;
+
 function endGame() {
   gameState.phase = 'gameover';
   stopTimer();
@@ -758,6 +760,13 @@ function endGame() {
   }
 
   setTimeout(() => showScreen('gameover'), 350);
+
+  if (gameoverAudioTimeout) clearTimeout(gameoverAudioTimeout);
+  gameoverAudioTimeout = setTimeout(() => {
+    if (audioCtx && audioCtx.state === 'running') {
+      audioCtx.suspend();
+    }
+  }, 3000);
 }
 
 // ─── 17. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────
@@ -885,6 +894,11 @@ function resetState() {
   gameState.difficultyLevel = 0;
   gameState.questionStartMs = 0;
   gameState.bestSpeedBonus  = 0;
+  
+  if (gameoverAudioTimeout) {
+    clearTimeout(gameoverAudioTimeout);
+    gameoverAudioTimeout = null;
+  }
 }
 
 function togglePause() {

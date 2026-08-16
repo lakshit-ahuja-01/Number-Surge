@@ -1839,7 +1839,7 @@ body.theme-robotics {
 }
 
 body.theme-robotics #ambient-canvas {
-  opacity: 0.7;
+  opacity: 0.85;
   filter: none;
 }
 
@@ -2022,48 +2022,12 @@ body.theme-robotics .pause-desc {
 body.theme-robotics #start-screen,
 body.theme-robotics #game-screen,
 body.theme-robotics #gameover-screen {
-  background: #0a0e17;
-  background-image: none;
-}
-body.theme-robotics .gameover-banner {
-  color: #ff007f;
-  text-shadow: 0 0 10px rgba(255,0,127,0.5);
-}
-body.theme-robotics .gameover-title {
-  color: #00f2fe;
-  text-shadow: 0 3px 0 #005577, 0 0 15px rgba(0,242,254,0.5);
-}
-body.theme-robotics .gameover-stars {
-  color: #00ff88;
-  text-shadow: 0 0 10px rgba(0,255,136,0.6);
-}
-body.theme-robotics .stat-card.stat-main {
-  background: #121826;
-  border: 2px solid #ff007f;
-  box-shadow: 0 4px 0 #99004d, 0 8px 20px rgba(255,0,127,0.2);
-}
-body.theme-robotics .stat-sub {
-  color: #00f2fe;
-}
-body.theme-robotics .stat-big {
-  color: #00ff88;
-  text-shadow: 0 0 8px rgba(0,255,136,0.5);
-}
-body.theme-robotics .mini-stat {
-  background: #0a0e17;
-  border: 1px solid #1d283a;
-}
-body.theme-robotics .m-label {
-  color: #94a3b8;
-}
-body.theme-robotics .m-val {
-  color: #ffffff;
+  background: transparent !important;
+  background-image: none !important;
 }
 
-/* ─── NEW ROBOTICS OVERRIDES TO FIX LEFTOVERS ─── */
 body.theme-robotics #river {
-  background: rgba(10, 14, 23, 0.6);
-  backdrop-filter: blur(1px);
+  background: transparent !important;
 }
 
 body.theme-robotics .title-highscore-pill {

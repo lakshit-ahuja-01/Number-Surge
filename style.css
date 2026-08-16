@@ -2066,9 +2066,72 @@ body.theme-robotics .arcade-secondary-btn:active {
 }
 
 body.theme-robotics .gameover-stage {
-  background: rgba(10, 14, 23, 0.92);
-  border: 2px solid #00f2fe;
-  box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+  background: rgba(10, 14, 23, 0.95);
+  border: 2px solid #1d283a;
+  box-shadow: 0 0 35px rgba(0, 242, 254, 0.25);
+  border-radius: 16px;
+}
+
+body.theme-robotics .gameover-banner {
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+}
+
+body.theme-robotics .gameover-title {
+  color: #00f2fe;
+  text-shadow: 0 0 15px rgba(0, 242, 254, 0.7);
+}
+
+body.theme-robotics .gameover-stars {
+  color: #00ff88;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.7);
+}
+
+body.theme-robotics .stat-card.stat-main {
+  background: #121826 !important;
+  border: 2px solid #00f2fe !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 0 #005577, 0 0 20px rgba(0, 242, 254, 0.25) !important;
+}
+
+body.theme-robotics .stat-sub {
+  color: #00f2fe !important;
+  letter-spacing: 2px;
+}
+
+body.theme-robotics .stat-big {
+  color: #00ff88 !important;
+  text-shadow: 0 0 12px rgba(0, 255, 136, 0.6) !important;
+}
+
+body.theme-robotics .mini-stat {
+  background: #121826 !important;
+  border: 2px solid #1d283a !important;
+  border-radius: 10px;
+  box-shadow: 0 4px 0 #0a0e17, 0 0 10px rgba(0, 242, 254, 0.08) !important;
+  transition: all 0.2s ease;
+}
+
+body.theme-robotics .mini-stat:hover {
+  border-color: #00f2fe !important;
+  box-shadow: 0 4px 0 #005577, 0 0 15px rgba(0, 242, 254, 0.3) !important;
+}
+
+body.theme-robotics .m-label {
+  color: #94a3b8 !important;
+  letter-spacing: 1.5px;
+}
+
+body.theme-robotics .m-val {
+  color: #00f2fe !important;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.5) !important;
+}
+
+body.theme-robotics .new-record-pill {
+  background: #ff007f !important;
+  border: 1px solid #ff007f !important;
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.6) !important;
+  color: #ffffff !important;
 }
 
 body.theme-robotics .hud-tag {

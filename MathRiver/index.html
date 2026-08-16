@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Math River — A fast-paced browser math game. Click floating numbers to solve equations before time runs out!">
+  <title>Math River — Solve Equations, Beat the Clock</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== Start Screen ===== -->
+  <div id="start-screen" class="screen active">
+    <h1 class="game-title">Math River</h1>
+    <p class="tagline">How many can you solve in 60 seconds?</p>
+    <button id="start-btn" class="btn btn-primary">Start Game</button>
+  </div>
+
+  <!-- ===== Game Screen ===== -->
+  <div id="game-screen" class="screen">
+
+    <!-- HUD (heads-up display) -->
+    <header id="hud">
+      <div class="hud-item">
+        <span class="hud-label">Score</span>
+        <span id="score-display" class="hud-value">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Time</span>
+        <span id="timer-display" class="hud-value">60</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Combo</span>
+        <span id="combo-display" class="hud-value">0</span>
+      </div>
+    </header>
+
+    <!-- Target equation -->
+    <div id="equation-bar">
+      <span id="equation-text">_ + _ = ?</span>
+    </div>
+
+    <!-- River / game area where numbers float -->
+    <div id="river">
+      <!-- Floating number elements are injected here by script.js -->
+    </div>
+
+  </div>
+
+  <!-- ===== Game Over Screen ===== -->
+  <div id="gameover-screen" class="screen">
+    <h2 class="gameover-title">Game Over</h2>
+    <div id="final-stats">
+      <p>Score: <span id="final-score">0</span></p>
+      <p>Solved: <span id="final-solved">0</span></p>
+      <p>Accuracy: <span id="final-accuracy">0%</span></p>
+      <p>Best Combo: <span id="final-combo">0</span></p>
+    </div>
+    <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+    <button id="menu-btn" class="btn btn-secondary">Main Menu</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

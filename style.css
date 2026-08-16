@@ -226,10 +226,11 @@ html, body {
 
 .panel-header {
   font-family: var(--font-hud);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 900;
-  letter-spacing: 1.5px;
-  color: #64748b;
+  letter-spacing: 1px;
+  color: #ff9f43;
+  text-shadow: 0 2px 0 #fed7aa;
   text-align: center;
   margin-bottom: 8px;
 }
@@ -257,7 +258,7 @@ html, body {
   transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease;
   color: var(--text-dim);
   box-shadow: 0 6px 0 #cbd5e1, 0 8px 16px rgba(0, 0, 0, 0.06);
-  min-height: 102px;
+  min-height: 105px;
   overflow: hidden;
 }
 
@@ -275,16 +276,17 @@ html, body {
   font-family: var(--font-hud);
   font-size: 9px;
   font-weight: 900;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: 10px;
   background: #f1f5f9;
   color: #64748b;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .card-glyph {
   font-size: 28px;
   line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
 }
 
 .card-info {
@@ -296,11 +298,16 @@ html, body {
 
 .card-name {
   font-family: var(--font-hud);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.5px;
-  color: #2d3436;
 }
+
+.mode-add .card-name { color: #10b981; text-shadow: 0 1.5px 0 #a7f3d0; }
+.mode-sub .card-name { color: #f97316; text-shadow: 0 1.5px 0 #fed7aa; }
+.mode-mult .card-name { color: #a855f7; text-shadow: 0 1.5px 0 #e9d5ff; }
+.mode-div .card-name { color: #f43f5e; text-shadow: 0 1.5px 0 #fecdd3; }
+.mode-mix .card-name { color: #ca8a04; text-shadow: 0 1.5px 0 #fef08a; }
 
 .card-tagline {
   display: none;
@@ -486,15 +493,18 @@ html, body {
 }
 
 .time-chip-icon {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
 }
 
 .time-chip-val {
   font-family: var(--font-hud);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 900;
-  color: #2d3436;
+  letter-spacing: 0.5px;
+  color: #ff9f43;
+  text-shadow: 0 1.5px 0 #fed7aa;
 }
 
 .time-chip-label {
@@ -505,7 +515,41 @@ html, body {
 }
 
 .time-chip.active .time-chip-label { color: #ea580c; }
-.time-chip.active .time-chip-val { color: #c2410c; }
+.time-chip.active .time-chip-val { 
+  color: #ea580c; 
+  text-shadow: 0 1.5px 0 #fdba74;
+}
+
+/* 3D themed difficulty chips */
+.diff-grid .time-chip[data-diff="0"] .time-chip-val {
+  color: #10b981;
+  text-shadow: 0 1.5px 0 #a7f3d0;
+}
+.diff-grid .time-chip[data-diff="0"].active {
+  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+  border-color: #10b981;
+  box-shadow: 0 4px 0 #059669, 0 0 16px rgba(16, 185, 129, 0.3);
+}
+
+.diff-grid .time-chip[data-diff="3"] .time-chip-val {
+  color: #eab308;
+  text-shadow: 0 1.5px 0 #fef08a;
+}
+.diff-grid .time-chip[data-diff="3"].active {
+  background: linear-gradient(180deg, #fefce8 0%, #fef9c3 100%);
+  border-color: #eab308;
+  box-shadow: 0 4px 0 #ca8a04, 0 0 16px rgba(234, 179, 8, 0.3);
+}
+
+.diff-grid .time-chip[data-diff="6"] .time-chip-val {
+  color: #f43f5e;
+  text-shadow: 0 1.5px 0 #fecdd3;
+}
+.diff-grid .time-chip[data-diff="6"].active {
+  background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+  border-color: #f43f5e;
+  box-shadow: 0 4px 0 #e11d48, 0 0 16px rgba(244, 63, 94, 0.3);
+}
 
 /* 🎮 Big Rounded Play Button */
 .arcade-cta-box {

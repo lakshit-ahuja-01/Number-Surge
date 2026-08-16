@@ -1,44 +1,45 @@
 /* ========================================================
-   Number Surge — Master Arcade Game Theme
-   High-energy in-game cockpit HUD, mechanical equation console,
-   tactile floating energy orbs, and rich non-blue arcade aesthetics.
+   Number Surge — Playful Kids Math Adventure Theme
+   Bright candy colors, bouncy bubble number pieces,
+   cheerful sky backgrounds, and fun rounded UI.
    ======================================================== */
 
 /* ─── Design Tokens ─────────────────────────────────────── */
 :root {
-  /* Rich Dark Obsidian & Deep Carbon Backdrops (Zero Blue) */
-  --bg-deep:        #080b10;
-  --bg-surface:     #0f141d;
-  --bg-panel:       rgba(18, 24, 34, 0.94);
-  --border-subtle:  rgba(255, 255, 255, 0.08);
-  --border-accent:  #f59e0b;
+  /* Bright Cheerful Sky & Candy Backdrops */
+  --bg-deep:        #e8f4fd;
+  --bg-surface:     #f0f7ff;
+  --bg-panel:       rgba(255, 255, 255, 0.92);
+  --border-subtle:  rgba(0, 0, 0, 0.08);
+  --border-accent:  #ff9f43;
 
-  /* Arcade Colors */
-  --amber-light:    #fde047;
-  --amber-bright:   #fbbf24;
-  --amber-main:     #f59e0b;
-  --amber-dark:     #b45309;
-  --amber-shadow:   #78350f;
+  /* Candy Colors */
+  --candy-orange:   #ff9f43;
+  --candy-orange-l: #ffd093;
+  --candy-orange-d: #e67e22;
+  --candy-orange-s: #cc6600;
 
-  --emerald-main:   #10b981;
-  --emerald-bright: #34d399;
-  --emerald-dark:   #047857;
+  --candy-pink:     #ff6b8a;
+  --candy-green:    #2ed573;
+  --candy-green-l:  #7bed9f;
+  --candy-blue:     #45aaf2;
+  --candy-purple:   #a55eea;
+  --candy-yellow:   #fed330;
+  --candy-red:      #fc5c65;
+  --candy-teal:     #26de81;
   
-  --violet-main:    #8b5cf6;
-  --coral-main:     #f43f5e;
-  
-  --text-pure:      #ffffff;
-  --text-main:      #f8fafc;
-  --text-dim:       #94a3b8;
-  --text-muted:     #64748b;
+  --text-pure:      #2d3436;
+  --text-main:      #2d3436;
+  --text-dim:       #636e72;
+  --text-muted:     #b2bec3;
 
   /* Typography */
-  --font-hud:       'Chakra Petch', monospace, sans-serif;
+  --font-hud:       'Fredoka', 'Outfit', system-ui, sans-serif;
   --font-retro:     'Press Start 2P', monospace;
   --font-body:      'Outfit', system-ui, sans-serif;
 
   /* Sizing */
-  --orb-size:       64px;
+  --orb-size:       68px;
   --dock-height:    82px;
   --hud-height:     68px;
 }
@@ -71,7 +72,7 @@ html, body {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.35;
+  opacity: 0.25;
 }
 
 #game-wrapper {
@@ -95,24 +96,26 @@ html, body {
 
 .screen.active {
   display: flex;
-  animation: screenFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: screenFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes screenFadeIn {
-  from { opacity: 0; transform: scale(0.98); }
+  from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: scale(1); }
 }
 
 /* ========================================================
-   AUTHENTIC ARCADE TITLE SCREEN
+   🌈 PLAYFUL KIDS TITLE SCREEN
    ======================================================== */
 #start-screen {
   justify-content: center;
-  gap: 14px;
+  gap: 16px;
   padding: 24px 20px;
   background: 
-    radial-gradient(ellipse 60% 45% at 50% 35%, rgba(245, 158, 11, 0.12) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 75%),
-    var(--bg-deep);
+    radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 214, 109, 0.3) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(255, 107, 138, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(69, 170, 242, 0.15) 0%, transparent 50%),
+    linear-gradient(180deg, #c8e6ff 0%, #e8f4fd 35%, #fff5e6 70%, #ffe8d6 100%);
   overflow-y: auto;
 }
 
@@ -129,19 +132,19 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(24, 30, 42, 0.85);
-  border: 1.5px solid rgba(245, 158, 11, 0.3);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 2px solid rgba(255, 159, 67, 0.4);
+  border-radius: 24px;
   padding: 6px 18px;
   font-family: var(--font-hud);
   font-size: 13px;
   font-weight: 700;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 159, 67, 0.2);
 }
 
 .trophy-icon { font-size: 16px; }
 .hs-txt { color: var(--text-dim); letter-spacing: 1px; }
-.hs-num { color: var(--amber-bright); font-weight: 900; }
+.hs-num { color: var(--candy-orange); font-weight: 900; }
 
 .arcade-title-stage {
   width: 100%;
@@ -149,7 +152,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 22px;
+  gap: 20px;
   z-index: 5;
 }
 
@@ -160,51 +163,51 @@ html, body {
 
 .logo-spark {
   position: absolute;
-  top: -12px;
-  right: 18px;
-  font-size: 28px;
-  filter: drop-shadow(0 0 10px var(--amber-bright));
+  top: -14px;
+  right: 12px;
+  font-size: 30px;
+  filter: drop-shadow(0 0 8px rgba(255, 159, 67, 0.6));
   animation: sparkPulse 1.2s ease-in-out infinite alternate;
 }
 
 @keyframes sparkPulse {
   from { transform: scale(0.9) rotate(-10deg); }
-  to   { transform: scale(1.2) rotate(10deg); }
+  to   { transform: scale(1.25) rotate(10deg); }
 }
 
 .game-logo-3d {
   font-family: var(--font-hud);
   font-weight: 900;
-  font-size: clamp(3.2rem, 9vw, 5.2rem);
-  line-height: 0.9;
-  letter-spacing: 3px;
+  font-size: clamp(3rem, 9vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: 2px;
 }
 
 .logo-row-1 {
   display: block;
-  color: #ffffff;
+  color: #ff6b8a;
   text-shadow: 
-    0 3px 0 #1e293b,
-    0 6px 0 #0f172a,
-    0 10px 20px rgba(0, 0, 0, 0.8);
+    0 3px 0 #e84865,
+    0 6px 0 #c13055,
+    0 8px 18px rgba(255, 107, 138, 0.4);
 }
 
 .logo-row-2 {
   display: block;
-  color: var(--amber-bright);
+  color: var(--candy-orange);
   text-shadow: 
-    0 4px 0 var(--amber-dark),
-    0 7px 0 var(--amber-shadow),
-    0 12px 30px rgba(245, 158, 11, 0.45);
+    0 3px 0 var(--candy-orange-d),
+    0 6px 0 var(--candy-orange-s),
+    0 10px 24px rgba(255, 159, 67, 0.4);
 }
 
 .logo-subline {
   font-family: var(--font-hud);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 3px;
   color: var(--text-dim);
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 /* Mode Selector */
@@ -214,39 +217,40 @@ html, body {
 
 .panel-header {
   font-family: var(--font-hud);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
-  color: var(--text-muted);
+  color: var(--text-dim);
   text-align: center;
   margin-bottom: 10px;
 }
 
-/* ─── Vibrant Arcade Mode Cards ────────────────────────── */
+/* ─── Colorful Kids Mode Cards ────────────────────────── */
 .arcade-mode-selector {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 10px;
   width: 100%;
 }
 
 .arcade-card {
   position: relative;
-  background: linear-gradient(180deg, #151b26 0%, #0d121b 100%);
-  border: 2px solid #253144;
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 2.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
   padding: 14px 8px 12px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
-  box-shadow: 0 6px 0 #080b10, 0 10px 20px rgba(0, 0, 0, 0.6);
-  min-height: 135px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.06), 0 6px 18px rgba(0, 0, 0, 0.08);
+  min-height: 130px;
   justify-content: space-between;
   overflow: hidden;
+  backdrop-filter: blur(6px);
 }
 
 .card-glow-bg {
@@ -260,20 +264,20 @@ html, body {
 .card-pill {
   font-family: var(--font-hud);
   font-size: 9px;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 1.5px;
   padding: 2px 8px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.04);
   color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .card-glyph {
-  font-size: 28px;
+  font-size: 30px;
   line-height: 1;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
 }
 
 .card-info {
@@ -285,9 +289,9 @@ html, body {
 
 .card-name {
   font-family: var(--font-hud);
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 1px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   color: var(--text-main);
 }
 
@@ -312,18 +316,18 @@ html, body {
 
 /* Hover lift */
 .arcade-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 0 #080b10, 0 16px 30px rgba(0, 0, 0, 0.7);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.05), 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .arcade-card:hover .card-glyph {
-  transform: scale(1.18);
+  transform: scale(1.2) rotate(5deg);
 }
 
 /* Active Pressed / Selected */
 .arcade-card.active {
   transform: translateY(-3px) scale(1.02);
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .arcade-card.active .card-check-tag {
@@ -332,83 +336,78 @@ html, body {
 }
 
 .arcade-card.active .card-glow-bg {
-  opacity: 0.18;
+  opacity: 0.2;
 }
 
-/* ── 1. Addition (Emerald Jade) ── */
-.mode-add {
-  border-color: rgba(16, 185, 129, 0.3);
-}
-.mode-add .card-glyph { color: #34d399; }
-.mode-add:hover { border-color: #34d399; }
+/* ── 1. Addition (Mint Green) ── */
+.mode-add { border-color: rgba(46, 213, 115, 0.4); }
+.mode-add .card-glyph { color: #2ed573; }
+.mode-add:hover { border-color: #2ed573; }
 .mode-add.active {
-  border-color: #10b981;
-  box-shadow: 0 6px 0 #047857, 0 0 25px rgba(16, 185, 129, 0.4);
+  border-color: #2ed573;
+  background: rgba(46, 213, 115, 0.1);
+  box-shadow: 0 4px 0 rgba(46, 213, 115, 0.2), 0 0 20px rgba(46, 213, 115, 0.15);
 }
-.mode-add.active .card-pill { background: rgba(16, 185, 129, 0.25); color: #34d399; border-color: #10b981; }
-.mode-add.active .card-tagline { color: #34d399; }
-.mode-add.active .card-check-tag { background: #10b981; color: #080b10; }
-.mode-add .card-glow-bg { background: radial-gradient(circle at 50% 30%, #10b981, transparent 70%); }
+.mode-add.active .card-pill { background: rgba(46, 213, 115, 0.2); color: #1e8449; border-color: #2ed573; }
+.mode-add.active .card-tagline { color: #27ae60; }
+.mode-add.active .card-check-tag { background: #2ed573; color: #fff; }
+.mode-add .card-glow-bg { background: radial-gradient(circle at 50% 30%, #2ed573, transparent 70%); }
 
-/* ── 2. Subtraction (Sunset Amber) ── */
-.mode-sub {
-  border-color: rgba(245, 158, 11, 0.3);
-}
-.mode-sub .card-glyph { color: #fbbf24; }
-.mode-sub:hover { border-color: #fbbf24; }
+/* ── 2. Subtraction (Sunny Orange) ── */
+.mode-sub { border-color: rgba(255, 159, 67, 0.4); }
+.mode-sub .card-glyph { color: #ff9f43; }
+.mode-sub:hover { border-color: #ff9f43; }
 .mode-sub.active {
-  border-color: #f59e0b;
-  box-shadow: 0 6px 0 #b45309, 0 0 25px rgba(245, 158, 11, 0.4);
+  border-color: #ff9f43;
+  background: rgba(255, 159, 67, 0.1);
+  box-shadow: 0 4px 0 rgba(255, 159, 67, 0.2), 0 0 20px rgba(255, 159, 67, 0.15);
 }
-.mode-sub.active .card-pill { background: rgba(245, 158, 11, 0.25); color: #fbbf24; border-color: #f59e0b; }
-.mode-sub.active .card-tagline { color: #fbbf24; }
-.mode-sub.active .card-check-tag { background: #f59e0b; color: #080b10; }
-.mode-sub .card-glow-bg { background: radial-gradient(circle at 50% 30%, #f59e0b, transparent 70%); }
+.mode-sub.active .card-pill { background: rgba(255, 159, 67, 0.2); color: #e67e22; border-color: #ff9f43; }
+.mode-sub.active .card-tagline { color: #e67e22; }
+.mode-sub.active .card-check-tag { background: #ff9f43; color: #fff; }
+.mode-sub .card-glow-bg { background: radial-gradient(circle at 50% 30%, #ff9f43, transparent 70%); }
 
-/* ── 3. Multiplication (Cosmic Violet) ── */
-.mode-mult {
-  border-color: rgba(168, 85, 247, 0.3);
-}
-.mode-mult .card-glyph { color: #c084fc; }
-.mode-mult:hover { border-color: #c084fc; }
+/* ── 3. Multiplication (Lavender Purple) ── */
+.mode-mult { border-color: rgba(165, 94, 234, 0.4); }
+.mode-mult .card-glyph { color: #a55eea; }
+.mode-mult:hover { border-color: #a55eea; }
 .mode-mult.active {
-  border-color: #a855f7;
-  box-shadow: 0 6px 0 #7c3aed, 0 0 25px rgba(168, 85, 247, 0.4);
+  border-color: #a55eea;
+  background: rgba(165, 94, 234, 0.1);
+  box-shadow: 0 4px 0 rgba(165, 94, 234, 0.2), 0 0 20px rgba(165, 94, 234, 0.15);
 }
-.mode-mult.active .card-pill { background: rgba(168, 85, 247, 0.25); color: #c084fc; border-color: #a855f7; }
-.mode-mult.active .card-tagline { color: #c084fc; }
-.mode-mult.active .card-check-tag { background: #a855f7; color: #080b10; }
-.mode-mult .card-glow-bg { background: radial-gradient(circle at 50% 30%, #a855f7, transparent 70%); }
+.mode-mult.active .card-pill { background: rgba(165, 94, 234, 0.2); color: #8e44ad; border-color: #a55eea; }
+.mode-mult.active .card-tagline { color: #8e44ad; }
+.mode-mult.active .card-check-tag { background: #a55eea; color: #fff; }
+.mode-mult .card-glow-bg { background: radial-gradient(circle at 50% 30%, #a55eea, transparent 70%); }
 
-/* ── 4. Division (Ruby Coral) ── */
-.mode-div {
-  border-color: rgba(244, 63, 94, 0.3);
-}
-.mode-div .card-glyph { color: #fb7185; }
-.mode-div:hover { border-color: #fb7185; }
+/* ── 4. Division (Bubblegum Pink) ── */
+.mode-div { border-color: rgba(255, 107, 138, 0.4); }
+.mode-div .card-glyph { color: #ff6b8a; }
+.mode-div:hover { border-color: #ff6b8a; }
 .mode-div.active {
-  border-color: #f43f5e;
-  box-shadow: 0 6px 0 #be123c, 0 0 25px rgba(244, 63, 94, 0.4);
+  border-color: #ff6b8a;
+  background: rgba(255, 107, 138, 0.1);
+  box-shadow: 0 4px 0 rgba(255, 107, 138, 0.2), 0 0 20px rgba(255, 107, 138, 0.15);
 }
-.mode-div.active .card-pill { background: rgba(244, 63, 94, 0.25); color: #fb7185; border-color: #f43f5e; }
-.mode-div.active .card-tagline { color: #fb7185; }
-.mode-div.active .card-check-tag { background: #f43f5e; color: #080b10; }
-.mode-div .card-glow-bg { background: radial-gradient(circle at 50% 30%, #f43f5e, transparent 70%); }
+.mode-div.active .card-pill { background: rgba(255, 107, 138, 0.2); color: #e84865; border-color: #ff6b8a; }
+.mode-div.active .card-tagline { color: #e84865; }
+.mode-div.active .card-check-tag { background: #ff6b8a; color: #fff; }
+.mode-div .card-glow-bg { background: radial-gradient(circle at 50% 30%, #ff6b8a, transparent 70%); }
 
-/* ── 5. Surge Mix (Electrified Gold) ── */
-.mode-mix {
-  border-color: rgba(251, 191, 36, 0.4);
-}
-.mode-mix .card-glyph { color: #fde047; animation: sparkPulse 0.9s infinite alternate; }
-.mode-mix:hover { border-color: #fde047; }
+/* ── 5. Surge Mix (Sunny Yellow) ── */
+.mode-mix { border-color: rgba(254, 211, 48, 0.5); }
+.mode-mix .card-glyph { color: #e67e22; animation: sparkPulse 0.9s infinite alternate; }
+.mode-mix:hover { border-color: #fed330; }
 .mode-mix.active {
-  border-color: #fbbf24;
-  box-shadow: 0 6px 0 #78350f, 0 0 30px rgba(251, 191, 36, 0.55);
+  border-color: #fed330;
+  background: rgba(254, 211, 48, 0.12);
+  box-shadow: 0 4px 0 rgba(254, 211, 48, 0.25), 0 0 20px rgba(254, 211, 48, 0.2);
 }
-.mode-mix.active .card-pill { background: rgba(251, 191, 36, 0.3); color: #fde047; border-color: #fbbf24; }
-.mode-mix.active .card-tagline { color: #fde047; }
-.mode-mix.active .card-check-tag { background: #fbbf24; color: #080b10; }
-.mode-mix .card-glow-bg { background: radial-gradient(circle at 50% 30%, #fbbf24, transparent 70%); }
+.mode-mix.active .card-pill { background: rgba(254, 211, 48, 0.25); color: #e67e22; border-color: #fed330; }
+.mode-mix.active .card-tagline { color: #e67e22; }
+.mode-mix.active .card-check-tag { background: #fed330; color: #5a3e00; }
+.mode-mix .card-glow-bg { background: radial-gradient(circle at 50% 30%, #fed330, transparent 70%); }
 
 @media (max-width: 580px) {
   .arcade-mode-selector {
@@ -432,50 +431,51 @@ html, body {
 }
 
 .time-chip {
-  background: linear-gradient(180deg, #151b26 0%, #0d121b 100%);
-  border: 2px solid #253144;
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 2.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
   padding: 10px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: var(--text-dim);
-  box-shadow: 0 4px 0 #080b10, 0 6px 14px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(6px);
 }
 
 .time-chip:hover {
-  background: #1c2433;
-  border-color: #3b4961;
-  color: #ffffff;
+  background: #ffffff;
+  border-color: rgba(255, 159, 67, 0.4);
+  color: var(--text-main);
   transform: translateY(-3px);
-  box-shadow: 0 7px 0 #080b10, 0 10px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.04), 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .time-chip:active {
   transform: translateY(2px);
-  box-shadow: 0 1px 0 #080b10, 0 3px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
 .time-chip.active {
-  background: #1e2738;
-  border-color: var(--amber-bright);
-  color: #ffffff;
+  background: #fff8ef;
+  border-color: var(--candy-orange);
+  color: var(--text-main);
   box-shadow: 
-    0 4px 0 var(--amber-dark),
-    0 0 20px rgba(245, 158, 11, 0.3);
+    0 3px 0 var(--candy-orange-d),
+    0 0 16px rgba(255, 159, 67, 0.25);
   transform: translateY(-2px);
 }
 
 .time-chip-icon { font-size: 16px; line-height: 1; }
-.time-chip-val { font-family: var(--font-hud); font-size: 15px; font-weight: 900; letter-spacing: 0.5px; color: var(--text-pure); }
+.time-chip-val { font-family: var(--font-hud); font-size: 15px; font-weight: 900; letter-spacing: 0.5px; color: var(--text-main); }
 .time-chip-label { font-family: var(--font-hud); font-size: 8px; font-weight: 800; letter-spacing: 1px; color: var(--text-muted); }
-.time-chip.active .time-chip-label { color: var(--amber-bright); }
-.time-chip.active .time-chip-val { color: var(--amber-bright); }
+.time-chip.active .time-chip-label { color: var(--candy-orange-d); }
+.time-chip.active .time-chip-val { color: var(--candy-orange); }
 
-/* Massive 3D Play Button */
+/* 🎮 Big Rounded Play Button */
 .arcade-cta-box {
   display: flex;
   flex-direction: column;
@@ -488,35 +488,35 @@ html, body {
   position: relative;
   width: 100%;
   max-width: 380px;
-  height: 64px;
-  background: linear-gradient(180deg, var(--amber-light) 0%, var(--amber-main) 50%, var(--amber-dark) 100%);
+  height: 62px;
+  background: linear-gradient(180deg, #ffb347 0%, #ff9f43 50%, #e67e22 100%);
   border: none;
-  border-radius: 18px;
+  border-radius: 20px;
   cursor: pointer;
   box-shadow: 
-    0 6px 0 var(--amber-shadow),
-    0 12px 25px rgba(0, 0, 0, 0.65),
+    0 5px 0 #cc6600,
+    0 10px 24px rgba(255, 159, 67, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  transition: all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .arcade-play-button:hover {
-  background: linear-gradient(180deg, #ffffff 0%, var(--amber-bright) 45%, var(--amber-main) 100%);
+  background: linear-gradient(180deg, #ffd093 0%, #ffb347 45%, #ff9f43 100%);
   transform: translateY(-2px);
   box-shadow: 
-    0 8px 0 var(--amber-shadow),
-    0 16px 30px rgba(245, 158, 11, 0.35),
+    0 7px 0 #cc6600,
+    0 14px 30px rgba(255, 159, 67, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .arcade-play-button:active {
   transform: translateY(4px);
   box-shadow: 
-    0 2px 0 var(--amber-shadow),
-    0 4px 10px rgba(0, 0, 0, 0.5);
+    0 1px 0 #cc6600,
+    0 3px 8px rgba(255, 159, 67, 0.3);
 }
 
 .play-btn-content {
@@ -524,14 +524,14 @@ html, body {
   align-items: center;
   gap: 10px;
   font-family: var(--font-hud);
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: #090c12;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.play-arrow { font-size: 20px; }
+.play-arrow { font-size: 18px; }
 
 .press-space-prompt {
   font-family: var(--font-hud);
@@ -545,16 +545,17 @@ html, body {
 }
 
 .press-space-prompt kbd {
-  background: #1a2230;
-  border: 1px solid #2e3b52;
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
   border-radius: 6px;
   padding: 2px 6px;
   font-size: 11px;
-  color: var(--amber-bright);
+  color: var(--candy-orange);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .blink-dot {
-  color: var(--amber-bright);
+  color: var(--candy-orange);
   animation: blinkDot 1s infinite alternate;
 }
 
@@ -564,7 +565,7 @@ html, body {
 }
 
 /* ========================================================
-   UPGRADED IN-GAME COCKPIT HUD (HIGH-OCTANE ACTION)
+   🌤️ FRIENDLY IN-GAME HUD (PLAYGROUND SCOREBOARD)
    ======================================================== */
 #game-screen {
   justify-content: flex-start;
@@ -573,9 +574,9 @@ html, body {
 #arcade-hud {
   width: 100%;
   height: var(--hud-height);
-  background: linear-gradient(180deg, #131822 0%, #0c1017 100%);
-  border-bottom: 2px solid rgba(245, 158, 11, 0.25);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(180deg, #ffffff 0%, #f0f7ff 100%);
+  border-bottom: 2.5px solid rgba(69, 170, 242, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -585,13 +586,13 @@ html, body {
 
 /* Dashboard Box */
 .hud-dashboard-box {
-  background: #151b26;
-  border: 1.5px solid #232c3d;
-  border-radius: 12px;
+  background: #f8fbff;
+  border: 2px solid rgba(69, 170, 242, 0.2);
+  border-radius: 14px;
   padding: 6px 14px;
   display: flex;
   flex-direction: column;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   min-width: 110px;
 }
 
@@ -614,10 +615,10 @@ html, body {
   font-family: var(--font-hud);
   font-size: 9px;
   font-weight: 800;
-  color: var(--emerald-bright);
-  background: rgba(16, 185, 129, 0.15);
+  color: #27ae60;
+  background: rgba(46, 213, 115, 0.15);
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 .hud-number-digital {
@@ -625,13 +626,12 @@ html, body {
   font-size: 24px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  color: var(--text-main);
 }
 
 #hud-score-box.score-pop .hud-number-digital {
   animation: scoreBounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--emerald-bright);
+  color: var(--candy-green);
 }
 
 @keyframes scoreBounce {
@@ -652,18 +652,18 @@ html, body {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: #171e2b;
-  border: 1.5px solid rgba(245, 158, 11, 0.3);
-  border-radius: 12px;
+  background: #fff8ef;
+  border: 2px solid rgba(255, 159, 67, 0.35);
+  border-radius: 14px;
   padding: 3px 14px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(255, 159, 67, 0.12);
 }
 
 .timer-number {
   font-family: var(--font-hud);
   font-size: 22px;
   font-weight: 900;
-  color: var(--text-pure);
+  color: var(--text-main);
   min-width: 28px;
   text-align: center;
 }
@@ -676,13 +676,13 @@ html, body {
 }
 
 .timer-low .timer-number {
-  color: var(--coral-main) !important;
+  color: var(--candy-red) !important;
   animation: timerPanic 0.4s ease infinite alternate;
 }
 
 @keyframes timerPanic {
-  from { transform: scale(1); filter: drop-shadow(0 0 8px var(--coral-main)); }
-  to   { transform: scale(1.15); filter: drop-shadow(0 0 16px var(--coral-main)); }
+  from { transform: scale(1); }
+  to   { transform: scale(1.15); }
 }
 
 .speed-surge-meter {
@@ -694,17 +694,17 @@ html, body {
 
 .speed-meter-track {
   width: 110px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 6px;
+  background: rgba(0, 0, 0, 0.06);
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 #speed-meter-bar {
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, var(--emerald-bright) 0%, var(--amber-bright) 60%, var(--coral-main) 100%);
+  background: linear-gradient(90deg, var(--candy-green) 0%, var(--candy-yellow) 60%, var(--candy-red) 100%);
   border-radius: 6px;
   transform-origin: left;
   transition: width 0.1s linear;
@@ -732,7 +732,7 @@ html, body {
   font-family: var(--font-hud);
   font-size: 20px;
   font-weight: 900;
-  color: var(--amber-bright);
+  color: var(--candy-orange);
 }
 
 .combo-flame {
@@ -760,31 +760,32 @@ html, body {
 }
 
 .hud-control-btn {
-  background: #171e2b;
-  border: 1.5px solid #283347;
-  border-radius: 10px;
+  background: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
   font-size: 15px;
   padding: 6px 10px;
   cursor: pointer;
-  color: var(--text-pure);
+  color: var(--text-main);
   transition: all 0.15s;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04);
 }
 
 .hud-control-btn:hover {
-  background: #222c3d;
-  border-color: var(--amber-main);
+  background: #fff8ef;
+  border-color: var(--candy-orange);
   transform: scale(1.08);
 }
 
 /* ========================================================
-   TACTILE MECHANICAL EQUATION CONSOLE (DOCK)
+   🧩 PLAYFUL EQUATION CONSOLE (DOCK)
    ======================================================== */
 #equation-dock {
   width: 100%;
   height: var(--dock-height);
-  background: #111620;
-  border-bottom: 2px solid #20293a;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5fd 100%);
+  border-bottom: 2.5px solid rgba(69, 170, 242, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -802,9 +803,9 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #171f2c;
-  border: 1.5px solid #263347;
-  border-radius: 10px;
+  background: #ffffff;
+  border: 2px solid rgba(46, 213, 115, 0.3);
+  border-radius: 12px;
   padding: 5px 10px;
 }
 
@@ -812,8 +813,8 @@ html, body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--emerald-bright);
-  box-shadow: 0 0 8px var(--emerald-bright);
+  background: var(--candy-green);
+  box-shadow: 0 0 8px var(--candy-green);
   animation: ledPulse 1.5s infinite alternate;
 }
 
@@ -827,7 +828,7 @@ html, body {
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  color: var(--emerald-bright);
+  color: #27ae60;
 }
 
 .equation-slots-rig {
@@ -852,7 +853,7 @@ html, body {
 }
 
 .slot-label-gold {
-  color: var(--amber-bright);
+  color: var(--candy-orange);
 }
 
 .slot {
@@ -861,41 +862,41 @@ html, body {
   justify-content: center;
   font-family: var(--font-hud);
   font-weight: 900;
-  border-radius: 12px;
+  border-radius: 14px;
   transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .slot-operand {
   width: 62px;
   height: 50px;
-  background: #171e2a;
-  border: 2px dashed #2f3e57;
+  background: #ffffff;
+  border: 2.5px dashed rgba(69, 170, 242, 0.35);
   color: var(--text-dim);
   font-size: 24px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* Locked slot state */
 .slot-operand.locked {
-  background: rgba(16, 185, 129, 0.2);
-  border: 2px solid var(--emerald-bright);
-  color: var(--text-pure);
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.35), inset 0 0 8px rgba(16, 185, 129, 0.2);
+  background: rgba(46, 213, 115, 0.12);
+  border: 2.5px solid var(--candy-green);
+  color: var(--text-main);
+  box-shadow: 0 0 12px rgba(46, 213, 115, 0.25);
   transform: scale(1.06);
 }
 
 .slot-operand.success-flash {
-  background: rgba(16, 185, 129, 0.55) !important;
-  border-color: var(--emerald-bright) !important;
-  color: var(--text-pure) !important;
-  box-shadow: 0 0 25px rgba(16, 185, 129, 0.8) !important;
+  background: rgba(46, 213, 115, 0.3) !important;
+  border-color: var(--candy-green) !important;
+  color: var(--text-main) !important;
+  box-shadow: 0 0 20px rgba(46, 213, 115, 0.5) !important;
   transform: scale(1.12) !important;
 }
 
 .slot-operand.wrong-flash {
-  background: rgba(244, 63, 94, 0.55) !important;
-  border-color: var(--coral-main) !important;
-  color: var(--text-pure) !important;
+  background: rgba(252, 92, 101, 0.2) !important;
+  border-color: var(--candy-red) !important;
+  color: var(--text-main) !important;
   animation: slotShake 0.35s ease;
 }
 
@@ -910,20 +911,19 @@ html, body {
   font-family: var(--font-hud);
   font-size: 22px;
   font-weight: 900;
-  color: var(--amber-bright);
+  color: var(--candy-orange);
   margin-top: 12px;
-  text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
 .slot-target {
   min-width: 72px;
   height: 50px;
   padding: 0 14px;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(180, 83, 9, 0.35) 100%);
-  border: 2px solid var(--amber-bright);
-  color: var(--text-pure);
+  background: linear-gradient(135deg, rgba(255, 159, 67, 0.15) 0%, rgba(255, 159, 67, 0.25) 100%);
+  border: 2.5px solid var(--candy-orange);
+  color: var(--text-main);
   font-size: 26px;
-  box-shadow: 0 0 18px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 14px rgba(255, 159, 67, 0.2);
 }
 
 /* Speed Toast */
@@ -932,8 +932,8 @@ html, body {
   top: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(8px);
-  background: var(--amber-bright);
-  color: #080b10;
+  background: var(--candy-orange);
+  color: #ffffff;
   font-family: var(--font-hud);
   font-size: 13px;
   font-weight: 900;
@@ -942,7 +942,7 @@ html, body {
   pointer-events: none;
   opacity: 0;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(255, 159, 67, 0.35);
   white-space: nowrap;
 }
 
@@ -952,14 +952,16 @@ html, body {
 }
 
 /* ========================================================
-   RIVER GAME ARENA & 3D FLOATING ENERGY ORBS
+   🌈 PLAYGROUND GAME ARENA & BOUNCY CANDY BUBBLES
    ======================================================== */
 #river {
   position: relative;
   flex: 1;
   width: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #11151f 0%, #080b10 100%);
+  background: 
+    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(69, 170, 242, 0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #e8f4fd 0%, #d4ecff 50%, #c8e6ff 100%);
 }
 
 .river-grid-bg {
@@ -967,9 +969,8 @@ html, body {
   inset: 0;
   pointer-events: none;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
+    radial-gradient(circle, rgba(69, 170, 242, 0.08) 1px, transparent 1px);
+  background-size: 30px 30px;
 }
 
 .river-stream-overlay {
@@ -980,8 +981,8 @@ html, body {
     115deg,
     transparent,
     transparent 100px,
-    rgba(245, 158, 11, 0.02) 100px,
-    rgba(245, 158, 11, 0.02) 102px
+    rgba(69, 170, 242, 0.03) 100px,
+    rgba(69, 170, 242, 0.03) 102px
   );
   animation: streamFlow 14s linear infinite;
 }
@@ -992,9 +993,9 @@ html, body {
 }
 
 /* ========================================================
-   OPTION 2: 3D CASINO / POKER CHIPS (BALATRO TACTILE STYLE)
-   Weighted physical casino chips with striped perimeter edge,
-   gold foil inner ring, and 3D extruded drop base.
+   🍬 CANDY BUBBLE NUMBER PIECES (KIDS STYLE)
+   Soft bouncy spheres with cheerful colors,
+   friendly face-like highlights, and jelly physics.
    ======================================================== */
 .orb-floater {
   position: absolute;
@@ -1007,140 +1008,129 @@ html, body {
   cursor: pointer;
   z-index: 5;
   transition: 
-    transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.16s ease,
-    filter 0.16s ease;
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
   will-change: left, top, transform;
   outline: none;
   -webkit-tap-highlight-color: transparent;
   box-shadow: 
-    0 8px 0 #07090e,
-    0 14px 25px rgba(0, 0, 0, 0.7),
-    inset 0 2px 2px rgba(255, 255, 255, 0.35),
-    inset 0 -3px 5px rgba(0, 0, 0, 0.6);
+    0 6px 0 rgba(0, 0, 0, 0.08),
+    0 10px 20px rgba(0, 0, 0, 0.1),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Outer Striped Perimeter Ring */
-.chip-stripes {
+/* Cute top shine */
+.bubble-shine {
   position: absolute;
-  inset: 0;
+  top: 6px;
+  left: 12px;
+  width: 22px;
+  height: 14px;
   border-radius: 50%;
-  border: 4px dashed rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   pointer-events: none;
-  z-index: 2;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Recessed Inset Core with Gold Foil Rim */
-.chip-inner-rim {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.4) 100%);
-  border: 2px solid rgba(251, 191, 36, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 3;
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.6),
-    0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.chip-num {
+/* Number text */
+.bubble-num {
   font-family: var(--font-hud);
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 900;
   color: #ffffff;
   z-index: 4;
   letter-spacing: 0.5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(255, 255, 255, 0.6);
+  text-shadow: 
+    0 2px 3px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
 }
 
-/* Hover Lift */
+/* Hover bounce */
 .orb-floater:hover {
-  transform: translateY(-4px) scale(1.16) !important;
+  transform: translateY(-6px) scale(1.18) !important;
   z-index: 10;
+  filter: brightness(1.08);
   box-shadow: 
-    0 12px 0 #07090e,
-    0 18px 30px rgba(0, 0, 0, 0.8),
-    inset 0 2px 3px rgba(255, 255, 255, 0.5);
+    0 12px 0 rgba(0, 0, 0, 0.06),
+    0 18px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* ── 1. Gold Amber Casino Chip ── */
+/* ── 1. Strawberry Pink Bubble ── */
 .orb-amber {
-  background: radial-gradient(circle at 40% 40%, #f59e0b 0%, #d97706 60%, #78350f 100%);
-  border: 2px solid #fbbf24;
+  background: radial-gradient(circle at 35% 30%, #ffb3c6 0%, #ff6b8a 50%, #e84865 100%);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 6px 0 rgba(232, 72, 101, 0.3),
+    0 10px 20px rgba(255, 107, 138, 0.25),
+    inset 0 -4px 8px rgba(200, 40, 70, 0.2);
 }
 
-/* ── 2. Emerald Green Casino Chip ── */
+/* ── 2. Minty Green Bubble ── */
 .orb-emerald {
-  background: radial-gradient(circle at 40% 40%, #10b981 0%, #059669 60%, #064e3b 100%);
-  border: 2px solid #34d399;
+  background: radial-gradient(circle at 35% 30%, #a0f0c5 0%, #2ed573 50%, #1e8449 100%);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 6px 0 rgba(30, 132, 73, 0.3),
+    0 10px 20px rgba(46, 213, 115, 0.25),
+    inset 0 -4px 8px rgba(20, 100, 50, 0.2);
 }
 
-/* ── 3. Royal Purple Casino Chip ── */
+/* ── 3. Grape Purple Bubble ── */
 .orb-violet {
-  background: radial-gradient(circle at 40% 40%, #8b5cf6 0%, #7c3aed 60%, #4c1d95 100%);
-  border: 2px solid #c084fc;
+  background: radial-gradient(circle at 35% 30%, #d4b3ff 0%, #a55eea 50%, #7c3aed 100%);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 6px 0 rgba(124, 58, 237, 0.3),
+    0 10px 20px rgba(165, 94, 234, 0.25),
+    inset 0 -4px 8px rgba(90, 40, 180, 0.2);
 }
 
-/* ── 4. Crimson Ruby Casino Chip ── */
+/* ── 4. Sunny Orange Bubble ── */
 .orb-coral {
-  background: radial-gradient(circle at 40% 40%, #f43f5e 0%, #e11d48 60%, #881337 100%);
-  border: 2px solid #fb7185;
+  background: radial-gradient(circle at 35% 30%, #ffd093 0%, #ff9f43 50%, #e67e22 100%);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 6px 0 rgba(230, 126, 34, 0.3),
+    0 10px 20px rgba(255, 159, 67, 0.25),
+    inset 0 -4px 8px rgba(180, 100, 20, 0.2);
 }
 
 /* ── Selected State ── */
 .orb-selected {
-  transform: scale(1.24) !important;
+  transform: scale(1.22) !important;
   z-index: 15;
-  border-color: #ffffff !important;
-  box-shadow: 
-    0 10px 0 #07090e,
-    0 0 30px rgba(251, 191, 36, 0.9),
-    0 18px 35px rgba(0, 0, 0, 0.85) !important;
-  animation: chipPulse 0.5s infinite alternate;
+  filter: brightness(1.1);
+  animation: bubbleBounce 0.45s infinite alternate;
 }
 
-.orb-selected .chip-stripes {
-  border-color: #ffffff;
-  animation: chipSpin 4s linear infinite;
+.orb-selected .bubble-shine {
+  width: 26px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.85);
 }
 
-@keyframes chipSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@keyframes bubbleBounce {
+  from { transform: scale(1.18) translateY(0); }
+  to   { transform: scale(1.26) translateY(-4px); }
 }
 
-@keyframes chipPulse {
-  from { transform: scale(1.2); }
-  to   { transform: scale(1.28); }
-}
-
-/* ── Correct Match Burst ── */
+/* ── Correct Match Pop ── */
 .orb-correct {
-  transform: scale(1.55) !important;
+  transform: scale(1.6) !important;
   opacity: 0;
   transition: all 0.28s ease-out;
   pointer-events: none;
-  filter: brightness(1.8);
-  box-shadow: 0 0 60px var(--emerald-bright) !important;
+  filter: brightness(1.5);
+  box-shadow: 0 0 40px rgba(46, 213, 115, 0.6) !important;
 }
 
 /* ── Wrong Match Shake ── */
 .orb-wrong {
   animation: orbShake 0.35s ease;
-  filter: saturate(1.8) brightness(1.2);
-  box-shadow: 0 0 40px var(--coral-main) !important;
-}
-
-@keyframes orbShake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-8px); }
-  50% { transform: translateX(8px); }
-  75% { transform: translateX(-4px); }
+  filter: saturate(1.5) brightness(0.95);
+  box-shadow: 0 0 30px rgba(252, 92, 101, 0.5) !important;
 }
 
 @keyframes orbShake {
@@ -1160,17 +1150,16 @@ html, body {
   z-index: 30;
   transform: translateX(-50%);
   animation: floatUpFade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .score-plus {
-  color: var(--emerald-bright);
-  text-shadow: 0 0 15px rgba(52, 211, 153, 0.8);
+  color: var(--candy-green);
+  text-shadow: 0 0 10px rgba(46, 213, 115, 0.6);
 }
 
 .score-minus {
-  color: var(--coral-main);
-  text-shadow: 0 0 15px rgba(244, 63, 94, 0.8);
+  color: var(--candy-red);
+  text-shadow: 0 0 10px rgba(252, 92, 101, 0.6);
 }
 
 @keyframes floatUpFade {
@@ -1186,20 +1175,20 @@ html, body {
 
 @keyframes cameraShake {
   0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-6px, 4px); }
-  40% { transform: translate(6px, -4px); }
-  60% { transform: translate(-4px, -2px); }
-  80% { transform: translate(4px, 2px); }
+  20% { transform: translate(-5px, 3px); }
+  40% { transform: translate(5px, -3px); }
+  60% { transform: translate(-3px, -2px); }
+  80% { transform: translate(3px, 2px); }
 }
 
 /* ========================================================
-   IN-GAME PAUSE MODAL
+   ⏸️ IN-GAME PAUSE MODAL
    ======================================================== */
 .pause-modal {
   display: none;
   position: absolute;
   inset: 0;
-  background: rgba(8, 11, 16, 0.88);
+  background: rgba(232, 244, 253, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 50;
@@ -1213,9 +1202,9 @@ html, body {
 }
 
 .pause-card {
-  background: #141a24;
-  border: 2px solid #283347;
-  border-radius: 20px;
+  background: #ffffff;
+  border: 2.5px solid rgba(69, 170, 242, 0.25);
+  border-radius: 24px;
   padding: 30px 24px;
   text-align: center;
   max-width: 400px;
@@ -1224,11 +1213,11 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
 }
 
 .pause-icon { font-size: 36px; }
-.pause-title { font-family: var(--font-hud); font-size: 28px; font-weight: 900; color: #ffffff; letter-spacing: 2px; }
+.pause-title { font-family: var(--font-hud); font-size: 28px; font-weight: 900; color: var(--text-main); letter-spacing: 2px; }
 .pause-desc { font-size: 14px; color: var(--text-dim); }
 
 .pause-actions {
@@ -1240,20 +1229,27 @@ html, body {
 }
 
 /* ========================================================
-   GAME OVER STATS STAGE
+   🏆 GAME OVER STATS STAGE
    ======================================================== */
+#gameover-screen {
+  background: 
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255, 159, 67, 0.15) 0%, transparent 60%),
+    linear-gradient(180deg, #e8f4fd 0%, #fff5e6 100%);
+}
+
 .gameover-stage {
   width: 90%;
   max-width: 520px;
-  background: var(--bg-panel);
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
   padding: 30px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .go-header {
@@ -1268,7 +1264,7 @@ html, body {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
-  color: var(--coral-main);
+  color: var(--candy-pink);
 }
 
 .gameover-title {
@@ -1276,6 +1272,7 @@ html, body {
   font-size: 34px;
   font-weight: 900;
   letter-spacing: 1px;
+  color: var(--text-main);
 }
 
 .rank-badge {
@@ -1283,8 +1280,8 @@ html, body {
   font-size: 15px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  background: var(--amber-bright);
-  color: #0c0f14;
+  background: var(--candy-orange);
+  color: #ffffff;
   padding: 4px 16px;
   border-radius: 16px;
   margin-top: 4px;
@@ -1299,9 +1296,9 @@ html, body {
 }
 
 .stat-card.stat-main {
-  background: rgba(245, 158, 11, 0.12);
-  border: 1.5px solid rgba(245, 158, 11, 0.4);
-  border-radius: 14px;
+  background: rgba(255, 159, 67, 0.1);
+  border: 2px solid rgba(255, 159, 67, 0.3);
+  border-radius: 16px;
   padding: 14px 18px;
   display: flex;
   align-items: center;
@@ -1310,16 +1307,16 @@ html, body {
 }
 
 .stat-card .stat-icon { font-size: 30px; }
-.stat-sub { font-family: var(--font-hud); font-size: 11px; font-weight: 700; color: var(--amber-main); letter-spacing: 1px; }
-.stat-big { font-family: var(--font-hud); font-size: 34px; font-weight: 900; color: var(--text-pure); }
+.stat-sub { font-family: var(--font-hud); font-size: 11px; font-weight: 700; color: var(--candy-orange-d); letter-spacing: 1px; }
+.stat-big { font-family: var(--font-hud); font-size: 34px; font-weight: 900; color: var(--text-main); }
 
 .new-record-pill {
   display: none;
   position: absolute;
   right: 16px;
   top: 16px;
-  background: var(--amber-bright);
-  color: #0c0f14;
+  background: var(--candy-orange);
+  color: #ffffff;
   font-family: var(--font-hud);
   font-size: 11px;
   font-weight: 900;
@@ -1336,9 +1333,9 @@ html, body {
 }
 
 .mini-stat {
-  background: rgba(25, 31, 42, 0.75);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+  background: rgba(69, 170, 242, 0.06);
+  border: 1.5px solid rgba(69, 170, 242, 0.12);
+  border-radius: 14px;
   padding: 10px 14px;
   display: flex;
   flex-direction: column;
@@ -1348,7 +1345,7 @@ html, body {
 
 .m-icon { font-size: 15px; margin-bottom: 2px; }
 .m-label { font-family: var(--font-hud); font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; }
-.m-val { font-family: var(--font-hud); font-size: 17px; font-weight: 900; color: var(--text-pure); }
+.m-val { font-family: var(--font-hud); font-size: 17px; font-weight: 900; color: var(--text-main); }
 
 .gameover-actions {
   display: flex;
@@ -1361,9 +1358,9 @@ html, body {
 .arcade-secondary-btn {
   width: 100%;
   height: 48px;
-  background: #18202c;
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 14px;
+  background: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
   color: var(--text-dim);
   font-family: var(--font-hud);
   font-size: 15px;
@@ -1371,20 +1368,21 @@ html, body {
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.15s;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04);
 }
 
 .arcade-secondary-btn:hover {
-  background: #242f40;
-  color: var(--text-pure);
-  border-color: var(--amber-main);
+  background: #fff8ef;
+  color: var(--text-main);
+  border-color: var(--candy-orange);
 }
 
 /* ========================================================
-   RESPONSIVE DESIGN (MOBILE & TABLET)
+   📱 RESPONSIVE DESIGN (MOBILE & TABLET)
    ======================================================== */
 @media (max-width: 520px) {
   :root {
-    --orb-size: 52px;
+    --orb-size: 56px;
     --hud-height: 58px;
     --dock-height: 72px;
   }

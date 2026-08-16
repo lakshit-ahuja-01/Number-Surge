@@ -1839,8 +1839,8 @@ body.theme-robotics {
 }
 
 body.theme-robotics #ambient-canvas {
-  opacity: 0.15;
-  filter: hue-rotate(180deg) brightness(1.5);
+  opacity: 0.7;
+  filter: none;
 }
 
 body.theme-robotics .river-sky-decor {
@@ -2062,7 +2062,8 @@ body.theme-robotics .m-val {
 
 /* ─── NEW ROBOTICS OVERRIDES TO FIX LEFTOVERS ─── */
 body.theme-robotics #river {
-  background: #0a0e17;
+  background: rgba(10, 14, 23, 0.6);
+  backdrop-filter: blur(1px);
 }
 
 body.theme-robotics .title-highscore-pill {

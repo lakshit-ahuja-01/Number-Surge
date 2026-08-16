@@ -193,10 +193,13 @@ const dom = {
   newRecordBadge:  document.getElementById('new-record-badge'),
 };
 
-// ─── 5. AMBIENT BACKGROUND PARTICLES CANVAS ──────────────────
+// ─── 5. AMBIENT BACKGROUND PARTICLES & MATRIX CANVAS ──────────
 const ambientCanvas = document.getElementById('ambient-canvas');
 const ambientCtx = ambientCanvas ? ambientCanvas.getContext('2d') : null;
 let ambientParticles = [];
+let matrixDrops = [];
+const MATRIX_CHARS = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ+-*/=><^$#%@&';
+const MATRIX_FONT_SIZE = 14;
 
 function initAmbientCanvas() {
   if (!ambientCanvas) return;
@@ -224,31 +227,77 @@ function initAmbientCanvas() {
       alpha: Math.random() * 0.5 + 0.3,
     });
   }
+
+  // Initialize Matrix columns
+  const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+  matrixDrops = [];
+  for (let i = 0; i < columns; i++) {
+    matrixDrops[i] = Math.floor(Math.random() * -60);
+  }
 }
 
-function renderAmbientParticles() {
+let lastMatrixFrame = 0;
+
+function renderAmbientParticles(timestamp = 0) {
   if (!ambientCtx || !ambientCanvas) return;
-  ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
-  ambientParticles.forEach(p => {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.y + p.radius < 0) { p.y = ambientCanvas.height + p.radius; p.x = Math.random() * ambientCanvas.width; }
-    if (p.x + p.radius < 0) p.x = ambientCanvas.width + p.radius;
-    if (p.x - p.radius > ambientCanvas.width) p.x = -p.radius;
+  if (gameState.theme === 'robotics') {
+    // MATRIX DIGITAL RAIN (Cyber Hacker Theme)
+    if (!lastMatrixFrame) lastMatrixFrame = timestamp;
+    const elapsed = timestamp - lastMatrixFrame;
+    
+    if (elapsed > 35) {
+      lastMatrixFrame = timestamp;
+      ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.14)';
+      ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
-    // Pastel Bubble
-    ambientCtx.beginPath();
-    ambientCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-    ambientCtx.fillStyle = p.color;
-    ambientCtx.fill();
+      ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
 
-    // Bubble shine
-    ambientCtx.beginPath();
-    ambientCtx.arc(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.28, 0, Math.PI * 2);
-    ambientCtx.fillStyle = 'rgba(255, 255, 255, 0.65)';
-    ambientCtx.fill();
-  });
+      for (let i = 0; i < matrixDrops.length; i++) {
+        const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+        const x = i * MATRIX_FONT_SIZE;
+        const y = matrixDrops[i] * MATRIX_FONT_SIZE;
+
+        if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE) {
+          // Leading glyph is bright glowing white/cyan, body is matrix neon green
+          const isLead = Math.random() > 0.88;
+          ambientCtx.fillStyle = isLead ? '#ffffff' : (i % 4 === 0 ? '#00f2fe' : '#00ff88');
+          ambientCtx.shadowColor = isLead ? '#00f2fe' : '#00ff88';
+          ambientCtx.shadowBlur = isLead ? 6 : 3;
+          ambientCtx.fillText(char, x, y);
+          ambientCtx.shadowBlur = 0;
+        }
+
+        if (y > ambientCanvas.height && Math.random() > 0.975) {
+          matrixDrops[i] = 0;
+        }
+        matrixDrops[i]++;
+      }
+    }
+  } else {
+    // PASTEL FLOATING BUBBLES (Kids Candy Theme)
+    ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+
+    ambientParticles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.y + p.radius < 0) { p.y = ambientCanvas.height + p.radius; p.x = Math.random() * ambientCanvas.width; }
+      if (p.x + p.radius < 0) p.x = ambientCanvas.width + p.radius;
+      if (p.x - p.radius > ambientCanvas.width) p.x = -p.radius;
+
+      // Pastel Bubble
+      ambientCtx.beginPath();
+      ambientCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ambientCtx.fillStyle = p.color;
+      ambientCtx.fill();
+
+      // Bubble shine
+      ambientCtx.beginPath();
+      ambientCtx.arc(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.28, 0, Math.PI * 2);
+      ambientCtx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+      ambientCtx.fill();
+    });
+  }
 
   requestAnimationFrame(renderAmbientParticles);
 }

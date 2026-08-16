@@ -778,7 +778,19 @@ function calculateRank(score, accuracy) {
   }
 }
 
-let gameoverAudioTimeout = null;
+function stopAllAudio() {
+  if (audioCtx && masterGainNode) {
+    try {
+      masterGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+      masterGainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+      setTimeout(() => {
+        if (masterGainNode && audioCtx && !gameState.isMuted) {
+          masterGainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+        }
+      }, 80);
+    } catch (_) {}
+  }
+}
 
 function endGame() {
   if (gameState.phase !== 'playing') return;
@@ -787,6 +799,7 @@ function endGame() {
   stopGameLoop();
   cancelAnimationFrame(speedMeterLoopId);
   clearAllFloaters();
+  stopAllAudio();
 
   const totalAttempts = gameState.solved + gameState.wrongAnswers;
   const accuracy = totalAttempts > 0 ? Math.round(gameState.solved / totalAttempts * 100) : 0;
@@ -804,20 +817,11 @@ function endGame() {
 
   if (isNewRecord && gameState.score > 0) {
     dom.newRecordBadge.classList.add('show');
-    playArcadeSound('gameover_record');
   } else {
     dom.newRecordBadge.classList.remove('show');
-    playArcadeSound('gameover');
   }
 
   setTimeout(() => showScreen('gameover'), 350);
-
-  if (gameoverAudioTimeout) clearTimeout(gameoverAudioTimeout);
-  gameoverAudioTimeout = setTimeout(() => {
-    if (masterGainNode && audioCtx) {
-      masterGainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-    }
-  }, 3000);
 }
 
 // ─── 17. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────

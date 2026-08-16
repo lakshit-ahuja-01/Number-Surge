@@ -946,17 +946,17 @@ function playArcadeSound(type, comboLevel = 1) {
 
 // ─── 18. GAME CONTROLS & FLOW ────────────────────────────────
 function startGame() {
-  if (gameState.phase === 'playing') return; // Prevent double initialization
   resetState();
   gameState.phase = 'playing';
   clearAllFloaters();
-  dom.timerBadge.classList.remove('timer-low');
-  dom.hudComboBox.classList.remove('combo-fire');
+  if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
+  if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
   showScreen('game');
   updateHUD();
   generateQuestion();
   startTimer();
   startGameLoop();
+  playArcadeSound('select');
 }
 
 function resetState() {

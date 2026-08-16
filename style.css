@@ -581,6 +581,10 @@ html, body {
   justify-content: center;
 }
 
+.arcade-play-button * {
+  pointer-events: none;
+}
+
 .arcade-play-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 9px 0 #cc6600, 0 16px 28px rgba(255, 159, 67, 0.4);

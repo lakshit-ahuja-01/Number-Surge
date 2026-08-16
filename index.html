@@ -3,149 +3,212 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Number Surge — A fast-paced browser math game. Click floating numbers to solve equations before time runs out!">
-  <meta name="theme-color" content="#0a1628">
-  <title>Number Surge — Solve Equations, Beat the Clock</title>
+  <meta name="description" content="Number Surge — High-octane arcade math game. Click floating number orbs to solve equations before the surge ends!">
+  <meta name="theme-color" content="#060c18">
+  <title>Number Surge — Arcade Math Action</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ===== Start Screen ===== -->
-  <div id="start-screen" class="screen active">
-    <div class="screen-table">
-      <div class="screen-cell">
-        <div class="start-inner">
-          <div class="title-block">
-            <h1 class="game-title">Number Surge</h1>
-            <p class="tagline">How many can you solve in 60 seconds?</p>
-          </div>
+  <!-- Background Ambient Particle Canvas -->
+  <canvas id="ambient-canvas"></canvas>
 
-          <!-- Mode Selector -->
-          <div class="mode-section">
-            <p class="mode-label">Choose Mode</p>
-            <div class="mode-grid" id="mode-grid" role="group" aria-label="Game mode selector">
-              <button class="mode-card active" data-mode="addition"       aria-pressed="true">
-                <span class="mode-icon">➕</span>
-                <span class="mode-name">Addition</span>
-                <span class="mode-example">_ + _ = ?</span>
-              </button>
-              <button class="mode-card" data-mode="subtraction"  aria-pressed="false">
-                <span class="mode-icon">➖</span>
-                <span class="mode-name">Subtraction</span>
-                <span class="mode-example">_ − _ = ?</span>
-              </button>
-              <button class="mode-card" data-mode="multiplication" aria-pressed="false">
-                <span class="mode-icon">✖️</span>
-                <span class="mode-name">Multiply</span>
-                <span class="mode-example">_ × _ = ?</span>
-              </button>
-              <button class="mode-card" data-mode="division"    aria-pressed="false">
-                <span class="mode-icon">➗</span>
-                <span class="mode-name">Division</span>
-                <span class="mode-example">_ ÷ _ = ?</span>
-              </button>
-              <button class="mode-card mode-card--mixed" data-mode="mixed" aria-pressed="false">
-                <span class="mode-icon">🔀</span>
-                <span class="mode-name">Mixed</span>
-                <span class="mode-example">All ops!</span>
-              </button>
-            </div>
-          </div>
+  <div id="game-wrapper">
 
-          <button id="start-btn" class="btn btn-primary btn-large">▶ Start Game</button>
+    <!-- ===== START SCREEN ===== -->
+    <div id="start-screen" class="screen active">
+      <div class="screen-card">
+        
+        <div class="arcade-header">
+          <div class="badge-pill">⚡ FAST-PACED MATH ARCADE</div>
+          <h1 class="game-logo">
+            <span class="logo-top">NUMBER</span>
+            <span class="logo-bot">SURGE</span>
+          </h1>
+          <p class="tagline">Lock in the numbers. Beat the 60s clock.</p>
+        </div>
 
-          <div class="tips">
-            <span class="tip-item">⚡ Faster answers = more points</span>
-            <span class="tip-sep">·</span>
-            <span class="tip-item">🔥 Build combos for bonus</span>
+        <div class="highscore-banner">
+          <span class="crown-icon">👑</span>
+          <span class="hs-label">ALL-TIME BEST:</span>
+          <span id="start-highscore" class="hs-val">0 PTS</span>
+        </div>
+
+        <!-- Mode Selector Cards -->
+        <div class="mode-section">
+          <div class="section-title">SELECT OPERATION</div>
+          <div class="mode-grid" id="mode-grid" role="group" aria-label="Game mode selector">
+            <button class="mode-card active" data-mode="addition" aria-pressed="true">
+              <span class="mode-icon">➕</span>
+              <span class="mode-name">Addition</span>
+              <span class="mode-hint">_ + _ = Target</span>
+            </button>
+            <button class="mode-card" data-mode="subtraction" aria-pressed="false">
+              <span class="mode-icon">➖</span>
+              <span class="mode-name">Subtract</span>
+              <span class="mode-hint">_ − _ = Target</span>
+            </button>
+            <button class="mode-card" data-mode="multiplication" aria-pressed="false">
+              <span class="mode-icon">✖️</span>
+              <span class="mode-name">Multiply</span>
+              <span class="mode-hint">_ × _ = Target</span>
+            </button>
+            <button class="mode-card" data-mode="division" aria-pressed="false">
+              <span class="mode-icon">➗</span>
+              <span class="mode-name">Division</span>
+              <span class="mode-hint">_ ÷ _ = Target</span>
+            </button>
+            <button class="mode-card mode-mixed" data-mode="mixed" aria-pressed="false">
+              <span class="mode-icon">🔀</span>
+              <span class="mode-name">Surge Mix</span>
+              <span class="mode-hint">All Operators!</span>
+            </button>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ===== Game Screen ===== -->
-  <div id="game-screen" class="screen">
+        <button id="start-btn" class="arcade-btn arcade-btn-play">
+          <span class="btn-glow"></span>
+          <span class="btn-text">▶ START SURGE</span>
+        </button>
 
-    <!-- HUD -->
-    <header id="hud">
-      <div class="hud-item" id="hud-score">
-        <span class="hud-label">Score</span>
-        <span id="score-display" class="hud-value">0</span>
-      </div>
-
-      <div class="hud-center">
-        <div class="hud-item">
-          <span class="hud-label">Time</span>
-          <span id="timer-display" class="hud-value">60</span>
+        <div class="how-to-play-pills">
+          <div class="pill">⚡ Speed = Extra Bonus</div>
+          <div class="pill">🔥 Streak = Multiplier</div>
+          <div class="pill">⌨️ Space / Click to Play</div>
         </div>
-        <div id="speed-bar-wrap" title="Speed bonus bar — answer fast!">
-          <div id="speed-bar"></div>
-        </div>
-      </div>
 
-      <div class="hud-item" id="hud-combo">
-        <span class="hud-label">Combo</span>
-        <span id="combo-display" class="hud-value">×0</span>
-      </div>
-      <button id="sound-toggle" class="hud-sound-btn" aria-label="Toggle sound" title="Toggle sound">🔊</button>
-    </header>
-
-    <!-- Target equation -->
-    <div id="equation-bar">
-      <div id="equation-wrap">
-        <span id="mode-badge"></span>
-        <span id="equation-text">_ + _ = ?</span>
       </div>
     </div>
 
-    <!-- Speed bonus flash -->
-    <div id="speed-bonus-toast" class="speed-toast" aria-live="polite"></div>
+    <!-- ===== MAIN GAMEPLAY SCREEN ===== -->
+    <div id="game-screen" class="screen">
 
-    <!-- River -->
-    <div id="river" role="application" aria-label="Number Surge game area">
-      <!-- Floating number buttons injected by script.js -->
-    </div>
+      <!-- TOP HUD -->
+      <header id="arcade-hud">
+        
+        <!-- Score Column -->
+        <div class="hud-box" id="hud-score-box">
+          <div class="hud-tag">SCORE</div>
+          <div class="hud-number" id="score-display">0</div>
+        </div>
 
-  </div>
-
-  <!-- ===== Game Over Screen ===== -->
-  <div id="gameover-screen" class="screen">
-    <div class="screen-table">
-      <div class="screen-cell">
-        <div class="gameover-inner">
-          <h2 class="gameover-title">Game Over!</h2>
-
-          <div id="final-stats">
-            <div class="stat-row">
-              <span class="stat-label">🏆 Score</span>
-              <span id="final-score" class="stat-value highlight">0</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">✅ Solved</span>
-              <span id="final-solved" class="stat-value">0</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">🎯 Accuracy</span>
-              <span id="final-accuracy" class="stat-value">0%</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">🔥 Best Combo</span>
-              <span id="final-combo" class="stat-value">0</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">⚡ Best Speed Bonus</span>
-              <span id="final-speed" class="stat-value">+0</span>
-            </div>
+        <!-- Center Timer & Speed Bar -->
+        <div class="hud-center-cluster">
+          <div class="timer-badge" id="timer-badge">
+            <span class="timer-icon">⏱️</span>
+            <span class="timer-number" id="timer-display">60</span>
+            <span class="timer-sec">s</span>
           </div>
-
-          <div id="gameover-actions">
-            <button id="play-again-btn" class="btn btn-primary">▶ Play Again</button>
-            <button id="menu-btn" class="btn btn-secondary">🏠 Main Menu</button>
+          <div id="speed-meter-wrap" title="Speed bonus gauge">
+            <div id="speed-meter-bar"></div>
           </div>
         </div>
+
+        <!-- Combo Multiplier Column -->
+        <div class="hud-box" id="hud-combo-box">
+          <div class="hud-tag">COMBO</div>
+          <div class="hud-combo-val" id="combo-display">
+            <span id="combo-flame" class="combo-flame">🔥</span>
+            <span id="combo-num">x0</span>
+          </div>
+        </div>
+
+        <!-- Sound Toggle -->
+        <button id="sound-toggle" class="sound-chip" aria-label="Toggle sound" title="Toggle sound">
+          <span id="sound-icon">🔊</span>
+        </button>
+
+      </header>
+
+      <!-- DYNAMIC EQUATION DOCK (INTERACTIVE SLOTS) -->
+      <div id="equation-dock">
+        <div class="dock-inner">
+          <div id="mode-badge" class="mode-badge">ADD</div>
+          
+          <div class="equation-slots">
+            <div class="slot slot-operand" id="slot-a" data-slot="A">?</div>
+            <span class="op-sign" id="op-symbol">+</span>
+            <div class="slot slot-operand" id="slot-b" data-slot="B">?</div>
+            <span class="eq-sign">=</span>
+            <div class="slot slot-target" id="slot-target">40</div>
+          </div>
+
+          <div id="speed-toast" class="speed-toast" aria-live="polite">⚡ SPEED +20</div>
+        </div>
+      </div>
+
+      <!-- RIVER / GAME AREA -->
+      <main id="river" role="application" aria-label="Number Surge live river">
+        <!-- Floating orbs injected by script.js -->
+        <div class="river-stream-overlay"></div>
+      </main>
+
+    </div>
+
+    <!-- ===== GAME OVER SCREEN ===== -->
+    <div id="gameover-screen" class="screen">
+      <div class="screen-card gameover-card">
+
+        <div class="go-header">
+          <div class="gameover-banner">TIME'S UP!</div>
+          <h2 class="gameover-title">SURGE COMPLETE</h2>
+          <div id="rank-badge" class="rank-badge">RANK S</div>
+        </div>
+
+        <!-- Stats Breakdown Matrix -->
+        <div class="stats-matrix">
+          
+          <div class="stat-card stat-main">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-data">
+              <div class="stat-sub">FINAL SCORE</div>
+              <div class="stat-big" id="final-score">0</div>
+            </div>
+            <div id="new-record-badge" class="new-record-pill">NEW RECORD!</div>
+          </div>
+
+          <div class="stats-mini-grid">
+            <div class="mini-stat">
+              <span class="m-icon">🎯</span>
+              <span class="m-label">ACCURACY</span>
+              <span class="m-val" id="final-accuracy">0%</span>
+            </div>
+            <div class="mini-stat">
+              <span class="m-icon">✅</span>
+              <span class="m-label">SOLVED</span>
+              <span class="m-val" id="final-solved">0</span>
+            </div>
+            <div class="mini-stat">
+              <span class="m-icon">🔥</span>
+              <span class="m-label">MAX COMBO</span>
+              <span class="m-val" id="final-combo">0</span>
+            </div>
+            <div class="mini-stat">
+              <span class="m-icon">⚡</span>
+              <span class="m-label">TOP SPEED</span>
+              <span class="m-val" id="final-speed">+0</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="gameover-actions">
+          <button id="play-again-btn" class="arcade-btn arcade-btn-play">
+            <span class="btn-glow"></span>
+            <span class="btn-text">🔄 PLAY AGAIN</span>
+          </button>
+          <button id="menu-btn" class="arcade-btn arcade-btn-secondary">
+            <span class="btn-text">🏠 MAIN MENU</span>
+          </button>
+        </div>
+
       </div>
     </div>
+
   </div>
 
   <script src="script.js"></script>

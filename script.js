@@ -1,71 +1,40 @@
 /* ========================================================
-   Number Surge — Game Logic
-   ========================================================
-
-   Architecture
-   ─────────────────────────────────────────────────────────
-   1.  CONFIG        – Frozen constants (scoring, speeds, timing)
-   2.  MODES         – Definitions for all 5 game modes
-   3.  GAME STATE    – Central state object
-   4.  DOM REFS      – Cached element references
-   5.  SCREEN MGMT  – show / hide screens
-   6.  QUESTION GEN  – Target + guaranteed-solvable numbers per mode
-   7.  FLOATER SYS   – Create / move / remove floating bubbles
-   8.  SELECTION     – Click handling
-   9.  VALIDATION    – Correct / wrong answer logic
-  10.  SCORING       – Points, combos, speed bonus
-  11.  SPEED BAR     – Draining bar that rewards fast answers
-  12.  TIMER         – 60-second countdown
-  13.  HUD           – Update display values
-  14.  GAME LOOP     – requestAnimationFrame movement
-  15.  GAME OVER     – End state + stats
-  16.  AUDIO         – Web Audio API synthesis
-  17.  START / RESET – Game flow
-  18.  EVENTS        – Button listeners, mode picker, keyboard
+   Number Surge — Arcade Master Game Engine
+   Full interactive game juice: slot docking, synth sound scales,
+   screen shake, combo fire, high-score tracking, and ambient particles.
    ======================================================== */
 
 'use strict';
 
-// ─── 1. CONFIG ───────────────────────────────────────────────
+// ─── 1. GAME CONFIGURATION ───────────────────────────────────
 const CONFIG = Object.freeze({
-  GAME_DURATION:        60,     // seconds
-  POINTS_CORRECT:       10,     // base points per correct answer
-  POINTS_WRONG:         -3,     // penalty (score floor is 0)
-  COMBO_BONUS:          5,      // extra points per combo level above 1
-  SPEED_MAX_BONUS:      20,     // max extra points for instant answer
-  SPEED_WINDOW:         8,      // seconds in which full speed bonus decays
-  INITIAL_SPEED:        0.55,   // px/frame at 60fps, starting difficulty
-  MAX_SPEED:            2.8,    // cap
-  INITIAL_NUM_COUNT:    12,     // floaters at game start (more numbers!)
-  MAX_NUM_COUNT:        20,     // cap
+  GAME_DURATION:        60,     // Total round time (seconds)
+  POINTS_CORRECT:       10,     // Base points
+  POINTS_WRONG:         -3,     // Penalty on wrong guess
+  COMBO_BONUS:          5,      // Bonus per combo multiplier level
+  SPEED_MAX_BONUS:      20,     // Max speed reward
+  SPEED_WINDOW:         7.5,    // Seconds before speed bonus runs out
+  INITIAL_SPEED:        0.65,   // Floater speed px/frame
+  MAX_SPEED:            2.8,    // Max speed cap
+  INITIAL_NUM_COUNT:    12,     // Starting floating orbs
+  MAX_NUM_COUNT:        20,     // Maximum floating orbs
   MIN_NUMBER:           1,
   MAX_NUMBER_START:     20,
   MAX_NUMBER_CAP:       99,
-  FLOATER_SIZE:         58,     // must match --bubble in CSS
-  SPAWN_MARGIN:         36,
-  DIFFICULTY_INTERVAL:  3,      // solved questions between difficulty bumps
-  BUBBLE_HUES: ['hue-blue','hue-purple','hue-teal','hue-rose'],
+  ORB_SIZE:             62,     // Diameter px
+  SPAWN_MARGIN:         40,
+  DIFFICULTY_INTERVAL:  3,      // Solved questions per difficulty level
+  ORB_THEMES: ['orb-blue', 'orb-purple', 'orb-teal', 'orb-pink'],
 });
 
 // ─── 2. GAME MODES ───────────────────────────────────────────
-/**
- * Each mode defines:
- *  label      – Short display name for the badge
- *  symbol     – Operator symbol shown in the equation
- *  generateQ  – fn(difficulty) → { target, operandA, operandB, check(a,b) }
- *
- * generateQ guarantees at least one valid pair exists in the pool.
- */
 const MODES = {
   addition: {
-    label:  '+',
     badge:  'ADD',
     symbol: '+',
-    /** target = a + b  →  need two numbers that SUM to target */
-    generateQ(diffLevel) {
-      const max = getMaxNumber(diffLevel);
-      const minT = 5, maxT = Math.min(Math.floor(max * 1.8), 99);
-      const target = randInt(minT, maxT);
+    generateQ(diff) {
+      const max = getMaxNumber(diff);
+      const target = randInt(6, Math.min(Math.floor(max * 1.8), 99));
       const minA = Math.max(CONFIG.MIN_NUMBER, target - max);
       const maxA = Math.min(max, target - CONFIG.MIN_NUMBER);
       const a = minA > maxA ? Math.floor(target / 2) : randInt(minA, maxA);
@@ -75,14 +44,11 @@ const MODES = {
   },
 
   subtraction: {
-    label:  '−',
     badge:  'SUB',
     symbol: '−',
-    /** target = a − b  →  need a larger and a smaller number */
-    generateQ(diffLevel) {
-      const max = getMaxNumber(diffLevel);
-      const target = randInt(1, Math.min(max - 1, 40));
-      // a = target + b,  b ∈ [1, max-target]
+    generateQ(diff) {
+      const max = getMaxNumber(diff);
+      const target = randInt(2, Math.min(max - 2, 45));
       const b = randInt(1, Math.min(max - target, max - 1));
       const a = target + b;
       return { target, pairA: a, pairB: b, check: (x, y) => Math.abs(x - y) === target };
@@ -90,13 +56,10 @@ const MODES = {
   },
 
   multiplication: {
-    label:  '×',
     badge:  'MUL',
     symbol: '×',
-    /** target = a × b  →  need a factor pair */
-    generateQ(diffLevel) {
-      // Keep multiplication ranges reasonable
-      const maxFactor = Math.min(3 + diffLevel, 12);
+    generateQ(diff) {
+      const maxFactor = Math.min(3 + diff, 12);
       const a = randInt(2, maxFactor);
       const b = randInt(2, maxFactor);
       const target = a * b;
@@ -105,15 +68,13 @@ const MODES = {
   },
 
   division: {
-    label:  '÷',
     badge:  'DIV',
     symbol: '÷',
-    /** target = a ÷ b  →  show dividend and divisor, player finds them */
-    generateQ(diffLevel) {
-      const maxFactor = Math.min(3 + diffLevel, 12);
-      const b = randInt(2, maxFactor);            // divisor
-      const target = randInt(1, maxFactor);        // quotient
-      const a = target * b;                        // dividend
+    generateQ(diff) {
+      const maxFactor = Math.min(3 + diff, 12);
+      const b = randInt(2, maxFactor);
+      const target = randInt(2, maxFactor);
+      const a = target * b;
       return { target, pairA: a, pairB: b, check: (x, y) => {
         const big = Math.max(x, y), small = Math.min(x, y);
         return small !== 0 && big % small === 0 && big / small === target;
@@ -122,24 +83,22 @@ const MODES = {
   },
 
   mixed: {
-    label:  '±',
     badge:  'MIX',
     symbol: '?',
-    /** Randomly pick one of the four modes each question */
-    generateQ(diffLevel) {
-      const pick = ['addition','subtraction','multiplication','division'];
-      const chosen = pick[randInt(0, pick.length - 1)];
-      const q = MODES[chosen].generateQ(diffLevel);
-      q.chosenMode = chosen;   // so we can show the right symbol
+    generateQ(diff) {
+      const pool = ['addition', 'subtraction', 'multiplication', 'division'];
+      const chosen = pool[randInt(0, pool.length - 1)];
+      const q = MODES[chosen].generateQ(diff);
+      q.chosenMode = chosen;
       return q;
     },
   },
 };
 
-// ─── 3. GAME STATE ───────────────────────────────────────────
+// ─── 3. STATE MANAGEMENT ─────────────────────────────────────
 const gameState = {
   phase:           'menu',       // 'menu' | 'playing' | 'gameover'
-  mode:            'addition',   // current game mode key
+  mode:            'addition',
   score:           0,
   timeLeft:        CONFIG.GAME_DURATION,
   combo:           0,
@@ -147,9 +106,9 @@ const gameState = {
   solved:          0,
   wrongAnswers:    0,
   target:          0,
-  currentCheck:    null,         // fn(a,b) → bool for current question
+  currentCheck:    null,
   currentSymbol:   '+',
-  selected:        [],           // floater IDs currently selected
+  selected:        [],           // [floaterId1, floaterId2]
   floaters:        [],           // { id, value, el, x, y, vx, vy }
   nextId:          0,
   animFrameId:     null,
@@ -157,130 +116,186 @@ const gameState = {
   lastFrameTime:   0,
   difficultyLevel: 0,
   isMuted:         false,
-  questionStartMs: 0,            // Date.now() when current question appeared
-  bestSpeedBonus:  0,            // biggest single speed bonus this game
+  questionStartMs: 0,
+  bestSpeedBonus:  0,
+  highScore:       0,
 };
 
-// ─── 4. DOM REFERENCES ───────────────────────────────────────
+// ─── 4. DOM ELEMENT CACHE ────────────────────────────────────
 const dom = {
-  startScreen:    document.getElementById('start-screen'),
-  gameScreen:     document.getElementById('game-screen'),
-  gameoverScreen: document.getElementById('gameover-screen'),
+  wrapper:         document.getElementById('game-wrapper'),
+  startScreen:     document.getElementById('start-screen'),
+  gameScreen:      document.getElementById('game-screen'),
+  gameoverScreen:  document.getElementById('gameover-screen'),
 
-  startBtn:       document.getElementById('start-btn'),
-  playAgainBtn:   document.getElementById('play-again-btn'),
-  menuBtn:        document.getElementById('menu-btn'),
-  soundToggle:    document.getElementById('sound-toggle'),
-  modeGrid:       document.getElementById('mode-grid'),
+  startBtn:        document.getElementById('start-btn'),
+  playAgainBtn:    document.getElementById('play-again-btn'),
+  menuBtn:         document.getElementById('menu-btn'),
+  soundToggle:     document.getElementById('sound-toggle'),
+  soundIcon:       document.getElementById('sound-icon'),
+  modeGrid:        document.getElementById('mode-grid'),
 
-  scoreDisplay:   document.getElementById('score-display'),
-  timerDisplay:   document.getElementById('timer-display'),
-  comboDisplay:   document.getElementById('combo-display'),
-  speedBar:       document.getElementById('speed-bar'),
-  speedBonusToast:document.getElementById('speed-bonus-toast'),
+  scoreDisplay:    document.getElementById('score-display'),
+  hudScoreBox:     document.getElementById('hud-score-box'),
+  timerDisplay:    document.getElementById('timer-display'),
+  timerBadge:      document.getElementById('timer-badge'),
+  comboDisplay:    document.getElementById('combo-display'),
+  hudComboBox:     document.getElementById('hud-combo-box'),
+  comboNum:        document.getElementById('combo-num'),
+  speedMeterBar:   document.getElementById('speed-meter-bar'),
+  speedToast:      document.getElementById('speed-toast'),
 
-  equationText:   document.getElementById('equation-text'),
-  modeBadge:      document.getElementById('mode-badge'),
-  river:          document.getElementById('river'),
+  modeBadge:       document.getElementById('mode-badge'),
+  slotA:           document.getElementById('slot-a'),
+  slotB:           document.getElementById('slot-b'),
+  slotTarget:      document.getElementById('slot-target'),
+  opSymbol:        document.getElementById('op-symbol'),
+  river:           document.getElementById('river'),
 
-  hudScore:       document.getElementById('hud-score'),
-  hudCombo:       document.getElementById('hud-combo'),
-
-  finalScore:     document.getElementById('final-score'),
-  finalSolved:    document.getElementById('final-solved'),
-  finalAccuracy:  document.getElementById('final-accuracy'),
-  finalCombo:     document.getElementById('final-combo'),
-  finalSpeed:     document.getElementById('final-speed'),
+  startHighScore:  document.getElementById('start-highscore'),
+  finalScore:      document.getElementById('final-score'),
+  finalSolved:     document.getElementById('final-solved'),
+  finalAccuracy:   document.getElementById('final-accuracy'),
+  finalCombo:      document.getElementById('final-combo'),
+  finalSpeed:      document.getElementById('final-speed'),
+  rankBadge:       document.getElementById('rank-badge'),
+  newRecordBadge:  document.getElementById('new-record-badge'),
 };
 
-// ─── 5. SCREEN MANAGEMENT ────────────────────────────────────
-function showScreen(name) {
-  [dom.startScreen, dom.gameScreen, dom.gameoverScreen]
-    .forEach(s => s.classList.remove('active'));
-  const map = { start: dom.startScreen, game: dom.gameScreen, gameover: dom.gameoverScreen };
-  if (map[name]) map[name].classList.add('active');
+// ─── 5. AMBIENT BACKGROUND PARTICLES CANVAS ──────────────────
+const ambientCanvas = document.getElementById('ambient-canvas');
+const ambientCtx = ambientCanvas ? ambientCanvas.getContext('2d') : null;
+let ambientParticles = [];
+
+function initAmbientCanvas() {
+  if (!ambientCanvas) return;
+  ambientCanvas.width = window.innerWidth;
+  ambientCanvas.height = window.innerHeight;
+  ambientParticles = [];
+  for (let i = 0; i < 45; i++) {
+    ambientParticles.push({
+      x: Math.random() * ambientCanvas.width,
+      y: Math.random() * ambientCanvas.height,
+      radius: Math.random() * 2 + 0.5,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: -Math.random() * 0.5 - 0.2,
+      alpha: Math.random() * 0.6 + 0.2,
+    });
+  }
 }
 
-// ─── 6. QUESTION GENERATION ──────────────────────────────────
-function getMaxNumber(diffLevel) {
-  const d = diffLevel !== undefined ? diffLevel : gameState.difficultyLevel;
-  return Math.min(CONFIG.MAX_NUMBER_START + d * 8, CONFIG.MAX_NUMBER_CAP);
+function renderAmbientParticles() {
+  if (!ambientCtx) return;
+  ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+  ambientCtx.fillStyle = '#00e5ff';
+
+  ambientParticles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.y < 0) { p.y = ambientCanvas.height; p.x = Math.random() * ambientCanvas.width; }
+    if (p.x < 0) p.x = ambientCanvas.width;
+    if (p.x > ambientCanvas.width) p.x = 0;
+
+    ambientCtx.globalAlpha = p.alpha;
+    ambientCtx.beginPath();
+    ambientCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ambientCtx.fill();
+  });
+  ambientCtx.globalAlpha = 1;
+  requestAnimationFrame(renderAmbientParticles);
+}
+
+window.addEventListener('resize', () => {
+  if (ambientCanvas) {
+    ambientCanvas.width = window.innerWidth;
+    ambientCanvas.height = window.innerHeight;
+  }
+});
+
+// ─── 6. LOCAL STORAGE HIGH SCORE ─────────────────────────────
+function loadHighScore() {
+  const saved = localStorage.getItem('number_surge_high_score');
+  gameState.highScore = saved ? parseInt(saved, 10) : 0;
+  if (dom.startHighScore) {
+    dom.startHighScore.textContent = `${gameState.highScore} PTS`;
+  }
+}
+
+function saveHighScoreIfRecord(score) {
+  if (score > gameState.highScore) {
+    gameState.highScore = score;
+    localStorage.setItem('number_surge_high_score', score.toString());
+    return true;
+  }
+  return false;
+}
+
+// ─── 7. SCREEN MANAGEMENT ────────────────────────────────────
+function showScreen(name) {
+  [dom.startScreen, dom.gameScreen, dom.gameoverScreen].forEach(s => s.classList.remove('active'));
+  if (name === 'start') dom.startScreen.classList.add('active');
+  if (name === 'game')  dom.gameScreen.classList.add('active');
+  if (name === 'gameover') dom.gameoverScreen.classList.add('active');
+}
+
+// ─── 8. QUESTION & FLOATER GENERATION ────────────────────────
+function getMaxNumber(diff) {
+  return Math.min(CONFIG.MAX_NUMBER_START + diff * 8, CONFIG.MAX_NUMBER_CAP);
 }
 
 function getCurrentSpeed() {
-  return Math.min(CONFIG.INITIAL_SPEED + gameState.difficultyLevel * 0.18, CONFIG.MAX_SPEED);
+  return Math.min(CONFIG.INITIAL_SPEED + gameState.difficultyLevel * 0.16, CONFIG.MAX_SPEED);
 }
 
 function getCurrentNumCount() {
-  return Math.min(
-    CONFIG.INITIAL_NUM_COUNT + Math.floor(gameState.difficultyLevel * 1.2),
-    CONFIG.MAX_NUM_COUNT
-  );
+  return Math.min(CONFIG.INITIAL_NUM_COUNT + Math.floor(gameState.difficultyLevel * 1.2), CONFIG.MAX_NUM_COUNT);
 }
 
-/**
- * Generate a new question for the active mode,
- * spawn floaters guaranteed to include at least one valid pair.
- */
 function generateQuestion() {
   const modeDef = MODES[gameState.mode];
   const q = modeDef.generateQ(gameState.difficultyLevel);
 
-  gameState.target      = q.target;
+  gameState.target = q.target;
   gameState.currentCheck = q.check;
 
-  // For mixed mode: use the chosen sub-mode's symbol
   let symbol = modeDef.symbol;
-  let badge  = modeDef.badge;
+  let badge = modeDef.badge;
   if (q.chosenMode) {
     symbol = MODES[q.chosenMode].symbol;
-    badge  = MODES[q.chosenMode].badge;
+    badge = MODES[q.chosenMode].badge;
   }
   gameState.currentSymbol = symbol;
 
-  // Update equation display with pop animation
-  dom.equationText.classList.remove('eq-pop');
-  // Force reflow so animation restarts
-  void dom.equationText.offsetWidth;
-  dom.equationText.textContent = `_ ${symbol} _ = ${q.target}`;
-  dom.equationText.classList.add('eq-pop');
+  // Reset interactive equation dock
   dom.modeBadge.textContent = badge;
+  dom.opSymbol.textContent = symbol;
+  dom.slotTarget.textContent = q.target;
+  resetEquationSlots();
 
-  // Record when this question started (for speed bonus)
   gameState.questionStartMs = Date.now();
-  resetSpeedBar();
+  resetSpeedMeter();
 
-  // Build number pool with guaranteed pair
   clearAllFloaters();
-  const numbers = buildNumberPool(q, gameState.difficultyLevel);
-  numbers.forEach(v => createFloater(v));
+  const pool = buildNumberPool(q, gameState.difficultyLevel);
+  pool.forEach(val => createOrbFloater(val));
 }
 
-/**
- * Build a shuffled array of numbers containing the valid pair + distractors.
- */
-function buildNumberPool(q, diffLevel) {
+function buildNumberPool(q, diff) {
   const count = getCurrentNumCount();
-  const max = getMaxNumber(diffLevel);
+  const max = getMaxNumber(diff);
   const numbers = [q.pairA, q.pairB];
 
-  // Sometimes add a second valid pair (60% chance if room)
   if (count >= 8 && Math.random() < 0.6) {
-    // Try to generate another valid pair
-    const q2 = MODES[gameState.mode === 'mixed' ? (q.chosenMode || 'addition') : gameState.mode]
-                 .generateQ(diffLevel);
-    // Only add if it's a different pair
+    const q2 = MODES[gameState.mode === 'mixed' ? (q.chosenMode || 'addition') : gameState.mode].generateQ(diff);
     if (q2.pairA !== q.pairA || q2.pairB !== q.pairB) {
       numbers.push(q2.pairA, q2.pairB);
     }
   }
 
-  // Fill with random distractors
   while (numbers.length < count) {
     numbers.push(randInt(CONFIG.MIN_NUMBER, max));
   }
 
-  // Fisher-Yates shuffle
   for (let i = numbers.length - 1; i > 0; i--) {
     const j = randInt(0, i);
     [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
@@ -289,38 +304,34 @@ function buildNumberPool(q, diffLevel) {
   return numbers;
 }
 
-// ─── 7. FLOATER SYSTEM ───────────────────────────────────────
-function createFloater(value) {
+// ─── 9. 3D FLOATING ORB SYSTEM ───────────────────────────────
+function createOrbFloater(value) {
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
-  const m  = CONFIG.SPAWN_MARGIN;
-  const sz = CONFIG.FLOATER_SIZE;
+  const m = CONFIG.SPAWN_MARGIN;
+  const sz = CONFIG.ORB_SIZE;
 
   const x = randInt(m, Math.max(m + 1, rw - sz - m));
   const y = randInt(m, Math.max(m + 1, rh - sz - m));
 
   const speed = getCurrentSpeed();
   const angle = Math.random() * Math.PI * 2;
-  const vx = Math.cos(angle) * speed * (.5 + Math.random() * .5);
-  const vy = Math.sin(angle) * speed * (.5 + Math.random() * .5);
+  const vx = Math.cos(angle) * speed * (0.6 + Math.random() * 0.6);
+  const vy = Math.sin(angle) * speed * (0.6 + Math.random() * 0.6);
 
   const el = document.createElement('button');
-  el.className = 'floater ' + CONFIG.BUBBLE_HUES[randInt(0, CONFIG.BUBBLE_HUES.length - 1)];
+  const theme = CONFIG.ORB_THEMES[randInt(0, CONFIG.ORB_THEMES.length - 1)];
+  el.className = `orb-floater ${theme}`;
   el.textContent = value;
   el.setAttribute('aria-label', `Number ${value}`);
   el.style.left = `${x}px`;
-  el.style.top  = `${y}px`;
-  el.style.width  = `${sz}px`;
-  el.style.height = `${sz}px`;
+  el.style.top = `${y}px`;
 
   const id = gameState.nextId++;
   el.dataset.floaterId = id;
   el.addEventListener('click', () => onFloaterClick(id));
 
   dom.river.appendChild(el);
-
-  // Entrance animation: CSS class after a frame
-  requestAnimationFrame(() => el.classList.add('visible'));
 
   const floater = { id, value, el, x, y, vx, vy };
   gameState.floaters.push(floater);
@@ -333,187 +344,274 @@ function clearAllFloaters() {
   gameState.selected = [];
 }
 
-function removeFloater(id, reason = 'remove') {
+function removeFloater(id, isCorrect) {
   const idx = gameState.floaters.findIndex(f => f.id === id);
   if (idx === -1) return;
 
   const { el } = gameState.floaters[idx];
-  if (reason === 'correct') {
-    el.className = 'floater floater-correct';
-    setTimeout(() => {
-      if (el.parentNode) el.parentNode.removeChild(el);
-    }, 150);
+  if (isCorrect) {
+    el.classList.add('orb-correct');
+    setTimeout(() => el.parentNode && el.parentNode.removeChild(el), 280);
   } else {
-    if (el.parentNode) el.parentNode.removeChild(el);
+    el.parentNode && el.parentNode.removeChild(el);
   }
-
   gameState.floaters.splice(idx, 1);
 }
 
-// ─── 8. SELECTION ─────────────────────────────────────────────
+// ─── 10. SELECTION & EQUATION DOCK LOGIC ──────────────────────
+function resetEquationSlots() {
+  dom.slotA.textContent = '?';
+  dom.slotB.textContent = '?';
+  dom.slotA.className = 'slot slot-operand';
+  dom.slotB.className = 'slot slot-operand';
+}
+
 function onFloaterClick(floaterId) {
   if (gameState.phase !== 'playing') return;
 
   const floater = gameState.floaters.find(f => f.id === floaterId);
   if (!floater) return;
 
-  // Deselect if already selected
+  // Deselection
   const selIdx = gameState.selected.indexOf(floaterId);
   if (selIdx !== -1) {
     gameState.selected.splice(selIdx, 1);
-    floater.el.classList.remove('floater-selected');
-    playSound('click');
+    floater.el.classList.remove('orb-selected');
+    playArcadeSound('click');
+    updateEquationSlotsPreview();
     return;
   }
 
-  // Max 2 selected
+  // Maximum 2 selected
   if (gameState.selected.length >= 2) return;
 
   gameState.selected.push(floaterId);
-  floater.el.classList.add('floater-selected');
-  playSound('click');
+  floater.el.classList.add('orb-selected');
+  playArcadeSound('select');
+  updateEquationSlotsPreview();
 
   if (gameState.selected.length === 2) {
-    setTimeout(validateSelection, 140);
+    setTimeout(validateAnswer, 180);
   }
 }
 
-// ─── 9. VALIDATION ────────────────────────────────────────────
-function validateSelection() {
+function updateEquationSlotsPreview() {
+  if (gameState.selected.length === 0) {
+    resetEquationSlots();
+  } else if (gameState.selected.length === 1) {
+    const f1 = gameState.floaters.find(f => f.id === gameState.selected[0]);
+    if (f1) {
+      dom.slotA.textContent = f1.value;
+      dom.slotA.className = 'slot slot-operand locked';
+    }
+    dom.slotB.textContent = '?';
+    dom.slotB.className = 'slot slot-operand';
+  } else if (gameState.selected.length === 2) {
+    const f1 = gameState.floaters.find(f => f.id === gameState.selected[0]);
+    const f2 = gameState.floaters.find(f => f.id === gameState.selected[1]);
+    if (f1) { dom.slotA.textContent = f1.value; dom.slotA.className = 'slot slot-operand locked'; }
+    if (f2) { dom.slotB.textContent = f2.value; dom.slotB.className = 'slot slot-operand locked'; }
+  }
+}
+
+// ─── 11. ANSWER VALIDATION & SCORING ─────────────────────────
+function validateAnswer() {
   if (gameState.selected.length !== 2) return;
 
   const f1 = gameState.floaters.find(f => f.id === gameState.selected[0]);
   const f2 = gameState.floaters.find(f => f.id === gameState.selected[1]);
 
-  if (!f1 || !f2) { gameState.selected = []; return; }
+  if (!f1 || !f2) {
+    gameState.selected = [];
+    resetEquationSlots();
+    return;
+  }
 
-  const correct = gameState.currentCheck
-    ? gameState.currentCheck(f1.value, f2.value)
-    : false;
+  const isCorrect = gameState.currentCheck ? gameState.currentCheck(f1.value, f2.value) : false;
 
-  if (correct) {
-    onCorrectAnswer(f1, f2);
+  if (isCorrect) {
+    handleCorrect(f1, f2);
   } else {
-    onWrongAnswer(f1, f2);
+    handleWrong(f1, f2);
   }
 }
 
-// ─── 10. SCORING ──────────────────────────────────────────────
-/**
- * Calculate speed bonus: answers within SPEED_WINDOW seconds
- * get up to SPEED_MAX_BONUS extra points (linearly decaying).
- */
 function calcSpeedBonus() {
   const elapsed = (Date.now() - gameState.questionStartMs) / 1000;
   if (elapsed >= CONFIG.SPEED_WINDOW) return 0;
-  const ratio = 1 - elapsed / CONFIG.SPEED_WINDOW;
-  return Math.round(CONFIG.SPEED_MAX_BONUS * ratio);
+  const factor = 1 - (elapsed / CONFIG.SPEED_WINDOW);
+  return Math.round(CONFIG.SPEED_MAX_BONUS * factor);
 }
 
-function onCorrectAnswer(f1, f2) {
+function handleCorrect(f1, f2) {
   gameState.combo++;
   if (gameState.combo > gameState.bestCombo) gameState.bestCombo = gameState.combo;
 
-  // Speed bonus
   const speedBonus = calcSpeedBonus();
   if (speedBonus > gameState.bestSpeedBonus) gameState.bestSpeedBonus = speedBonus;
 
-  // Combo bonus
   const comboBonus = Math.max(0, gameState.combo - 1) * CONFIG.COMBO_BONUS;
   const points = CONFIG.POINTS_CORRECT + comboBonus + speedBonus;
   gameState.score += points;
   gameState.solved++;
 
-  // Difficulty scaling
   gameState.difficultyLevel = Math.floor(gameState.solved / CONFIG.DIFFICULTY_INTERVAL);
 
-  // Feedback
-  showScorePopup(`+${points}`, f1.el, 'positive');
-  if (speedBonus > 0) showSpeedToast(speedBonus);
-  removeFloater(f1.id, 'correct');
-  removeFloater(f2.id, 'correct');
+  // Visual slot feedback
+  dom.slotA.className = 'slot slot-operand success-flash';
+  dom.slotB.className = 'slot slot-operand success-flash';
+
+  showFloatingScore(`+${points}`, f1.el, 'plus');
+  if (speedBonus >= 8) showSpeedToast(speedBonus);
+
+  removeFloater(f1.id, true);
+  removeFloater(f2.id, true);
   gameState.selected = [];
 
-  playSound('correct');
-  spawnParticles(f1.el);
-  animScoreBump();
-  updateComboDisplay();
+  playArcadeSound('correct', gameState.combo);
+  spawnEnergyParticles(f1.el);
+  spawnEnergyParticles(f2.el);
+  triggerScoreBump();
   updateHUD();
 
-  setTimeout(() => { if (gameState.phase === 'playing') generateQuestion(); }, 380);
+  setTimeout(() => {
+    if (gameState.phase === 'playing') generateQuestion();
+  }, 380);
 }
 
-function onWrongAnswer(f1, f2) {
+function handleWrong(f1, f2) {
   gameState.combo = 0;
   gameState.score = Math.max(0, gameState.score + CONFIG.POINTS_WRONG);
   gameState.wrongAnswers++;
 
-  showScorePopup(`${CONFIG.POINTS_WRONG}`, f1.el, 'negative');
+  dom.slotA.className = 'slot slot-operand wrong-flash';
+  dom.slotB.className = 'slot slot-operand wrong-flash';
 
-  f1.el.classList.add('floater-wrong');
-  f2.el.classList.add('floater-wrong');
+  showFloatingScore(`${CONFIG.POINTS_WRONG}`, f1.el, 'minus');
+  triggerScreenShake();
+
+  f1.el.classList.add('orb-wrong');
+  f2.el.classList.add('orb-wrong');
+
+  playArcadeSound('wrong');
+
   setTimeout(() => {
-    f1.el.classList.remove('floater-wrong','floater-selected');
-    f2.el.classList.remove('floater-wrong','floater-selected');
-  }, 500);
+    f1.el.classList.remove('orb-wrong', 'orb-selected');
+    f2.el.classList.remove('orb-wrong', 'orb-selected');
+    resetEquationSlots();
+  }, 450);
 
   gameState.selected = [];
-  playSound('wrong');
-  updateComboDisplay();
   updateHUD();
 }
 
-function animScoreBump() {
-  dom.hudScore.classList.remove('bump');
-  void dom.hudScore.offsetWidth;
-  dom.hudScore.classList.add('bump');
+// ─── 12. SPEED METER GAUGE ───────────────────────────────────
+let speedMeterLoopId = null;
+
+function resetSpeedMeter() {
+  dom.speedMeterBar.style.width = '100%';
+  cancelAnimationFrame(speedMeterLoopId);
+  updateSpeedMeter();
 }
 
-function updateComboDisplay() {
-  const c = gameState.combo;
-  dom.comboDisplay.textContent = c > 0 ? `×${c}` : '×0';
-  if (c >= 4) {
-    dom.hudCombo.classList.add('on-fire');
-  } else {
-    dom.hudCombo.classList.remove('on-fire');
-  }
-}
-
-// ─── 11. SPEED BAR ────────────────────────────────────────────
-let speedBarFrameId = null;
-
-function resetSpeedBar() {
-  dom.speedBar.style.width = '100%';
-  dom.speedBar.style.background = 'linear-gradient(90deg, var(--success), var(--warning))';
-  cancelAnimationFrame(speedBarFrameId);
-  drainSpeedBar();
-}
-
-function drainSpeedBar() {
+function updateSpeedMeter() {
   const elapsed = (Date.now() - gameState.questionStartMs) / 1000;
   const pct = Math.max(0, 1 - elapsed / CONFIG.SPEED_WINDOW) * 100;
-  dom.speedBar.style.width = `${pct}%`;
-
-  // Color shifts red as it empties
-  const r = Math.round(52 + (248 - 52) * (1 - pct / 100));
-  const g = Math.round(211 - 211 * (1 - pct / 100));
-  dom.speedBar.style.background = `rgb(${r},${g},80)`;
+  dom.speedMeterBar.style.width = `${pct}%`;
 
   if (pct > 0 && gameState.phase === 'playing') {
-    speedBarFrameId = requestAnimationFrame(drainSpeedBar);
+    speedMeterLoopId = requestAnimationFrame(updateSpeedMeter);
   }
 }
 
-function showSpeedToast(bonus) {
-  const el = dom.speedBonusToast;
-  el.textContent = `⚡ Speed Bonus +${bonus}`;
-  el.classList.remove('show');
-  void el.offsetWidth;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 900);
+function showSpeedToast(val) {
+  dom.speedToast.textContent = `⚡ SPEED +${val}`;
+  dom.speedToast.classList.remove('pop');
+  void dom.speedToast.offsetWidth;
+  dom.speedToast.classList.add('pop');
+  setTimeout(() => dom.speedToast.classList.remove('pop'), 850);
 }
 
-// ─── 12. TIMER ────────────────────────────────────────────────
+// ─── 13. HUD & SCREEN FX ─────────────────────────────────────
+function updateHUD() {
+  dom.scoreDisplay.textContent = gameState.score;
+  dom.timerDisplay.textContent = gameState.timeLeft;
+  dom.comboNum.textContent = `x${gameState.combo}`;
+
+  if (gameState.combo >= 3) {
+    dom.hudComboBox.classList.add('combo-fire');
+  } else {
+    dom.hudComboBox.classList.remove('combo-fire');
+  }
+}
+
+function triggerScoreBump() {
+  dom.hudScoreBox.classList.remove('score-pop');
+  void dom.hudScoreBox.offsetWidth;
+  dom.hudScoreBox.classList.add('score-pop');
+}
+
+function triggerScreenShake() {
+  dom.wrapper.classList.remove('screen-shake');
+  void dom.wrapper.offsetWidth;
+  dom.wrapper.classList.add('screen-shake');
+  setTimeout(() => dom.wrapper.classList.remove('screen-shake'), 400);
+}
+
+function showFloatingScore(text, refEl, type) {
+  const popup = document.createElement('div');
+  popup.className = `score-floating-text score-${type}`;
+  popup.textContent = text;
+
+  const rect = refEl.getBoundingClientRect();
+  const rRect = dom.river.getBoundingClientRect();
+  popup.style.left = `${rect.left - rRect.left + rect.width / 2}px`;
+  popup.style.top  = `${rect.top  - rRect.top}px`;
+
+  dom.river.appendChild(popup);
+  setTimeout(() => popup.parentNode && popup.parentNode.removeChild(popup), 750);
+}
+
+function spawnEnergyParticles(refEl) {
+  const rect = refEl.getBoundingClientRect();
+  const rRect = dom.river.getBoundingClientRect();
+  const cx = rect.left - rRect.left + rect.width / 2;
+  const cy = rect.top - rRect.top + rect.height / 2;
+  const colors = ['#00e5ff', '#38bdf8', '#fbbf24', '#10b981', '#ffffff'];
+
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.style.position = 'absolute';
+    p.style.width = `${randInt(4, 8)}px`;
+    p.style.height = p.style.width;
+    p.style.borderRadius = '50%';
+    p.style.backgroundColor = colors[i % colors.length];
+    p.style.boxShadow = `0 0 10px ${colors[i % colors.length]}`;
+    p.style.left = `${cx}px`;
+    p.style.top = `${cy}px`;
+    p.style.pointerEvents = 'none';
+    p.style.zIndex = '25';
+    dom.river.appendChild(p);
+
+    const angle = (Math.PI * 2 / 12) * i + Math.random() * 0.3;
+    const dist = randInt(35, 75);
+    const tx = Math.cos(angle) * dist;
+    const ty = Math.sin(angle) * dist;
+
+    p.animate([
+      { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+      { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+    ], {
+      duration: 550,
+      easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      fill: 'forwards'
+    });
+
+    setTimeout(() => p.parentNode && p.parentNode.removeChild(p), 560);
+  }
+}
+
+// ─── 14. COUNTDOWN TIMER ─────────────────────────────────────
 function startTimer() {
   gameState.timeLeft = CONFIG.GAME_DURATION;
   updateHUD();
@@ -522,8 +620,14 @@ function startTimer() {
     gameState.timeLeft--;
     updateHUD();
 
-    if (gameState.timeLeft <= 10) dom.timerDisplay.classList.add('timer-low');
-    if (gameState.timeLeft <= 0)  endGame();
+    if (gameState.timeLeft <= 10) {
+      dom.timerBadge.classList.add('timer-low');
+      playArcadeSound('tick_urgent');
+    }
+
+    if (gameState.timeLeft <= 0) {
+      endGame();
+    }
   }, 1000);
 }
 
@@ -532,14 +636,7 @@ function stopTimer() {
   gameState.timerIntervalId = null;
 }
 
-// ─── 13. HUD ──────────────────────────────────────────────────
-function updateHUD() {
-  dom.scoreDisplay.textContent = gameState.score;
-  dom.timerDisplay.textContent = gameState.timeLeft;
-  updateComboDisplay();
-}
-
-// ─── 14. GAME LOOP ────────────────────────────────────────────
+// ─── 15. MAIN PHYSICS GAME LOOP (rAF) ────────────────────────
 function gameLoop(timestamp) {
   if (gameState.phase !== 'playing') return;
 
@@ -549,16 +646,16 @@ function gameLoop(timestamp) {
 
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
-  const sz = CONFIG.FLOATER_SIZE;
+  const sz = CONFIG.ORB_SIZE;
 
   gameState.floaters.forEach(f => {
     f.x += f.vx * dt;
     f.y += f.vy * dt;
 
-    if (f.x <= 0)       { f.x = 0;        f.vx =  Math.abs(f.vx); }
-    else if (f.x >= rw - sz) { f.x = rw - sz; f.vx = -Math.abs(f.vx); }
-    if (f.y <= 0)       { f.y = 0;        f.vy =  Math.abs(f.vy); }
-    else if (f.y >= rh - sz) { f.y = rh - sz; f.vy = -Math.abs(f.vy); }
+    if (f.x <= 0)            { f.x = 0;            f.vx = Math.abs(f.vx); }
+    else if (f.x >= rw - sz) { f.x = rw - sz;     f.vx = -Math.abs(f.vx); }
+    if (f.y <= 0)            { f.y = 0;            f.vy = Math.abs(f.vy); }
+    else if (f.y >= rh - sz) { f.y = rh - sz;     f.vy = -Math.abs(f.vy); }
 
     f.el.style.left = `${f.x}px`;
     f.el.style.top  = `${f.y}px`;
@@ -577,158 +674,142 @@ function stopGameLoop() {
   gameState.animFrameId = null;
 }
 
-// ─── 15. GAME OVER ────────────────────────────────────────────
+// ─── 16. GAME OVER & RANKING ─────────────────────────────────
+function calculateRank(score, accuracy) {
+  if (score >= 400 && accuracy >= 90) return { rank: 'RANK S+', color: '#fbbf24' };
+  if (score >= 300 && accuracy >= 80) return { rank: 'RANK S',  color: '#38bdf8' };
+  if (score >= 200 && accuracy >= 70) return { rank: 'RANK A',  color: '#10b981' };
+  if (score >= 100) return { rank: 'RANK B', color: '#a855f7' };
+  return { rank: 'RANK C', color: '#94a3b8' };
+}
+
 function endGame() {
   gameState.phase = 'gameover';
   stopTimer();
   stopGameLoop();
-  cancelAnimationFrame(speedBarFrameId);
-  playSound('gameover');
+  cancelAnimationFrame(speedMeterLoopId);
 
   const totalAttempts = gameState.solved + gameState.wrongAnswers;
   const accuracy = totalAttempts > 0 ? Math.round(gameState.solved / totalAttempts * 100) : 0;
+  const isNewRecord = saveHighScoreIfRecord(gameState.score);
+
+  const rankInfo = calculateRank(gameState.score, accuracy);
+  dom.rankBadge.textContent = rankInfo.rank;
+  dom.rankBadge.style.background = rankInfo.color;
 
   dom.finalScore.textContent    = gameState.score;
   dom.finalSolved.textContent   = gameState.solved;
   dom.finalAccuracy.textContent = `${accuracy}%`;
-  dom.finalCombo.textContent    = gameState.bestCombo;
+  dom.finalCombo.textContent    = `x${gameState.bestCombo}`;
   dom.finalSpeed.textContent    = `+${gameState.bestSpeedBonus}`;
 
-  setTimeout(() => showScreen('gameover'), 500);
+  if (isNewRecord && gameState.score > 0) {
+    dom.newRecordBadge.classList.add('show');
+    playArcadeSound('gameover_record');
+  } else {
+    dom.newRecordBadge.classList.remove('show');
+    playArcadeSound('gameover');
+  }
+
+  setTimeout(() => showScreen('gameover'), 450);
 }
 
-// ─── 16. AUDIO ────────────────────────────────────────────────
+// ─── 17. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────
 let audioCtx = null;
 
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
 
-function playSound(type) {
+function playArcadeSound(type, comboLevel = 1) {
   if (gameState.isMuted) return;
   try {
-    const ctx  = getAudioCtx();
-    const osc  = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    const t = ctx.currentTime;
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
 
-    switch (type) {
-      case 'correct':
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(523, t);
-        osc.frequency.setValueAtTime(659, t + .08);
-        osc.frequency.setValueAtTime(784, t + .16);
-        gain.gain.setValueAtTime(.14, t);
-        gain.gain.exponentialRampToValueAtTime(.001, t + .38);
-        osc.start(t); osc.stop(t + .38);
-        break;
+    if (type === 'select' || type === 'click') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(type === 'select' ? 980 : 700, now);
+      gain.gain.setValueAtTime(0.06, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.05);
+    }
+    else if (type === 'correct') {
+      // Dynamic musical scale based on combo level!
+      const semitone = Math.min(comboLevel - 1, 14);
+      const baseFreq = 440 * Math.pow(2, semitone / 12); // Rising pitch
 
-      case 'wrong':
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(160, t);
-        osc.frequency.setValueAtTime(120, t + .1);
-        gain.gain.setValueAtTime(.07, t);
-        gain.gain.exponentialRampToValueAtTime(.001, t + .28);
-        osc.start(t); osc.stop(t + .28);
-        break;
-
-      case 'click':
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, t);
-        gain.gain.setValueAtTime(.05, t);
-        gain.gain.exponentialRampToValueAtTime(.001, t + .04);
-        osc.start(t); osc.stop(t + .04);
-        break;
-
-      case 'gameover':
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, t);
-        osc.frequency.exponentialRampToValueAtTime(220, t + .55);
-        gain.gain.setValueAtTime(.12, t);
-        gain.gain.exponentialRampToValueAtTime(.001, t + .65);
-        osc.start(t); osc.stop(t + .65);
-        break;
-
-      case 'speedbonus':
+      const chord = [baseFreq, baseFreq * 1.25, baseFreq * 1.5];
+      chord.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(900, t);
-        osc.frequency.setValueAtTime(1200, t + .06);
-        gain.gain.setValueAtTime(.08, t);
-        gain.gain.exponentialRampToValueAtTime(.001, t + .18);
-        osc.start(t); osc.stop(t + .18);
-        break;
+        osc.frequency.setValueAtTime(freq, now + i * 0.04);
+        gain.gain.setValueAtTime(0.12, now + i * 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35 + i * 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.04);
+        osc.stop(now + 0.38 + i * 0.04);
+      });
     }
-  } catch (_) { /* fail silently */ }
-}
-
-// ─── 17. SCORE POPUP & PARTICLES (JS / CSS1 & CSS2) ──────────
-function showScorePopup(text, refEl, type) {
-  const popup = document.createElement('div');
-  popup.className = `score-popup popup-${type}`;
-  popup.textContent = text;
-
-  const rect = refEl.getBoundingClientRect();
-  const rRect = dom.river.getBoundingClientRect();
-  let topPos = rect.top - rRect.top;
-  popup.style.left = `${rect.left - rRect.left + rect.width / 2}px`;
-  popup.style.top  = `${topPos}px`;
-
-  dom.river.appendChild(popup);
-
-  let step = 0;
-  const interval = setInterval(() => {
-    step++;
-    topPos -= 2;
-    popup.style.top = `${topPos}px`;
-    if (step >= 15) {
-      clearInterval(interval);
-      if (popup.parentNode) popup.parentNode.removeChild(popup);
+    else if (type === 'wrong') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.linearRampToValueAtTime(90, now + 0.22);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.25);
     }
-  }, 30);
+    else if (type === 'tick_urgent') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(1100, now);
+      gain.gain.setValueAtTime(0.03, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.03);
+    }
+    else if (type === 'gameover' || type === 'gameover_record') {
+      const notes = type === 'gameover_record' ? [523, 659, 784, 1046] : [440, 392, 349, 293];
+      notes.forEach((f, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, now + idx * 0.12);
+        gain.gain.setValueAtTime(0.14, now + idx * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (idx + 1) * 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + idx * 0.12);
+        osc.stop(now + (idx + 1) * 0.22);
+      });
+    }
+  } catch (_) {}
 }
 
-function spawnParticles(refEl) {
-  const rect  = refEl.getBoundingClientRect();
-  const rRect = dom.river.getBoundingClientRect();
-  const cx = rect.left - rRect.left + rect.width  / 2;
-  const cy = rect.top  - rRect.top  + rect.height / 2;
-  const colors = ['#34d399', '#38bdf8', '#fbbf24', '#818cf8'];
-
-  for (let i = 0; i < 8; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.backgroundColor = colors[i % colors.length];
-    p.style.left = `${cx}px`;
-    p.style.top  = `${cy}px`;
-    dom.river.appendChild(p);
-
-    const angle = (Math.PI * 2 / 8) * i;
-    const dist  = 25 + Math.random() * 25;
-    const tx = Math.cos(angle) * dist;
-    const ty = Math.sin(angle) * dist;
-
-    let step = 0;
-    const interval = setInterval(() => {
-      step++;
-      p.style.left = `${cx + (tx * step / 10)}px`;
-      p.style.top  = `${cy + (ty * step / 10)}px`;
-      if (step >= 10) {
-        clearInterval(interval);
-        if (p.parentNode) p.parentNode.removeChild(p);
-      }
-    }, 30);
-  }
-}
-
-// ─── 18. GAME START / RESET ───────────────────────────────────
+// ─── 18. GAME CONTROLS & FLOW ────────────────────────────────
 function startGame() {
   resetState();
   gameState.phase = 'playing';
-  dom.river.innerHTML = '';
-  dom.timerDisplay.classList.remove('timer-low');
-  dom.hudCombo.classList.remove('on-fire');
+  dom.river.innerHTML = '<div class="river-stream-overlay"></div>';
+  dom.timerBadge.classList.remove('timer-low');
+  dom.hudComboBox.classList.remove('combo-fire');
   showScreen('game');
   updateHUD();
   generateQuestion();
@@ -757,14 +838,8 @@ function resetState() {
   gameState.bestSpeedBonus  = 0;
 }
 
-// ─── UTILITY ──────────────────────────────────────────────────
-function randInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// ─── EVENT LISTENERS ──────────────────────────────────────────
-
-// Mode selector cards
+// ─── 19. EVENT LISTENERS ─────────────────────────────────────
+// Mode Cards
 dom.modeGrid.addEventListener('click', e => {
   const card = e.target.closest('.mode-card');
   if (!card) return;
@@ -775,6 +850,7 @@ dom.modeGrid.addEventListener('click', e => {
   card.classList.add('active');
   card.setAttribute('aria-pressed', 'true');
   gameState.mode = card.dataset.mode;
+  playArcadeSound('click');
 });
 
 dom.startBtn.addEventListener('click', startGame);
@@ -782,26 +858,38 @@ dom.playAgainBtn.addEventListener('click', startGame);
 
 dom.menuBtn.addEventListener('click', () => {
   resetState();
-  dom.river.innerHTML = '';
-  cancelAnimationFrame(speedBarFrameId);
+  loadHighScore();
+  dom.river.innerHTML = '<div class="river-stream-overlay"></div>';
+  cancelAnimationFrame(speedMeterLoopId);
   showScreen('start');
 });
 
 dom.soundToggle.addEventListener('click', () => {
   gameState.isMuted = !gameState.isMuted;
-  dom.soundToggle.textContent = gameState.isMuted ? '🔇' : '🔊';
-  dom.soundToggle.setAttribute('aria-label', gameState.isMuted ? 'Unmute' : 'Mute');
+  dom.soundIcon.textContent = gameState.isMuted ? '🔇' : '🔊';
+  dom.soundToggle.setAttribute('aria-label', gameState.isMuted ? 'Unmute sound' : 'Mute sound');
 });
 
-// Keyboard accessibility
+// Spacebar / Enter hotkeys
 document.addEventListener('keydown', e => {
-  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement.classList.contains('btn')) {
-    document.activeElement.click();
+  if (e.code === 'Space' || e.code === 'Enter') {
+    if (gameState.phase === 'menu') {
+      e.preventDefault();
+      startGame();
+    } else if (gameState.phase === 'gameover') {
+      e.preventDefault();
+      startGame();
+    }
   }
 });
 
-// Prevent double-tap zoom on river
-dom.river.addEventListener('touchend', e => e.preventDefault(), { passive: false });
+// Utility
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-// ─── INIT ─────────────────────────────────────────────────────
+// ─── INITIALIZATION ──────────────────────────────────────────
+initAmbientCanvas();
+renderAmbientParticles();
+loadHighScore();
 showScreen('start');

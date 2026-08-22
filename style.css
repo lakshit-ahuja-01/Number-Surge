@@ -87,7 +87,7 @@ body.theme-robotics #ambient-canvas {
 
 /* ─── Screen Manager ───────────────────────────────────── */
 .screen {
-  display: none;
+  display: none !important;
   position: absolute;
   inset: 0;
   width: 100%;

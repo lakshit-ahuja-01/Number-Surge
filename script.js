@@ -726,10 +726,24 @@ function buyOrEquipSkin(skinId) {
 
 // ─── 8. SCREEN MANAGEMENT ────────────────────────────────────
 function showScreen(name) {
-  [dom.startScreen, dom.gameScreen, dom.gameoverScreen].forEach(s => s.classList.remove('active'));
-  if (name === 'start') dom.startScreen.classList.add('active');
-  if (name === 'game')  dom.gameScreen.classList.add('active');
-  if (name === 'gameover') dom.gameoverScreen.classList.add('active');
+  const screens = [dom.startScreen, dom.gameScreen, dom.gameoverScreen];
+  screens.forEach(s => {
+    if (s) {
+      s.classList.remove('active');
+      s.style.display = 'none';
+    }
+  });
+
+  if (name === 'start' && dom.startScreen) {
+    dom.startScreen.classList.add('active');
+    dom.startScreen.style.display = 'flex';
+  } else if (name === 'game' && dom.gameScreen) {
+    dom.gameScreen.classList.add('active');
+    dom.gameScreen.style.display = 'flex';
+  } else if (name === 'gameover' && dom.gameoverScreen) {
+    dom.gameoverScreen.classList.add('active');
+    dom.gameoverScreen.style.display = 'flex';
+  }
 }
 
 function getEffectiveSpeedWindow() {

@@ -158,7 +158,7 @@ const UPGRADES_CONFIG = {
 
 const SKINS_CONFIG = {
   classic: { name: 'CLASSIC BUBBLE', cost: 0 },
-  candy:   { name: 'CANDY SWIRL',    cost: 150 },
+  candy:   { name: 'CANDY SWIRL',    cost: 50 },
   cyber:   { name: 'CYBER NEON',     cost: 100 },
   magma:   { name: 'MAGMA SURGE',    cost: 200 },
   frost:   { name: 'GLACIAL FROST',  cost: 300 },

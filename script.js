@@ -452,10 +452,28 @@ let matrixDrops = [];
 const MATRIX_CHARS = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ+-*/=><^$#%@&';
 const MATRIX_FONT_SIZE = 14;
 
+function resizeAmbientCanvas() {
+  if (!ambientCanvas) return;
+  const w = window.innerWidth || document.documentElement.clientWidth || 1280;
+  const h = window.innerHeight || document.documentElement.clientHeight || 720;
+  
+  if (ambientCanvas.width !== w || ambientCanvas.height !== h) {
+    ambientCanvas.width = w;
+    ambientCanvas.height = h;
+  }
+
+  const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+  if (matrixDrops.length < columns) {
+    const start = matrixDrops.length;
+    for (let i = start; i < columns; i++) {
+      matrixDrops[i] = Math.floor(Math.random() * (ambientCanvas.height / MATRIX_FONT_SIZE * -1));
+    }
+  }
+}
+
 function initAmbientCanvas() {
   if (!ambientCanvas) return;
-  ambientCanvas.width = window.innerWidth;
-  ambientCanvas.height = window.innerHeight;
+  resizeAmbientCanvas();
   
   const colors = [
     'rgba(255, 107, 138, 0.45)', // Pink
@@ -479,11 +497,11 @@ function initAmbientCanvas() {
     });
   }
 
-  // Initialize Matrix columns
+  // Initialize Matrix columns across full width
   const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
   matrixDrops = [];
   for (let i = 0; i < columns; i++) {
-    matrixDrops[i] = Math.floor(Math.random() * -60);
+    matrixDrops[i] = Math.floor(Math.random() * (ambientCanvas.height / MATRIX_FONT_SIZE * -1));
   }
 }
 
@@ -494,25 +512,31 @@ function renderAmbientParticles(timestamp = 0) {
 
   if (gameState.theme === 'robotics') {
     if (gameState.phase === 'playing') {
-      // MATRIX DIGITAL RAIN (Active Gameplay Arena)
+      // MATRIX DIGITAL RAIN (Active Gameplay Arena across full viewport)
+      resizeAmbientCanvas();
+
       if (!lastMatrixFrame) lastMatrixFrame = timestamp;
       const elapsed = timestamp - lastMatrixFrame;
       
-      if (elapsed > 35) {
+      if (elapsed > 33) {
         lastMatrixFrame = timestamp;
-        ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.14)';
+        ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.16)';
         ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
         ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
 
-        for (let i = 0; i < matrixDrops.length; i++) {
+        const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+        for (let i = 0; i < columns; i++) {
+          if (matrixDrops[i] === undefined) {
+            matrixDrops[i] = Math.floor(Math.random() * -30);
+          }
           const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
           const x = i * MATRIX_FONT_SIZE;
           const y = matrixDrops[i] * MATRIX_FONT_SIZE;
 
-          if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE) {
+          if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE * 2) {
             // Leading glyph is bright glowing white/cyan, body is matrix neon green
-            const isLead = Math.random() > 0.88;
+            const isLead = Math.random() > 0.86;
             ambientCtx.fillStyle = isLead ? '#ffffff' : (i % 4 === 0 ? '#00f2fe' : '#00ff88');
             ambientCtx.shadowColor = isLead ? '#00f2fe' : '#00ff88';
             ambientCtx.shadowBlur = isLead ? 6 : 3;
@@ -559,10 +583,7 @@ function renderAmbientParticles(timestamp = 0) {
 }
 
 window.addEventListener('resize', () => {
-  if (ambientCanvas) {
-    ambientCanvas.width = window.innerWidth;
-    ambientCanvas.height = window.innerHeight;
-  }
+  resizeAmbientCanvas();
 });
 
 // ─── 6. LOCAL & CLOUD STORAGE HIGH SCORE ────────────────────

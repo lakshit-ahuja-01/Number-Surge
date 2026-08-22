@@ -1515,22 +1515,30 @@ html, body {
 
 /* ── 1. Strawberry Bubble ── */
 .orb-amber {
-  background: #ff6b8a;
+  background: radial-gradient(circle at 35% 35%, #ff8da6 0%, #ff6b8a 60%, #e84865 100%);
+  border-color: #ff477e;
+  box-shadow: 0 5px 14px rgba(255, 107, 138, 0.35), 0 3px 0 #c13055;
 }
 
 /* ── 2. Mint Green Bubble ── */
 .orb-emerald {
-  background: #2ed573;
+  background: radial-gradient(circle at 35% 35%, #55e695 0%, #2ed573 60%, #1db85b 100%);
+  border-color: #20bf6b;
+  box-shadow: 0 5px 14px rgba(46, 213, 115, 0.35), 0 3px 0 #139746;
 }
 
 /* ── 3. Grape Purple Bubble ── */
 .orb-violet {
-  background: #a55eea;
+  background: radial-gradient(circle at 35% 35%, #ba7eff 0%, #a55eea 60%, #8839d4 100%);
+  border-color: #8854d0;
+  box-shadow: 0 5px 14px rgba(165, 94, 234, 0.35), 0 3px 0 #7227b8;
 }
 
 /* ── 4. Juicy Orange Bubble ── */
 .orb-coral {
-  background: #ff9f43;
+  background: radial-gradient(circle at 35% 35%, #ffb669 0%, #ff9f43 60%, #e67e22 100%);
+  border-color: #fa8231;
+  box-shadow: 0 5px 14px rgba(255, 159, 67, 0.35), 0 3px 0 #cc6600;
 }
 
 /* Custom Equipped Orb Skin Classes */
@@ -2077,6 +2085,12 @@ html, body {
   z-index: 4;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(0, 0, 0, 0.5);
   pointer-events: none;
+}
+
+.skin-classic {
+  background: radial-gradient(circle at 35% 35%, #ff8da6 0%, #ff6b8a 60%, #e84865 100%);
+  border: 3px solid #ff477e;
+  box-shadow: 0 4px 12px rgba(255, 107, 138, 0.45);
 }
 
 .skin-candy {
@@ -3729,37 +3743,31 @@ body.theme-robotics .btn-revive .reward-content {
   font-weight: 800;
 }
 
-.arcade-mode-selector { grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.arcade-mode-selector { grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; }
 .arcade-card {
-  min-height: 150px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0;
-  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 158px;
+  padding: 14px 12px 12px;
   overflow: visible;
   border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 14px;
+  border-radius: 20px;
   background: linear-gradient(145deg, rgba(57, 50, 97, 0.94), rgba(26, 23, 53, 0.96));
   box-shadow: 0 8px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
   color: var(--launch-ink);
-  text-align: left;
+  text-align: center;
+  box-sizing: border-box;
 }
 .arcade-card::after {
-  content: '';
-  position: absolute;
-  right: 12px;
-  bottom: 11px;
-  width: 20px;
-  height: 20px;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-  opacity: .34;
+  display: none;
 }
 .arcade-card:hover, .arcade-card:nth-child(even):hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 28px rgba(0,0,0,.27), inset 0 1px 0 rgba(255,255,255,.13);
 }
-.arcade-card:hover .card-glyph { transform: none; }
+.arcade-card:hover .card-glyph { transform: scale(1.08); }
 .arcade-card.active, .arcade-card.active:hover {
   transform: translateY(-2px);
   border-color: currentColor;
@@ -3768,30 +3776,43 @@ body.theme-robotics .btn-revive .reward-content {
 .card-glow-bg { display: none; }
 .card-pill {
   order: 0;
-  padding: 0;
-  background: transparent !important;
+  padding: 4px 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1) !important;
   box-shadow: none;
   color: currentColor !important;
   font-size: 9px;
   letter-spacing: .1em;
+  text-align: center;
 }
 .card-glyph {
   order: 1;
-  margin: 11px 0 auto;
+  margin: 9px auto auto;
   color: currentColor !important;
-  font-size: 34px;
+  font-size: 36px;
   filter: none;
+  text-align: center;
+  transition: transform 0.18s ease;
 }
-.card-info { order: 2; align-items: flex-start; gap: 3px; }
-.card-name { color: #fff !important; text-shadow: none !important; font-size: 13px; letter-spacing: .03em; }
-.card-tagline { display: block; color: var(--launch-muted) !important; font-family: var(--font-body); font-size: 11px; font-weight: 700; line-height: 1.2; }
+.card-info {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  gap: 3px;
+}
+.card-name { color: #fff !important; text-shadow: none !important; font-size: 13px; letter-spacing: .03em; text-align: center; }
+.card-tagline { display: block; color: var(--launch-muted) !important; font-family: var(--font-body); font-size: 11px; font-weight: 700; line-height: 1.2; text-align: center; }
 .mode-add { color: #7cf5b7; }
 .mode-sub { color: #ffb36e; }
 .mode-mult { color: #cf9bff; }
 .mode-div { color: #ff91ab; }
+.mode-pow { color: #00f2fe; }
 .mode-mix { color: #ffe578; }
-.mode-add, .mode-sub, .mode-mult, .mode-div, .mode-mix { border-color: rgba(255,255,255,.13); box-shadow: 0 8px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08); }
-.mode-add.active, .mode-sub.active, .mode-mult.active, .mode-div.active, .mode-mix.active { background: linear-gradient(145deg, rgba(72, 65, 114, .96), rgba(29, 26, 58, .98)); }
+.mode-add, .mode-sub, .mode-mult, .mode-div, .mode-pow, .mode-mix { border-color: rgba(255,255,255,.13); box-shadow: 0 8px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08); }
+.mode-add.active, .mode-sub.active, .mode-mult.active, .mode-div.active, .mode-pow.active, .mode-mix.active { background: linear-gradient(145deg, rgba(72, 65, 114, .96), rgba(29, 26, 58, .98)); }
 .card-check-tag { display: none; }
 
 .arcade-settings-bar {
@@ -4074,39 +4095,44 @@ body.theme-robotics .selection-status {
 }
 body.theme-robotics .launch-step.is-current { color: #a4ffe0; }
 body.theme-robotics .launch-step.is-current b { color: #00f2fe; }
+body.theme-robotics .arcade-mode-selector { grid-template-columns: repeat(6, 1fr); gap: 8px; }
 body.theme-robotics .arcade-card {
-  min-height: 156px;
-  padding: 13px;
-  border-color: rgba(96, 177, 222, .2);
+  min-height: 158px;
+  padding: 14px 10px 12px;
+  border: 1px solid rgba(96, 177, 222, .24);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(15, 35, 57, .96), rgba(6, 17, 32, .98));
   box-shadow: 0 8px 0 #030b14, 0 13px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(118,225,255,.1);
 }
-body.theme-robotics .arcade-card::before {
-  content: '';
-  position: absolute;
-  inset: 7px;
-  pointer-events: none;
-  border-top: 1px solid rgba(0, 242, 254, .16);
-  border-left: 1px solid rgba(0, 242, 254, .16);
-}
-body.theme-robotics .arcade-card::after {
-  display: block;
-  right: 8px;
-  bottom: 8px;
-  width: 12px;
-  height: 12px;
-  color: currentColor;
-  opacity: .55;
-}
+body.theme-robotics .arcade-card::before { display: none; }
+body.theme-robotics .arcade-card::after { display: none; }
 body.theme-robotics .arcade-card.active,
 body.theme-robotics .arcade-card.active:hover {
-  box-shadow: 0 0 0 1px currentColor, 0 7px 0 #030b14, 0 0 22px color-mix(in srgb, currentColor 27%, transparent), inset 0 1px 0 rgba(198,255,255,.22);
+  background: linear-gradient(145deg, rgba(15, 49, 70, .98), rgba(5, 23, 38, 1));
+  box-shadow: 0 0 0 2px currentColor, 0 7px 0 #030b14, 0 0 22px color-mix(in srgb, currentColor 27%, transparent), inset 0 1px 0 rgba(198,255,255,.22);
 }
 body.theme-robotics .arcade-card:hover,
-body.theme-robotics .arcade-card:nth-child(even):hover { transform: translateY(-3px); }
-body.theme-robotics .card-pill { font-size: 8px; letter-spacing: .13em; }
-body.theme-robotics .card-glyph { font-size: 32px; margin: 12px 0 auto; }
-body.theme-robotics .card-name { font-size: 12px; letter-spacing: .06em; }
-body.theme-robotics .card-tagline { font-size: 11px; color: #91a8be !important; }
+body.theme-robotics .arcade-card:nth-child(even):hover { transform: translateY(-4px); }
+body.theme-robotics .card-pill {
+  padding: 4px 8px;
+  border-radius: 99px;
+  background: rgba(0, 242, 254, .08) !important;
+  border: 1px solid rgba(0, 242, 254, .2);
+  font-size: 8px;
+  letter-spacing: .13em;
+}
+body.theme-robotics .card-glyph {
+  font-size: 36px;
+  margin: 9px auto auto;
+  filter: drop-shadow(0 0 12px currentColor);
+}
+body.theme-robotics .card-info {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+body.theme-robotics .card-name { font-size: 13px; letter-spacing: .06em; text-align: center; }
+body.theme-robotics .card-tagline { font-size: 11px; color: #91a8be !important; text-align: center; }
 body.theme-robotics .arcade-settings-bar { border-radius: 8px; border-color: rgba(0,242,254,.24); }
 body.theme-robotics .settings-group-title { color: #84eaff; letter-spacing: .14em; }
 body.theme-robotics .time-chip { border-radius: 5px; }
@@ -4301,6 +4327,8 @@ body:not(.theme-robotics) .u-buy-btn { min-width: 68px; border: 2px solid #f3bb3
 .skin-preview::before { inset: 5px; z-index: 1; border-radius: inherit; }
 .skin-preview::after { z-index: 2; }
 .skin-preview .bubble-num { z-index: 4; }
+.skin-classic { border-color: #ff477e; background: radial-gradient(circle at 35% 35%, #ff8da6 0%, #ff6b8a 60%, #e84865 100%); box-shadow: 0 4px 12px rgba(255, 107, 138, 0.45); }
+body.theme-robotics .skin-classic { border-color: #00f2fe; background: radial-gradient(circle at 35% 35%, #00f2fe 0%, #0284c7 60%, #0f172a 100%); box-shadow: 0 0 14px rgba(0, 242, 254, 0.6), inset 0 0 10px rgba(0, 242, 254, 0.3); }
 .skin-candy { border-color: #f14d7d; background: conic-gradient(from 25deg, #ff6f99, #ffb14a, #ffde71, #ff6f99); }
 .skin-candy::before { background: repeating-linear-gradient(-44deg, rgba(255,255,255,.36) 0 5px, transparent 5px 13px); }
 .skin-cyber { border-color: #00f2fe; background: radial-gradient(circle at 50% 50%, #173c5b 0 27%, #07111d 29% 56%, #00d2df 57% 60%, #07111d 61%); }

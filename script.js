@@ -157,19 +157,40 @@ const UPGRADES_CONFIG = {
 };
 
 const SKINS_CONFIG = {
-  candy:  { name: 'CANDY BUBBLE', cost: 0 },
-  cyber:  { name: 'CYBER NEON',   cost: 100 },
-  magma:  { name: 'MAGMA SURGE',  cost: 200 },
-  frost:  { name: 'GLACIAL FROST',cost: 300 },
-  gold:   { name: 'GOLDEN ROYALE',cost: 500 },
-  galaxy: { name: 'GALAXY NEBULA',cost: 750 },
+  classic: { name: 'CLASSIC BUBBLE', cost: 0 },
+  candy:   { name: 'CANDY SWIRL',    cost: 50 },
+  cyber:   { name: 'CYBER NEON',     cost: 100 },
+  magma:   { name: 'MAGMA SURGE',    cost: 200 },
+  frost:   { name: 'GLACIAL FROST',  cost: 300 },
+  gold:    { name: 'GOLDEN ROYALE',  cost: 500 },
+  galaxy:  { name: 'GALAXY NEBULA',  cost: 750 },
 };
+
+// Migration: Ensure 'classic' is the sole free default, and 'candy' requires purchase (50 coins)
+let savedOwnedSkins = JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["classic"]');
+const hasMigratedSkinsV2 = localStorage.getItem('number_surge_skins_v2_migrated');
+
+if (!hasMigratedSkinsV2) {
+  // Remove legacy free candy default so it displays purchase cost of 50 coins
+  savedOwnedSkins = savedOwnedSkins.filter(s => s !== 'candy');
+  if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
+  localStorage.setItem('number_surge_owned_skins', JSON.stringify(savedOwnedSkins));
+  localStorage.setItem('number_surge_active_skin', 'classic');
+  localStorage.setItem('number_surge_skins_v2_migrated', 'true');
+}
+
+if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
+
+let savedActiveSkin = localStorage.getItem('number_surge_active_skin') || 'classic';
+if (!savedOwnedSkins.includes(savedActiveSkin)) {
+  savedActiveSkin = 'classic';
+}
 
 const economy = {
   coins: parseInt(localStorage.getItem('number_surge_coins') || '0', 10),
   upgrades: JSON.parse(localStorage.getItem('number_surge_upgrades') || '{"timeBoost":0,"comboShield":0,"speedBoost":0,"coinMult":0}'),
-  ownedSkins: JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["candy"]'),
-  activeSkin: localStorage.getItem('number_surge_active_skin') || 'candy',
+  ownedSkins: savedOwnedSkins,
+  activeSkin: savedActiveSkin,
 };
 
 // ─── 5. CRAZYGAMES SDK V3 MANAGER ────────────────────────────
@@ -503,9 +524,11 @@ function applyEquippedSkin(skinId) {
   economy.activeSkin = skinId;
   saveEconomy();
 
-  const skinClasses = ['skin-applied-candy', 'skin-applied-cyber', 'skin-applied-magma', 'skin-applied-frost', 'skin-applied-gold', 'skin-applied-galaxy'];
+  const skinClasses = ['skin-applied-classic', 'skin-applied-candy', 'skin-applied-cyber', 'skin-applied-magma', 'skin-applied-frost', 'skin-applied-gold', 'skin-applied-galaxy'];
   skinClasses.forEach(cls => dom.river && dom.river.classList.remove(cls));
-  if (dom.river) dom.river.classList.add(`skin-applied-${skinId}`);
+  if (skinId !== 'classic' && dom.river) {
+    dom.river.classList.add(`skin-applied-${skinId}`);
+  }
 }
 
 function renderShopUI() {
@@ -1680,6 +1703,7 @@ const themeTranslations = {
     '#close-how-to-play-btn .play-btn-content': '🚀 GOT IT, LET\'S PLAY!',
     '#shop-btn .nav-label': 'UPGRADES', '#shop-title': 'SURGE SHOP',
     '#close-shop-btn .play-btn-content': '🚀 BACK TO GAME',
+    '.skin-classic-icon': '🍓', '.skin-classic-name': 'CLASSIC BUBBLE',
     '.mode-add .card-pill': 'BERRY ADD', '.mode-add .card-tagline': 'Make a tasty total!',
     '.mode-sub .card-pill': 'LEMON SUB', '.mode-sub .card-tagline': 'Take a little away!',
     '.mode-mult .card-pill': 'GRAPE MULTIPLY', '.mode-mult .card-tagline': 'Make numbers grow!',
@@ -1709,6 +1733,7 @@ const themeTranslations = {
     '#close-how-to-play-btn .play-btn-content': '⚡ PROTOCOL ACKNOWLEDGED',
     '#shop-btn .nav-label': 'UPGRADES', '#shop-title': 'SYSTEM UPGRADES',
     '#close-shop-btn .play-btn-content': '⚡ RETURN TO CONSOLE',
+    '.skin-classic-icon': '🤖', '.skin-classic-name': 'CLASSIC CORE',
     '.mode-add .card-pill': 'ADD · 01', '.mode-add .card-tagline': 'System sum',
     '.mode-sub .card-pill': 'SUBTRACT · 02', '.mode-sub .card-tagline': 'Drain core',
     '.mode-mult .card-pill': 'MULTIPLY · 03', '.mode-mult .card-tagline': 'Overclock',

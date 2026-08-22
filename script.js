@@ -184,6 +184,10 @@ const dom = {
   pauseMenuBtn:    document.getElementById('pause-menu-btn'),
   pauseModal:      document.getElementById('pause-modal'),
 
+  howToPlayBtn:      document.getElementById('how-to-play-btn'),
+  howToPlayModal:    document.getElementById('how-to-play-modal'),
+  closeHowToPlayBtn: document.getElementById('close-how-to-play-btn'),
+
   finalScore:      document.getElementById('final-score'),
   finalSolved:     document.getElementById('final-solved'),
   finalAccuracy:   document.getElementById('final-accuracy'),
@@ -193,10 +197,13 @@ const dom = {
   newRecordBadge:  document.getElementById('new-record-badge'),
 };
 
-// ─── 5. AMBIENT BACKGROUND PARTICLES CANVAS ──────────────────
+// ─── 5. AMBIENT BACKGROUND PARTICLES & MATRIX CANVAS ──────────
 const ambientCanvas = document.getElementById('ambient-canvas');
 const ambientCtx = ambientCanvas ? ambientCanvas.getContext('2d') : null;
 let ambientParticles = [];
+let matrixDrops = [];
+const MATRIX_CHARS = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ+-*/=><^$#%@&';
+const MATRIX_FONT_SIZE = 14;
 
 function initAmbientCanvas() {
   if (!ambientCanvas) return;
@@ -224,31 +231,82 @@ function initAmbientCanvas() {
       alpha: Math.random() * 0.5 + 0.3,
     });
   }
+
+  // Initialize Matrix columns
+  const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+  matrixDrops = [];
+  for (let i = 0; i < columns; i++) {
+    matrixDrops[i] = Math.floor(Math.random() * -60);
+  }
 }
 
-function renderAmbientParticles() {
+let lastMatrixFrame = 0;
+
+function renderAmbientParticles(timestamp = 0) {
   if (!ambientCtx || !ambientCanvas) return;
-  ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
-  ambientParticles.forEach(p => {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.y + p.radius < 0) { p.y = ambientCanvas.height + p.radius; p.x = Math.random() * ambientCanvas.width; }
-    if (p.x + p.radius < 0) p.x = ambientCanvas.width + p.radius;
-    if (p.x - p.radius > ambientCanvas.width) p.x = -p.radius;
+  if (gameState.theme === 'robotics') {
+    if (gameState.phase === 'playing') {
+      // MATRIX DIGITAL RAIN (Active Gameplay Arena)
+      if (!lastMatrixFrame) lastMatrixFrame = timestamp;
+      const elapsed = timestamp - lastMatrixFrame;
+      
+      if (elapsed > 35) {
+        lastMatrixFrame = timestamp;
+        ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.14)';
+        ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
-    // Pastel Bubble
-    ambientCtx.beginPath();
-    ambientCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-    ambientCtx.fillStyle = p.color;
-    ambientCtx.fill();
+        ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
 
-    // Bubble shine
-    ambientCtx.beginPath();
-    ambientCtx.arc(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.28, 0, Math.PI * 2);
-    ambientCtx.fillStyle = 'rgba(255, 255, 255, 0.65)';
-    ambientCtx.fill();
-  });
+        for (let i = 0; i < matrixDrops.length; i++) {
+          const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+          const x = i * MATRIX_FONT_SIZE;
+          const y = matrixDrops[i] * MATRIX_FONT_SIZE;
+
+          if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE) {
+            // Leading glyph is bright glowing white/cyan, body is matrix neon green
+            const isLead = Math.random() > 0.88;
+            ambientCtx.fillStyle = isLead ? '#ffffff' : (i % 4 === 0 ? '#00f2fe' : '#00ff88');
+            ambientCtx.shadowColor = isLead ? '#00f2fe' : '#00ff88';
+            ambientCtx.shadowBlur = isLead ? 6 : 3;
+            ambientCtx.fillText(char, x, y);
+            ambientCtx.shadowBlur = 0;
+          }
+
+          if (y > ambientCanvas.height && Math.random() > 0.975) {
+            matrixDrops[i] = 0;
+          }
+          matrixDrops[i]++;
+        }
+      }
+    } else {
+      // On menu / setup screens, clear canvas so home menu remains clean and uncluttered
+      ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+    }
+  } else {
+    // PASTEL FLOATING BUBBLES (Kids Candy Theme)
+    ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+
+    ambientParticles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.y + p.radius < 0) { p.y = ambientCanvas.height + p.radius; p.x = Math.random() * ambientCanvas.width; }
+      if (p.x + p.radius < 0) p.x = ambientCanvas.width + p.radius;
+      if (p.x - p.radius > ambientCanvas.width) p.x = -p.radius;
+
+      // Pastel Bubble
+      ambientCtx.beginPath();
+      ambientCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ambientCtx.fillStyle = p.color;
+      ambientCtx.fill();
+
+      // Bubble shine
+      ambientCtx.beginPath();
+      ambientCtx.arc(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.28, 0, Math.PI * 2);
+      ambientCtx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+      ambientCtx.fill();
+    });
+  }
 
   requestAnimationFrame(renderAmbientParticles);
 }
@@ -400,7 +458,7 @@ function createOrbFloater(value) {
 }
 
 function clearAllFloaters() {
-  gameState.floaters.forEach(f => f.el.parentNode && f.el.parentNode.removeChild(f.el));
+  document.querySelectorAll('.orb-floater').forEach(el => el.remove());
   gameState.floaters = [];
   gameState.selected = [];
 }
@@ -691,7 +749,7 @@ function startTimer() {
   updateHUD();
 
   gameState.timerIntervalId = setInterval(() => {
-    if (gameState.isPaused) return;
+    if (gameState.phase !== 'playing' || gameState.isPaused) return;
     gameState.timeLeft--;
     updateHUD();
 
@@ -701,6 +759,7 @@ function startTimer() {
     }
 
     if (gameState.timeLeft <= 0) {
+      stopTimer();
       endGame();
     }
   }, 1000);
@@ -777,14 +836,39 @@ function calculateRank(score, accuracy) {
   }
 }
 
-let gameoverAudioTimeout = null;
+function stopAllAudio() {
+  if (audioCtx && masterGainNode) {
+    try {
+      masterGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+      masterGainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+      setTimeout(() => {
+        if (masterGainNode && audioCtx && !gameState.isMuted) {
+          masterGainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+        }
+      }, 80);
+    } catch (_) {}
+  }
+}
+
+function triggerCMGEvent(eventType) {
+  try {
+    if (window.parent && typeof window.parent.cmg_game_event === 'function') {
+      window.parent.cmg_game_event(eventType);
+    } else if (typeof window.cmg_game_event === 'function') {
+      window.cmg_game_event(eventType);
+    }
+  } catch (_) {}
+}
 
 function endGame() {
+  if (gameState.phase !== 'playing') return;
   gameState.phase = 'gameover';
   stopTimer();
   stopGameLoop();
   cancelAnimationFrame(speedMeterLoopId);
   clearAllFloaters();
+  stopAllAudio();
+  triggerCMGEvent('gameover');
 
   const totalAttempts = gameState.solved + gameState.wrongAnswers;
   const accuracy = totalAttempts > 0 ? Math.round(gameState.solved / totalAttempts * 100) : 0;
@@ -802,20 +886,11 @@ function endGame() {
 
   if (isNewRecord && gameState.score > 0) {
     dom.newRecordBadge.classList.add('show');
-    playArcadeSound('gameover_record');
   } else {
     dom.newRecordBadge.classList.remove('show');
-    playArcadeSound('gameover');
   }
 
   setTimeout(() => showScreen('gameover'), 350);
-
-  if (gameoverAudioTimeout) clearTimeout(gameoverAudioTimeout);
-  gameoverAudioTimeout = setTimeout(() => {
-    if (masterGainNode && audioCtx) {
-      masterGainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-    }
-  }, 3000);
 }
 
 // ─── 17. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────
@@ -940,23 +1015,34 @@ function playArcadeSound(type, comboLevel = 1) {
 
 // ─── 18. GAME CONTROLS & FLOW ────────────────────────────────
 function startGame() {
-  if (gameState.phase === 'playing') return; // Prevent double initialization
   resetState();
   gameState.phase = 'playing';
   clearAllFloaters();
-  dom.timerBadge.classList.remove('timer-low');
-  dom.hudComboBox.classList.remove('combo-fire');
+  if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
+  if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
+  if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
   showScreen('game');
   updateHUD();
   generateQuestion();
   startTimer();
   startGameLoop();
+  playArcadeSound('select');
+  triggerCMGEvent('start');
 }
 
 function resetState() {
+  stopTimer();
+  stopGameLoop();
+  if (typeof cancelAnimationFrame === 'function' && speedMeterLoopId) {
+    cancelAnimationFrame(speedMeterLoopId);
+    speedMeterLoopId = null;
+  }
+  clearAllFloaters();
+
   gameState.phase           = 'menu';
+  gameState.isPaused        = false;
   gameState.score           = 0;
-  gameState.timeLeft        = CONFIG.GAME_DURATION;
+  gameState.timeLeft        = gameState.duration || CONFIG.GAME_DURATION;
   gameState.combo           = 0;
   gameState.bestCombo       = 0;
   gameState.solved          = 0;
@@ -973,10 +1059,10 @@ function resetState() {
   gameState.questionStartMs = 0;
   gameState.bestSpeedBonus  = 0;
   
-  if (gameoverAudioTimeout) {
-    clearTimeout(gameoverAudioTimeout);
-    gameoverAudioTimeout = null;
-  }
+  if (dom.pauseModal) dom.pauseModal.classList.remove('active');
+  if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
+  if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
+  if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
 }
 
 function togglePause() {
@@ -985,14 +1071,37 @@ function togglePause() {
   if (gameState.isPaused) {
     if (dom.pauseModal) dom.pauseModal.classList.add('active');
     playArcadeSound('click');
+    triggerCMGEvent('pause');
   } else {
     if (dom.pauseModal) dom.pauseModal.classList.remove('active');
     playArcadeSound('select');
+    triggerCMGEvent('resume');
   }
 }
 
 // ─── 19. EVENT LISTENERS ─────────────────────────────────────
-// Pause Controls
+// Pause & How to Play Controls
+if (dom.howToPlayBtn) {
+  dom.howToPlayBtn.addEventListener('click', () => {
+    if (dom.howToPlayModal) dom.howToPlayModal.classList.add('active');
+    playArcadeSound('click');
+  });
+}
+if (dom.closeHowToPlayBtn) {
+  dom.closeHowToPlayBtn.addEventListener('click', () => {
+    if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
+    playArcadeSound('select');
+  });
+}
+if (dom.howToPlayModal) {
+  dom.howToPlayModal.addEventListener('click', e => {
+    if (e.target === dom.howToPlayModal) {
+      dom.howToPlayModal.classList.remove('active');
+      playArcadeSound('click');
+    }
+  });
+}
+
 if (dom.pauseBtn) dom.pauseBtn.addEventListener('click', togglePause);
 if (dom.resumeBtn) dom.resumeBtn.addEventListener('click', togglePause);
 if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
@@ -1012,6 +1121,8 @@ const powModeBtn = document.querySelector('.mode-pow');
 const themeTranslations = {
   kids: {
     '.logo-deco-left': '🌟', '.logo-deco-right': '🌟', '.logo-subline': '🍭 FUN MATH FOR KIDS! 🍭', '.logo-emoji-row': '🌈 ➕ ➖ ✖️ ➗ 🌈',
+    '#how-to-play-btn': '❓ HOW TO PLAY', '#how-to-play-title': 'HOW TO PLAY',
+    '#close-how-to-play-btn .play-btn-content': '🚀 GOT IT, LET\'S PLAY!',
     '.mode-add .card-pill': '🍏 PLUS!', '.mode-add .card-tagline': '🤝 Add Together!',
     '.mode-sub .card-pill': '🍊 MINUS!', '.mode-sub .card-tagline': '✂️ Take Away!',
     '.mode-mult .card-pill': '🍇 TIMES!', '.mode-mult .card-tagline': '🚀 Power Up!',
@@ -1035,6 +1146,8 @@ const themeTranslations = {
   },
   robotics: {
     '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': '🦾 SYSTEM OVERRIDE 🦾', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
+    '#how-to-play-btn': '⚡ PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL 📋',
+    '#close-how-to-play-btn .play-btn-content': '⚡ PROTOCOL ACKNOWLEDGED',
     '.mode-add .card-pill': '➕ ADD', '.mode-add .card-tagline': '🔋 System Sum',
     '.mode-sub .card-pill': '➖ SUB', '.mode-sub .card-tagline': '🔧 Drain Core',
     '.mode-mult .card-pill': '✖️ MULT', '.mode-mult .card-tagline': '🚀 Overclock',
@@ -1154,7 +1267,10 @@ if (dom.diffGrid) {
 }
 
 dom.startBtn.addEventListener('click', startGame);
-dom.playAgainBtn.addEventListener('click', startGame);
+dom.playAgainBtn.addEventListener('click', () => {
+  triggerCMGEvent('replay');
+  startGame();
+});
 
 dom.menuBtn.addEventListener('click', () => {
   resetState();
@@ -1172,17 +1288,32 @@ dom.soundToggle.addEventListener('click', () => {
 
 // Keyboard Hotkeys
 document.addEventListener('keydown', e => {
+  if (e.code === 'Escape') {
+    if (dom.howToPlayModal && dom.howToPlayModal.classList.contains('active')) {
+      e.preventDefault();
+      dom.howToPlayModal.classList.remove('active');
+      playArcadeSound('click');
+      return;
+    }
+  }
   if (e.code === 'KeyP' || e.code === 'Escape') {
     if (gameState.phase === 'playing') {
       e.preventDefault();
       togglePause();
     }
   } else if (e.code === 'Space' || e.code === 'Enter') {
+    if (dom.howToPlayModal && dom.howToPlayModal.classList.contains('active')) {
+      e.preventDefault();
+      dom.howToPlayModal.classList.remove('active');
+      playArcadeSound('select');
+      return;
+    }
     if (gameState.phase === 'menu') {
       e.preventDefault();
       startGame();
     } else if (gameState.phase === 'gameover') {
       e.preventDefault();
+      triggerCMGEvent('replay');
       startGame();
     }
   }

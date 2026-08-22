@@ -607,109 +607,113 @@ html, body {
 }
 
 /* ─── Chunky 3D Cartoon Round Timer Chips ────────────────── */
-.arcade-time-panel {
+/* ========================================================
+   ⚙️ UNIFIED ARCADE SETTINGS DECK (TIME & DIFFICULTY)
+   ======================================================== */
+.arcade-settings-bar {
   width: 100%;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 2.5px solid #fed7aa;
+  border-radius: 20px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 0 #fdba74, 0 8px 18px rgba(255, 159, 67, 0.08);
+  box-sizing: border-box;
+}
+
+.settings-subgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-group-title {
+  font-family: var(--font-hud);
+  font-size: 11px;
+  font-weight: 900;
+  color: #c2410c;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .time-chips-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 6px;
   width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
 }
 
 .diff-grid {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 440px;
 }
 
 .time-chip {
   background: #ffffff;
-  border: 3px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 8px 6px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  height: 38px;
+  padding: 0 4px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  gap: 3px;
   cursor: pointer;
-  transition: transform 0.14s ease, box-shadow 0.14s ease;
-  color: var(--text-dim);
-  box-shadow: 0 5px 0 #cbd5e1, 0 6px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #64748b;
+  box-shadow: 0 3px 0 #cbd5e1;
+  box-sizing: border-box;
 }
 
 .time-chip:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: #fed7aa;
-  box-shadow: 0 8px 0 #fdba74;
+  box-shadow: 0 5px 0 #fdba74;
 }
 
 .time-chip.active {
-  background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
-  border-color: #ff9f43;
-  box-shadow: 0 3px 0 #ea580c, 0 0 16px rgba(255, 159, 67, 0.3);
-  transform: translateY(2px);
+  background: #ff9f43;
+  border-color: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 3px 0 #c2410c;
+  transform: translateY(1px);
 }
 
 .time-chip-icon {
-  font-size: 20px;
+  font-size: 14px;
   line-height: 1;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
 }
 
 .time-chip-val {
   font-family: var(--font-hud);
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 900;
-  letter-spacing: 0.5px;
-  color: #ff9f43;
-  text-shadow: 0 1.5px 0 #fed7aa;
+  letter-spacing: 0.3px;
 }
 
-.time-chip-label {
-  font-family: var(--font-hud);
-  font-size: 9px;
-  font-weight: 900;
-  color: #94a3b8;
-}
-
-.time-chip.active .time-chip-label { color: #ea580c; }
-.time-chip.active .time-chip-val { 
-  color: #ea580c; 
-  text-shadow: 0 1.5px 0 #fdba74;
+.time-chip.active .time-chip-val {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* 3D themed difficulty chips */
-.diff-grid .time-chip[data-diff="0"] .time-chip-val {
-  color: #10b981;
-  text-shadow: 0 1.5px 0 #a7f3d0;
-}
 .diff-grid .time-chip[data-diff="0"].active {
-  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
-  border-color: #10b981;
-  box-shadow: 0 4px 0 #059669, 0 0 16px rgba(16, 185, 129, 0.3);
+  background: #10b981;
+  border-color: #059669;
+  box-shadow: 0 3px 0 #047857;
 }
 
-.diff-grid .time-chip[data-diff="3"] .time-chip-val {
-  color: #eab308;
-  text-shadow: 0 1.5px 0 #fef08a;
-}
 .diff-grid .time-chip[data-diff="3"].active {
-  background: linear-gradient(180deg, #fefce8 0%, #fef9c3 100%);
-  border-color: #eab308;
-  box-shadow: 0 4px 0 #ca8a04, 0 0 16px rgba(234, 179, 8, 0.3);
+  background: #f59e0b;
+  border-color: #d97706;
+  box-shadow: 0 3px 0 #b45309;
 }
 
-.diff-grid .time-chip[data-diff="6"] .time-chip-val {
-  color: #f43f5e;
-  text-shadow: 0 1.5px 0 #fecdd3;
-}
 .diff-grid .time-chip[data-diff="6"].active {
-  background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
-  border-color: #f43f5e;
-  box-shadow: 0 4px 0 #e11d48, 0 0 16px rgba(244, 63, 94, 0.3);
+  background: #f43f5e;
+  border-color: #e11d48;
+  box-shadow: 0 3px 0 #be123c;
 }
 
 /* 🎮 Big Rounded Play Button */
@@ -717,16 +721,16 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .arcade-play-button {
   position: relative;
   width: 100%;
-  max-width: 380px;
-  height: 56px;
+  max-width: 440px;
+  height: 54px;
   background: linear-gradient(180deg, #ffb347 0%, #ff9f43 50%, #e67e22 100%);
   border: none;
   border-radius: 20px;
@@ -2606,6 +2610,12 @@ html, body {
   .op-sign-badge, .eq-sign-badge { font-size: 18px; }
 
   .orb-floater { font-size: 19px; }
+
+  .arcade-settings-bar {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 8px 10px;
+  }
 }
 
 /* ========================================================
@@ -3037,11 +3047,24 @@ body.theme-robotics * {
   --font-body: 'Rajdhani', sans-serif !important;
 }
 
-/* Inactive time-chips under Robotics (Both duration & difficulty) */
+/* Cyber Robotics Settings Bar */
+body.theme-robotics .arcade-settings-bar {
+  background: rgba(18, 24, 38, 0.95) !important;
+  border: 2px solid #1d283a !important;
+  box-shadow: 0 4px 0 #0a0e17, 0 0 15px rgba(0, 242, 254, 0.1) !important;
+  border-radius: 8px !important;
+}
+body.theme-robotics .settings-group-title {
+  color: #00f2fe !important;
+  text-shadow: 0 0 6px rgba(0, 242, 254, 0.4) !important;
+}
+
+/* Inactive time-chips under Robotics */
 body.theme-robotics .time-chip:not(.active) {
-  background: #121826 !important;
-  border-color: rgba(0, 242, 254, 0.15) !important;
-  box-shadow: 0 4px 0 #0f141e !important;
+  background: #0a0e17 !important;
+  border-color: #1d283a !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 0 #000000 !important;
 }
 body.theme-robotics .time-chip:not(.active):hover {
   background: #1a2235 !important;
@@ -3051,24 +3074,33 @@ body.theme-robotics .time-chip:not(.active) .time-chip-val {
   color: rgba(0, 242, 254, 0.5) !important;
   text-shadow: none !important;
 }
-body.theme-robotics .time-chip:not(.active) .time-chip-label {
-  color: rgba(0, 242, 254, 0.3) !important;
-  text-shadow: none !important;
-}
 
-/* Active time-chips under Robotics (Both 30s/60s/90s/120s and Easy/Normal/Hard) */
+/* Active time-chips under Robotics */
 body.theme-robotics .time-chip.active {
-  background: rgba(0, 242, 254, 0.12) !important;
+  background: rgba(0, 242, 254, 0.15) !important;
   border-color: #00f2fe !important;
-  box-shadow: 0 4px 0 #005577, 0 0 16px rgba(0, 242, 254, 0.4) !important;
+  box-shadow: 0 2px 0 #005577, 0 0 14px rgba(0, 242, 254, 0.4) !important;
+  border-radius: 4px !important;
 }
 body.theme-robotics .time-chip.active .time-chip-val {
   color: #00f2fe !important;
   text-shadow: 0 0 8px rgba(0, 242, 254, 0.6) !important;
 }
-body.theme-robotics .time-chip.active .time-chip-label {
+body.theme-robotics .diff-grid .time-chip[data-diff="0"].active {
+  border-color: #00ff88 !important;
+  box-shadow: 0 2px 0 #005577, 0 0 14px rgba(0, 255, 136, 0.4) !important;
+}
+body.theme-robotics .diff-grid .time-chip[data-diff="0"].active .time-chip-val {
   color: #00ff88 !important;
-  text-shadow: 0 0 6px rgba(0, 255, 136, 0.4) !important;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.6) !important;
+}
+body.theme-robotics .diff-grid .time-chip[data-diff="6"].active {
+  border-color: #ff007f !important;
+  box-shadow: 0 2px 0 #99004d, 0 0 14px rgba(255, 0, 127, 0.4) !important;
+}
+body.theme-robotics .diff-grid .time-chip[data-diff="6"].active .time-chip-val {
+  color: #ff007f !important;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.6) !important;
 }
 
 /* Inactive Adventure Cards under Robotics */

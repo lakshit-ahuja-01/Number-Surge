@@ -146,54 +146,48 @@
           </div>
         </div>
 
-        <!-- Duration Time Selector -->
-        <div class="arcade-time-panel">
-          <div class="panel-header">⏰ STEP 2 — HOW LONG DO YOU PLAY?</div>
-          
-          <div class="time-chips-grid" id="time-grid" role="group" aria-label="Round duration selector">
-            <button class="time-chip" data-time="30" aria-pressed="false">
-              <span class="time-chip-icon">⚡</span>
-              <span class="time-chip-val">30s</span>
-              <span class="time-chip-label">⚡ SPEEDY!</span>
-            </button>
-            <button class="time-chip active" data-time="60" aria-pressed="true">
-              <span class="time-chip-icon">⏰</span>
-              <span class="time-chip-val">60s</span>
-              <span class="time-chip-label">🌟 CLASSIC!</span>
-            </button>
-            <button class="time-chip" data-time="90" aria-pressed="false">
-              <span class="time-chip-icon">⏳</span>
-              <span class="time-chip-val">90s</span>
-              <span class="time-chip-label">🏃 LONG GO!</span>
-            </button>
-            <button class="time-chip" data-time="120" aria-pressed="false">
-              <span class="time-chip-icon">🦸</span>
-              <span class="time-chip-val">120s</span>
-              <span class="time-chip-label">🦸 HERO!</span>
-            </button>
+        <!-- Unified Settings Deck (Time & Difficulty Side-by-Side) -->
+        <div class="arcade-settings-bar">
+          <!-- Time Subgroup -->
+          <div class="settings-subgroup">
+            <div class="settings-group-title">⏱️ ROUND TIME</div>
+            <div class="time-chips-grid" id="time-grid" role="group" aria-label="Round duration selector">
+              <button class="time-chip" data-time="30" aria-pressed="false">
+                <span class="time-chip-icon">⚡</span>
+                <span class="time-chip-val">30s</span>
+              </button>
+              <button class="time-chip active" data-time="60" aria-pressed="true">
+                <span class="time-chip-icon">⏰</span>
+                <span class="time-chip-val">60s</span>
+              </button>
+              <button class="time-chip" data-time="90" aria-pressed="false">
+                <span class="time-chip-icon">⏳</span>
+                <span class="time-chip-val">90s</span>
+              </button>
+              <button class="time-chip" data-time="120" aria-pressed="false">
+                <span class="time-chip-icon">🦸</span>
+                <span class="time-chip-val">120s</span>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Difficulty Selector -->
-        <div class="arcade-time-panel">
-          <div class="panel-header">🏅 STEP 3 — HOW HARD?</div>
-          
-          <div class="time-chips-grid diff-grid" id="diff-grid" role="group" aria-label="Difficulty selector">
-            <button class="time-chip active" data-diff="0" aria-pressed="true">
-              <span class="time-chip-icon">🌱</span>
-              <span class="time-chip-val">EASY</span>
-              <span class="time-chip-label">RELAXED</span>
-            </button>
-            <button class="time-chip" data-diff="3" aria-pressed="false">
-              <span class="time-chip-icon">🌟</span>
-              <span class="time-chip-val">NORMAL</span>
-              <span class="time-chip-label">CLASSIC</span>
-            </button>
-            <button class="time-chip" data-diff="6" aria-pressed="false">
-              <span class="time-chip-icon">🔥</span>
-              <span class="time-chip-val">HARD</span>
-              <span class="time-chip-label">FAST!</span>
-            </button>
+          <!-- Difficulty Subgroup -->
+          <div class="settings-subgroup">
+            <div class="settings-group-title">🎯 DIFFICULTY</div>
+            <div class="time-chips-grid diff-grid" id="diff-grid" role="group" aria-label="Difficulty selector">
+              <button class="time-chip active" data-diff="0" aria-pressed="true">
+                <span class="time-chip-icon">🌱</span>
+                <span class="time-chip-val">EASY</span>
+              </button>
+              <button class="time-chip" data-diff="3" aria-pressed="false">
+                <span class="time-chip-icon">🌟</span>
+                <span class="time-chip-val">NORMAL</span>
+              </button>
+              <button class="time-chip" data-diff="6" aria-pressed="false">
+                <span class="time-chip-icon">🔥</span>
+                <span class="time-chip-val">HARD</span>
+              </button>
+            </div>
           </div>
         </div>
 

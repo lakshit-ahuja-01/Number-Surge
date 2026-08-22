@@ -166,29 +166,57 @@ const SKINS_CONFIG = {
   galaxy:  { name: 'GALAXY NEBULA',  cost: 750 },
 };
 
+// ─── 4.5 UNIFIED STORAGE ADAPTER (CrazyGames Data Module + LocalStorage) ──
+const storage = {
+  getItem: (key) => {
+    try {
+      if (isCrazySDKInitialized && crazySDK?.data?.getItem) {
+        const val = crazySDK.data.getItem(key);
+        if (val !== null && val !== undefined) return val;
+      }
+    } catch (_) {}
+    try {
+      return localStorage.getItem(key);
+    } catch (_) {
+      return null;
+    }
+  },
+  setItem: (key, value) => {
+    const str = String(value);
+    try {
+      localStorage.setItem(key, str);
+    } catch (_) {}
+    try {
+      if (isCrazySDKInitialized && crazySDK?.data?.setItem) {
+        crazySDK.data.setItem(key, str);
+      }
+    } catch (_) {}
+  }
+};
+
 // Migration: Ensure 'classic' is the sole free default, and 'candy' requires purchase (50 coins)
-let savedOwnedSkins = JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["classic"]');
-const hasMigratedSkinsV2 = localStorage.getItem('number_surge_skins_v2_migrated');
+let savedOwnedSkins = JSON.parse(storage.getItem('number_surge_owned_skins') || '["classic"]');
+const hasMigratedSkinsV2 = storage.getItem('number_surge_skins_v2_migrated');
 
 if (!hasMigratedSkinsV2) {
   // Remove legacy free candy default so it displays purchase cost of 50 coins
   savedOwnedSkins = savedOwnedSkins.filter(s => s !== 'candy');
   if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
-  localStorage.setItem('number_surge_owned_skins', JSON.stringify(savedOwnedSkins));
-  localStorage.setItem('number_surge_active_skin', 'classic');
-  localStorage.setItem('number_surge_skins_v2_migrated', 'true');
+  storage.setItem('number_surge_owned_skins', JSON.stringify(savedOwnedSkins));
+  storage.setItem('number_surge_active_skin', 'classic');
+  storage.setItem('number_surge_skins_v2_migrated', 'true');
 }
 
 if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
 
-let savedActiveSkin = localStorage.getItem('number_surge_active_skin') || 'classic';
+let savedActiveSkin = storage.getItem('number_surge_active_skin') || 'classic';
 if (!savedOwnedSkins.includes(savedActiveSkin)) {
   savedActiveSkin = 'classic';
 }
 
 const economy = {
-  coins: parseInt(localStorage.getItem('number_surge_coins') || '0', 10),
-  upgrades: JSON.parse(localStorage.getItem('number_surge_upgrades') || '{"timeBoost":0,"comboShield":0,"speedBoost":0,"coinMult":0}'),
+  coins: parseInt(storage.getItem('number_surge_coins') || '0', 10),
+  upgrades: JSON.parse(storage.getItem('number_surge_upgrades') || '{"timeBoost":0,"comboShield":0,"speedBoost":0,"coinMult":0}'),
   ownedSkins: savedOwnedSkins,
   activeSkin: savedActiveSkin,
 };
@@ -204,9 +232,67 @@ async function initCrazySDK() {
       await crazySDK.init();
       isCrazySDKInitialized = true;
       if (crazySDK.game?.loadingStop) crazySDK.game.loadingStop();
+      
+      // Synchronize Cloud Save Data from CrazyGames Data Module
+      syncCloudData();
     }
   } catch (err) {
     console.warn('CrazyGames SDK init fallback (offline/standalone mode):', err);
+  }
+}
+
+function syncCloudData() {
+  if (!isCrazySDKInitialized || !crazySDK?.data) return;
+  try {
+    const cloudHighScore = crazySDK.data.getItem('number_surge_high_score');
+    if (cloudHighScore !== null) {
+      const parsed = parseInt(cloudHighScore, 10);
+      if (!isNaN(parsed) && parsed > gameState.highScore) {
+        gameState.highScore = parsed;
+        loadHighScore();
+      }
+    }
+
+    const cloudCoins = crazySDK.data.getItem('number_surge_coins');
+    if (cloudCoins !== null) {
+      const parsed = parseInt(cloudCoins, 10);
+      if (!isNaN(parsed)) {
+        economy.coins = Math.max(economy.coins, parsed);
+      }
+    }
+
+    const cloudUpgrades = crazySDK.data.getItem('number_surge_upgrades');
+    if (cloudUpgrades) {
+      try {
+        const parsed = JSON.parse(cloudUpgrades);
+        economy.upgrades = Object.assign(economy.upgrades, parsed);
+      } catch (_) {}
+    }
+
+    const cloudSkins = crazySDK.data.getItem('number_surge_owned_skins');
+    if (cloudSkins) {
+      try {
+        const parsed = JSON.parse(cloudSkins);
+        if (Array.isArray(parsed)) {
+          parsed.forEach(s => {
+            if (!economy.ownedSkins.includes(s)) economy.ownedSkins.push(s);
+          });
+        }
+      } catch (_) {}
+    }
+
+    const cloudActiveSkin = crazySDK.data.getItem('number_surge_active_skin');
+    if (cloudActiveSkin && economy.ownedSkins.includes(cloudActiveSkin)) {
+      economy.activeSkin = cloudActiveSkin;
+      applyEquippedSkin(cloudActiveSkin);
+    }
+
+    saveHighScoreIfRecord(gameState.highScore);
+    saveEconomy();
+    updateCoinsDisplay();
+    renderShopUI();
+  } catch (err) {
+    console.warn('Error syncing CrazyGames cloud data:', err);
   }
 }
 
@@ -366,10 +452,28 @@ let matrixDrops = [];
 const MATRIX_CHARS = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ+-*/=><^$#%@&';
 const MATRIX_FONT_SIZE = 14;
 
+function resizeAmbientCanvas() {
+  if (!ambientCanvas) return;
+  const w = window.innerWidth || document.documentElement.clientWidth || 1280;
+  const h = window.innerHeight || document.documentElement.clientHeight || 720;
+  
+  if (ambientCanvas.width !== w || ambientCanvas.height !== h) {
+    ambientCanvas.width = w;
+    ambientCanvas.height = h;
+  }
+
+  const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+  if (matrixDrops.length < columns) {
+    const start = matrixDrops.length;
+    for (let i = start; i < columns; i++) {
+      matrixDrops[i] = Math.floor(Math.random() * (ambientCanvas.height / MATRIX_FONT_SIZE * -1));
+    }
+  }
+}
+
 function initAmbientCanvas() {
   if (!ambientCanvas) return;
-  ambientCanvas.width = window.innerWidth;
-  ambientCanvas.height = window.innerHeight;
+  resizeAmbientCanvas();
   
   const colors = [
     'rgba(255, 107, 138, 0.45)', // Pink
@@ -393,11 +497,11 @@ function initAmbientCanvas() {
     });
   }
 
-  // Initialize Matrix columns
+  // Initialize Matrix columns across full width
   const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
   matrixDrops = [];
   for (let i = 0; i < columns; i++) {
-    matrixDrops[i] = Math.floor(Math.random() * -60);
+    matrixDrops[i] = Math.floor(Math.random() * (ambientCanvas.height / MATRIX_FONT_SIZE * -1));
   }
 }
 
@@ -408,25 +512,31 @@ function renderAmbientParticles(timestamp = 0) {
 
   if (gameState.theme === 'robotics') {
     if (gameState.phase === 'playing') {
-      // MATRIX DIGITAL RAIN (Active Gameplay Arena)
+      // MATRIX DIGITAL RAIN (Active Gameplay Arena across full viewport)
+      resizeAmbientCanvas();
+
       if (!lastMatrixFrame) lastMatrixFrame = timestamp;
       const elapsed = timestamp - lastMatrixFrame;
       
-      if (elapsed > 35) {
+      if (elapsed > 33) {
         lastMatrixFrame = timestamp;
-        ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.14)';
+        ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.16)';
         ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
         ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
 
-        for (let i = 0; i < matrixDrops.length; i++) {
+        const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+        for (let i = 0; i < columns; i++) {
+          if (matrixDrops[i] === undefined) {
+            matrixDrops[i] = Math.floor(Math.random() * -30);
+          }
           const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
           const x = i * MATRIX_FONT_SIZE;
           const y = matrixDrops[i] * MATRIX_FONT_SIZE;
 
-          if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE) {
+          if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE * 2) {
             // Leading glyph is bright glowing white/cyan, body is matrix neon green
-            const isLead = Math.random() > 0.88;
+            const isLead = Math.random() > 0.86;
             ambientCtx.fillStyle = isLead ? '#ffffff' : (i % 4 === 0 ? '#00f2fe' : '#00ff88');
             ambientCtx.shadowColor = isLead ? '#00f2fe' : '#00ff88';
             ambientCtx.shadowBlur = isLead ? 6 : 3;
@@ -473,15 +583,12 @@ function renderAmbientParticles(timestamp = 0) {
 }
 
 window.addEventListener('resize', () => {
-  if (ambientCanvas) {
-    ambientCanvas.width = window.innerWidth;
-    ambientCanvas.height = window.innerHeight;
-  }
+  resizeAmbientCanvas();
 });
 
-// ─── 6. LOCAL STORAGE HIGH SCORE ─────────────────────────────
+// ─── 6. LOCAL & CLOUD STORAGE HIGH SCORE ────────────────────
 function loadHighScore() {
-  const saved = localStorage.getItem('number_surge_high_score');
+  const saved = storage.getItem('number_surge_high_score');
   gameState.highScore = saved ? parseInt(saved, 10) : 0;
   if (dom.startHighScore) {
     dom.startHighScore.textContent = `${gameState.highScore} PTS`;
@@ -491,7 +598,7 @@ function loadHighScore() {
 function saveHighScoreIfRecord(score) {
   if (score > gameState.highScore) {
     gameState.highScore = score;
-    localStorage.setItem('number_surge_high_score', score.toString());
+    storage.setItem('number_surge_high_score', score.toString());
     return true;
   }
   return false;
@@ -499,10 +606,10 @@ function saveHighScoreIfRecord(score) {
 
 // ─── 7. ECONOMY & SHOP LOGIC ─────────────────────────────────
 function saveEconomy() {
-  localStorage.setItem('number_surge_coins', economy.coins.toString());
-  localStorage.setItem('number_surge_upgrades', JSON.stringify(economy.upgrades));
-  localStorage.setItem('number_surge_owned_skins', JSON.stringify(economy.ownedSkins));
-  localStorage.setItem('number_surge_active_skin', economy.activeSkin);
+  storage.setItem('number_surge_coins', economy.coins.toString());
+  storage.setItem('number_surge_upgrades', JSON.stringify(economy.upgrades));
+  storage.setItem('number_surge_owned_skins', JSON.stringify(economy.ownedSkins));
+  storage.setItem('number_surge_active_skin', economy.activeSkin);
   updateCoinsDisplay();
   renderShopUI();
 }
@@ -619,10 +726,24 @@ function buyOrEquipSkin(skinId) {
 
 // ─── 8. SCREEN MANAGEMENT ────────────────────────────────────
 function showScreen(name) {
-  [dom.startScreen, dom.gameScreen, dom.gameoverScreen].forEach(s => s.classList.remove('active'));
-  if (name === 'start') dom.startScreen.classList.add('active');
-  if (name === 'game')  dom.gameScreen.classList.add('active');
-  if (name === 'gameover') dom.gameoverScreen.classList.add('active');
+  const screens = [dom.startScreen, dom.gameScreen, dom.gameoverScreen];
+  screens.forEach(s => {
+    if (s) {
+      s.classList.remove('active');
+      s.style.display = 'none';
+    }
+  });
+
+  if (name === 'start' && dom.startScreen) {
+    dom.startScreen.classList.add('active');
+    dom.startScreen.style.display = 'flex';
+  } else if (name === 'game' && dom.gameScreen) {
+    dom.gameScreen.classList.add('active');
+    dom.gameScreen.style.display = 'flex';
+  } else if (name === 'gameover' && dom.gameoverScreen) {
+    dom.gameoverScreen.classList.add('active');
+    dom.gameoverScreen.style.display = 'flex';
+  }
 }
 
 function getEffectiveSpeedWindow() {

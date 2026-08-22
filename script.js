@@ -8,12 +8,12 @@
 
 // ─── 1. GAME CONFIGURATION ───────────────────────────────────
 const CONFIG = Object.freeze({
-  GAME_DURATION:        60,     // Total round time (seconds)
+  GAME_DURATION:        60,     // Total base round time (seconds)
   POINTS_CORRECT:       10,     // Base points
   POINTS_WRONG:         -3,     // Penalty on wrong guess
   COMBO_BONUS:          5,      // Bonus per combo multiplier level
   SPEED_MAX_BONUS:      20,     // Max speed reward
-  SPEED_WINDOW:         7.5,    // Seconds before speed bonus runs out
+  SPEED_WINDOW:         7.5,    // Base seconds before speed bonus runs out
   INITIAL_SPEED:        0.65,   // Floater speed px/frame
   MAX_SPEED:            2.8,    // Max speed cap
   INITIAL_NUM_COUNT:    12,     // Starting floating orbs
@@ -24,6 +24,7 @@ const CONFIG = Object.freeze({
   ORB_SIZE:             62,     // Diameter px
   SPAWN_MARGIN:         40,
   DIFFICULTY_INTERVAL:  3,      // Solved questions per difficulty level
+  POWERUP_CHANCE:       0.18,   // Chance for a powerup orb to spawn
   ORB_THEMES: ['orb-amber', 'orb-emerald', 'orb-violet', 'orb-coral'],
 });
 
@@ -128,7 +129,7 @@ const gameState = {
   currentCheck:    null,
   currentSymbol:   '+',
   selected:        [],           // [floaterId1, floaterId2]
-  floaters:        [],           // { id, value, el, x, y, vx, vy }
+  floaters:        [],           // { id, value, el, x, y, vx, vy, isPowerUp, powerUpType }
   nextId:          0,
   animFrameId:     null,
   timerIntervalId: null,
@@ -141,9 +142,120 @@ const gameState = {
   highScore:       0,
   isPaused:        false,
   duration:        60,
+  shieldCharges:   0,
+  isFrozen:        false,
+  freezeTimeoutId: null,
+  coinsEarnedThisRound: 0,
 };
 
-// ─── 4. DOM ELEMENT CACHE ────────────────────────────────────
+// ─── 4. ECONOMY & UPGRADES SYSTEM ────────────────────────────
+const UPGRADES_CONFIG = {
+  timeBoost:   { max: 5, costs: [50, 100, 200, 350, 500], bonus: 5 },
+  comboShield: { max: 1, costs: [120],                    bonus: 1 },
+  speedBoost:  { max: 4, costs: [75, 150, 250, 400],      bonus: 1.5 },
+  coinMult:    { max: 4, costs: [100, 200, 350, 500],     bonus: 0.25 },
+};
+
+const SKINS_CONFIG = {
+  candy:  { name: 'CANDY BUBBLE', cost: 0 },
+  cyber:  { name: 'CYBER NEON',   cost: 100 },
+  magma:  { name: 'MAGMA SURGE',  cost: 200 },
+  frost:  { name: 'GLACIAL FROST',cost: 300 },
+  gold:   { name: 'GOLDEN ROYALE',cost: 500 },
+  galaxy: { name: 'GALAXY NEBULA',cost: 750 },
+};
+
+const economy = {
+  coins: parseInt(localStorage.getItem('number_surge_coins') || '0', 10),
+  upgrades: JSON.parse(localStorage.getItem('number_surge_upgrades') || '{"timeBoost":0,"comboShield":0,"speedBoost":0,"coinMult":0}'),
+  ownedSkins: JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["candy"]'),
+  activeSkin: localStorage.getItem('number_surge_active_skin') || 'candy',
+};
+
+// ─── 5. CRAZYGAMES SDK V3 MANAGER ────────────────────────────
+let crazySDK = null;
+let isCrazySDKInitialized = false;
+
+async function initCrazySDK() {
+  try {
+    if (window.CrazyGames && window.CrazyGames.SDK) {
+      crazySDK = window.CrazyGames.SDK;
+      await crazySDK.init();
+      isCrazySDKInitialized = true;
+      if (crazySDK.game?.loadingStop) crazySDK.game.loadingStop();
+    }
+  } catch (err) {
+    console.warn('CrazyGames SDK init fallback (offline/standalone mode):', err);
+  }
+}
+
+function triggerCrazyGameplayStart() {
+  try {
+    if (isCrazySDKInitialized && crazySDK?.game?.gameplayStart) {
+      crazySDK.game.gameplayStart();
+    }
+  } catch (_) {}
+}
+
+function triggerCrazyGameplayStop() {
+  try {
+    if (isCrazySDKInitialized && crazySDK?.game?.gameplayStop) {
+      crazySDK.game.gameplayStop();
+    }
+  } catch (_) {}
+}
+
+function triggerCrazyHappyTime() {
+  try {
+    if (isCrazySDKInitialized && crazySDK?.game?.happytime) {
+      crazySDK.game.happytime();
+    }
+  } catch (_) {}
+}
+
+function showCrazyMidroll(callback) {
+  if (isCrazySDKInitialized && crazySDK?.ad?.requestAd) {
+    crazySDK.ad.requestAd('midroll', {
+      adStarted: () => {
+        if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+      },
+      adFinished: () => {
+        if (audioCtx && audioCtx.state === 'suspended' && !gameState.isMuted) audioCtx.resume();
+        if (typeof callback === 'function') callback();
+      },
+      adError: (error) => {
+        console.warn('Midroll ad error:', error);
+        if (audioCtx && audioCtx.state === 'suspended' && !gameState.isMuted) audioCtx.resume();
+        if (typeof callback === 'function') callback();
+      }
+    });
+  } else {
+    if (typeof callback === 'function') callback();
+  }
+}
+
+function showCrazyRewarded(rewardType, rewardCallback) {
+  if (isCrazySDKInitialized && crazySDK?.ad?.requestAd) {
+    crazySDK.ad.requestAd('rewarded', {
+      adStarted: () => {
+        if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+      },
+      adFinished: () => {
+        if (audioCtx && audioCtx.state === 'suspended' && !gameState.isMuted) audioCtx.resume();
+        if (typeof rewardCallback === 'function') rewardCallback();
+      },
+      adError: (error) => {
+        console.warn('Rewarded ad error:', error);
+        if (audioCtx && audioCtx.state === 'suspended' && !gameState.isMuted) audioCtx.resume();
+        if (typeof rewardCallback === 'function') rewardCallback();
+      }
+    });
+  } else {
+    if (typeof rewardCallback === 'function') rewardCallback();
+  }
+}
+
+// ─── 6. DOM ELEMENT CACHE ────────────────────────────────────
 const dom = {
   wrapper:         document.getElementById('game-wrapper'),
   startScreen:     document.getElementById('start-screen'),
@@ -160,6 +272,12 @@ const dom = {
   timeGrid:        document.getElementById('time-grid'),
   diffGrid:        document.getElementById('diff-grid'),
 
+  coinsDisplay:    document.getElementById('coins-display'),
+  shopBtn:         document.getElementById('shop-btn'),
+  shopModal:       document.getElementById('shop-modal'),
+  closeShopBtn:    document.getElementById('close-shop-btn'),
+  shopCoinsVal:    document.getElementById('shop-coins-val'),
+
   scoreDisplay:    document.getElementById('score-display'),
   hudScoreBox:     document.getElementById('hud-score-box'),
   timerDisplay:    document.getElementById('timer-display'),
@@ -169,6 +287,9 @@ const dom = {
   comboNum:        document.getElementById('combo-num'),
   speedMeterBar:   document.getElementById('speed-meter-bar'),
   speedToast:      document.getElementById('speed-toast'),
+  hudShieldIndicator: document.getElementById('hud-shield-indicator'),
+  shieldCount:     document.getElementById('shield-count'),
+  freezeOverlay:   document.getElementById('freeze-overlay'),
 
   modeBadge:       document.getElementById('mode-badge'),
   slotA:           document.getElementById('slot-a'),
@@ -192,7 +313,9 @@ const dom = {
   finalSolved:     document.getElementById('final-solved'),
   finalAccuracy:   document.getElementById('final-accuracy'),
   finalCombo:      document.getElementById('final-combo'),
-  finalSpeed:      document.getElementById('final-speed'),
+  finalCoins:      document.getElementById('final-coins'),
+  doubleCoinsBtn:  document.getElementById('double-coins-btn'),
+  reviveBtn:       document.getElementById('revive-btn'),
   rankBadge:       document.getElementById('rank-badge'),
   newRecordBadge:  document.getElementById('new-record-badge'),
 };
@@ -336,7 +459,125 @@ function saveHighScoreIfRecord(score) {
   return false;
 }
 
-// ─── 7. SCREEN MANAGEMENT ────────────────────────────────────
+// ─── 7. ECONOMY & SHOP LOGIC ─────────────────────────────────
+function saveEconomy() {
+  localStorage.setItem('number_surge_coins', economy.coins.toString());
+  localStorage.setItem('number_surge_upgrades', JSON.stringify(economy.upgrades));
+  localStorage.setItem('number_surge_owned_skins', JSON.stringify(economy.ownedSkins));
+  localStorage.setItem('number_surge_active_skin', economy.activeSkin);
+  updateCoinsDisplay();
+  renderShopUI();
+}
+
+function updateCoinsDisplay() {
+  if (dom.coinsDisplay) dom.coinsDisplay.textContent = economy.coins.toLocaleString();
+  if (dom.shopCoinsVal) dom.shopCoinsVal.textContent = economy.coins.toLocaleString();
+}
+
+function addCoins(amount) {
+  economy.coins += amount;
+  gameState.coinsEarnedThisRound += amount;
+  saveEconomy();
+  updateCoinsDisplay();
+}
+
+function applyEquippedSkin(skinId) {
+  if (!economy.ownedSkins.includes(skinId)) return;
+  economy.activeSkin = skinId;
+  saveEconomy();
+
+  const skinClasses = ['skin-applied-candy', 'skin-applied-cyber', 'skin-applied-magma', 'skin-applied-frost', 'skin-applied-gold', 'skin-applied-galaxy'];
+  skinClasses.forEach(cls => dom.river && dom.river.classList.remove(cls));
+  if (dom.river) dom.river.classList.add(`skin-applied-${skinId}`);
+}
+
+function renderShopUI() {
+  // 1. Render Upgrades
+  for (const key in UPGRADES_CONFIG) {
+    const config = UPGRADES_CONFIG[key];
+    const currentLvl = economy.upgrades[key] || 0;
+    const lvlEl = document.getElementById(`u-${key}-level`);
+    const costEl = document.getElementById(`u-${key}-cost`);
+    const btn = document.querySelector(`.u-buy-btn[data-upgrade="${key}"]`);
+
+    if (lvlEl) lvlEl.textContent = `Level ${currentLvl}/${config.max}`;
+    if (currentLvl >= config.max) {
+      if (btn) {
+        btn.classList.add('maxed');
+        btn.innerHTML = '<span>MAXED</span>';
+      }
+    } else {
+      const cost = config.costs[currentLvl];
+      if (costEl) costEl.textContent = cost;
+      if (btn) {
+        btn.classList.remove('maxed');
+        btn.innerHTML = `<span class="u-cost-icon">🪙</span><span class="u-cost-val">${cost}</span>`;
+      }
+    }
+  }
+
+  // 2. Render Skins
+  document.querySelectorAll('.skin-item').forEach(item => {
+    const skinId = item.dataset.skin;
+    const btn = item.querySelector('.skin-action-btn');
+    const isOwned = economy.ownedSkins.includes(skinId);
+    const isActive = economy.activeSkin === skinId;
+
+    item.classList.toggle('active', isActive);
+
+    if (isActive) {
+      btn.textContent = 'EQUIPPED';
+      btn.className = 'skin-action-btn';
+    } else if (isOwned) {
+      btn.textContent = 'EQUIP';
+      btn.className = 'skin-action-btn btn-equip';
+    } else {
+      const cost = SKINS_CONFIG[skinId]?.cost || 100;
+      btn.textContent = `🪙 ${cost}`;
+      btn.className = 'skin-action-btn btn-buy';
+    }
+  });
+}
+
+function buyUpgrade(key) {
+  const config = UPGRADES_CONFIG[key];
+  if (!config) return;
+  const currentLvl = economy.upgrades[key] || 0;
+  if (currentLvl >= config.max) return;
+
+  const cost = config.costs[currentLvl];
+  if (economy.coins >= cost) {
+    economy.coins -= cost;
+    economy.upgrades[key] = currentLvl + 1;
+    saveEconomy();
+    playArcadeSound('correct');
+    showSpeedToast(10);
+  } else {
+    playArcadeSound('wrong');
+  }
+}
+
+function buyOrEquipSkin(skinId) {
+  const config = SKINS_CONFIG[skinId];
+  if (!config) return;
+
+  if (economy.ownedSkins.includes(skinId)) {
+    applyEquippedSkin(skinId);
+    playArcadeSound('select');
+  } else {
+    if (economy.coins >= config.cost) {
+      economy.coins -= config.cost;
+      economy.ownedSkins.push(skinId);
+      applyEquippedSkin(skinId);
+      playArcadeSound('correct');
+      showSpeedToast(15);
+    } else {
+      playArcadeSound('wrong');
+    }
+  }
+}
+
+// ─── 8. SCREEN MANAGEMENT ────────────────────────────────────
 function showScreen(name) {
   [dom.startScreen, dom.gameScreen, dom.gameoverScreen].forEach(s => s.classList.remove('active'));
   if (name === 'start') dom.startScreen.classList.add('active');
@@ -344,7 +585,15 @@ function showScreen(name) {
   if (name === 'gameover') dom.gameoverScreen.classList.add('active');
 }
 
-// ─── 8. QUESTION & FLOATER GENERATION ────────────────────────
+function getEffectiveSpeedWindow() {
+  return CONFIG.SPEED_WINDOW + ((economy.upgrades.speedBoost || 0) * 1.5);
+}
+
+function getBaseDuration() {
+  return (gameState.duration || CONFIG.GAME_DURATION) + ((economy.upgrades.timeBoost || 0) * 5);
+}
+
+// ─── 9. QUESTION & FLOATER GENERATION ────────────────────────
 function getMaxNumber(diff) {
   return Math.min(CONFIG.MAX_NUMBER_START + diff * 8, CONFIG.MAX_NUMBER_CAP);
 }
@@ -384,6 +633,13 @@ function generateQuestion() {
   clearAllFloaters();
   const pool = buildNumberPool(q, gameState.difficultyLevel);
   pool.forEach(val => createOrbFloater(val));
+
+  // Powerup Spawning (approx ~18% chance)
+  if (Math.random() < CONFIG.POWERUP_CHANCE) {
+    const powerUps = ['bomb', 'freeze', 'hint', 'shield', 'coin'];
+    const chosenP = powerUps[randInt(0, powerUps.length - 1)];
+    createOrbFloater(0, true, chosenP);
+  }
 }
 
 function buildNumberPool(q, diff) {
@@ -410,13 +666,11 @@ function buildNumberPool(q, diff) {
   return numbers;
 }
 
-// ─── 9. 3D FLOATING ORB SYSTEM ───────────────────────────────
-function createOrbFloater(value) {
+// ─── 10. 3D FLOATING ORB SYSTEM & POWER-UPS ──────────────────
+function createOrbFloater(value, isPowerUp = false, powerUpType = null) {
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
   const sz = CONFIG.ORB_SIZE;
-  
-  // Dynamic margin so balls don't spawn out of bounds on very narrow mobile screens
   const m = Math.min(CONFIG.SPAWN_MARGIN, Math.floor(rw / 4), Math.floor(rh / 4));
 
   const x = randInt(m, Math.max(m + 1, rw - sz - m));
@@ -424,35 +678,39 @@ function createOrbFloater(value) {
 
   const speed = getCurrentSpeed();
   const angle = Math.random() * Math.PI * 2;
-  
-  // Guarantee a minimum velocity so balls don't appear "stuck" if angle is near 0/90 degrees
   const minV = speed * 0.35;
   let vx = Math.cos(angle) * speed;
   let vy = Math.sin(angle) * speed;
   if (Math.abs(vx) < minV) vx = (vx >= 0 ? 1 : -1) * minV;
   if (Math.abs(vy) < minV) vy = (vy >= 0 ? 1 : -1) * minV;
-  
   vx *= (0.6 + Math.random() * 0.6);
   vy *= (0.6 + Math.random() * 0.6);
 
   const el = document.createElement('div');
-  const theme = CONFIG.ORB_THEMES[randInt(0, CONFIG.ORB_THEMES.length - 1)];
-  el.className = `orb-floater ${theme}`;
-  el.innerHTML = `
-    <div class="bubble-shine"></div>
-    <span class="bubble-num">${value}</span>
-  `;
-  el.setAttribute('aria-label', `Number ${value}`);
+  const id = gameState.nextId++;
+
+  if (isPowerUp) {
+    el.className = `orb-floater orb-powerup orb-${powerUpType}`;
+    const icons = { bomb: '💣', freeze: '❄️', hint: '💡', shield: '🛡️', coin: '🪙' };
+    el.innerHTML = `<span class="bubble-num">${icons[powerUpType] || '⚡'}</span>`;
+    el.setAttribute('aria-label', `Powerup ${powerUpType}`);
+  } else {
+    const theme = CONFIG.ORB_THEMES[randInt(0, CONFIG.ORB_THEMES.length - 1)];
+    el.className = `orb-floater ${theme}`;
+    el.innerHTML = `
+      <div class="bubble-shine"></div>
+      <span class="bubble-num">${value}</span>
+    `;
+    el.setAttribute('aria-label', `Number ${value}`);
+  }
+
   el.style.left = `${x}px`;
   el.style.top = `${y}px`;
-
-  const id = gameState.nextId++;
   el.dataset.floaterId = id;
   el.addEventListener('click', () => onFloaterClick(id));
 
   dom.river.appendChild(el);
-
-  const floater = { id, value, el, x, y, vx, vy };
+  const floater = { id, value, el, x, y, vx, vy, isPowerUp, powerUpType };
   gameState.floaters.push(floater);
   return floater;
 }
@@ -477,7 +735,85 @@ function removeFloater(id, isCorrect) {
   gameState.floaters.splice(idx, 1);
 }
 
-// ─── 10. SELECTION & EQUATION DOCK LOGIC ──────────────────────
+// ─── 11. POWER-UP ACTIVATIONS ────────────────────────────────
+function triggerPowerUp(type, refEl) {
+  spawnEnergyParticles(refEl);
+
+  if (type === 'bomb') {
+    playArcadeSound('powerup_bomb');
+    showFloatingScore('💥 BLAST!', refEl, 'plus');
+    triggerScreenShake();
+    showSpeedToast(25);
+    
+    // Auto solve with active equation pair
+    let pairFound = [];
+    for (let i = 0; i < gameState.floaters.length; i++) {
+      for (let j = i + 1; j < gameState.floaters.length; j++) {
+        const a = gameState.floaters[i], b = gameState.floaters[j];
+        if (!a.isPowerUp && !b.isPowerUp && gameState.currentCheck && gameState.currentCheck(a.value, b.value)) {
+          pairFound = [a, b];
+          break;
+        }
+      }
+      if (pairFound.length === 2) break;
+    }
+    if (pairFound.length === 2) {
+      handleCorrect(pairFound[0], pairFound[1], true);
+    }
+  }
+  else if (type === 'freeze') {
+    playArcadeSound('powerup_freeze');
+    gameState.isFrozen = true;
+    if (dom.freezeOverlay) dom.freezeOverlay.style.display = 'flex';
+    showFloatingScore('❄️ FROZEN!', refEl, 'plus');
+    showSpeedToast(15);
+    
+    if (gameState.freezeTimeoutId) clearTimeout(gameState.freezeTimeoutId);
+    gameState.freezeTimeoutId = setTimeout(() => {
+      gameState.isFrozen = false;
+      if (dom.freezeOverlay) dom.freezeOverlay.style.display = 'none';
+    }, 5000);
+  }
+  else if (type === 'hint') {
+    playArcadeSound('select');
+    showFloatingScore('💡 RADAR!', refEl, 'plus');
+    showSpeedToast(10);
+    
+    let pairFound = [];
+    for (let i = 0; i < gameState.floaters.length; i++) {
+      for (let j = i + 1; j < gameState.floaters.length; j++) {
+        const a = gameState.floaters[i], b = gameState.floaters[j];
+        if (!a.isPowerUp && !b.isPowerUp && gameState.currentCheck && gameState.currentCheck(a.value, b.value)) {
+          pairFound = [a, b];
+          break;
+        }
+      }
+      if (pairFound.length === 2) break;
+    }
+    pairFound.forEach(f => {
+      f.el.classList.add('orb-hint-glow');
+      setTimeout(() => f.el && f.el.classList.remove('orb-hint-glow'), 3500);
+    });
+  }
+  else if (type === 'shield') {
+    playArcadeSound('powerup_shield');
+    gameState.shieldCharges++;
+    if (dom.hudShieldIndicator) {
+      dom.hudShieldIndicator.style.display = 'flex';
+      if (dom.shieldCount) dom.shieldCount.textContent = gameState.shieldCharges;
+    }
+    showFloatingScore('🛡️ SHIELD!', refEl, 'plus');
+    showSpeedToast(10);
+  }
+  else if (type === 'coin') {
+    playArcadeSound('powerup_coin');
+    addCoins(15);
+    showFloatingScore('+15 🪙', refEl, 'plus');
+    showSpeedToast(15);
+  }
+}
+
+// ─── 12. SELECTION & EQUATION DOCK LOGIC ──────────────────────
 function resetEquationSlots() {
   dom.slotA.textContent = '?';
   dom.slotB.textContent = '?';
@@ -490,6 +826,13 @@ function onFloaterClick(floaterId) {
 
   const floater = gameState.floaters.find(f => f.id === floaterId);
   if (!floater) return;
+
+  // Handle Power-Up Orbs
+  if (floater.isPowerUp) {
+    triggerPowerUp(floater.powerUpType, floater.el);
+    removeFloater(floater.id, true);
+    return;
+  }
 
   // Deselection
   const selIdx = gameState.selected.indexOf(floaterId);
@@ -533,7 +876,7 @@ function updateEquationSlotsPreview() {
   }
 }
 
-// ─── 11. ANSWER VALIDATION & SCORING ─────────────────────────
+// ─── 13. ANSWER VALIDATION & SCORING ─────────────────────────
 function validateAnswer() {
   if (gameState.selected.length !== 2) return;
 
@@ -557,34 +900,47 @@ function validateAnswer() {
 
 function calcSpeedBonus() {
   const elapsed = (Date.now() - gameState.questionStartMs) / 1000;
-  if (elapsed >= CONFIG.SPEED_WINDOW) return 0;
-  const factor = 1 - (elapsed / CONFIG.SPEED_WINDOW);
+  const speedWindow = getEffectiveSpeedWindow();
+  if (elapsed >= speedWindow) return 0;
+  const factor = 1 - (elapsed / speedWindow);
   return Math.round(CONFIG.SPEED_MAX_BONUS * factor);
 }
 
-function handleCorrect(f1, f2) {
+function handleCorrect(f1, f2, isBomb = false) {
   gameState.combo++;
   if (gameState.combo > gameState.bestCombo) gameState.bestCombo = gameState.combo;
 
-  const speedBonus = calcSpeedBonus();
+  const speedBonus = isBomb ? CONFIG.SPEED_MAX_BONUS : calcSpeedBonus();
   if (speedBonus > gameState.bestSpeedBonus) gameState.bestSpeedBonus = speedBonus;
 
   const comboBonus = Math.max(0, gameState.combo - 1) * CONFIG.COMBO_BONUS;
   dom.comboNum.textContent = `${gameState.combo}x`;
   
-  if (gameState.combo > gameState.bestCombo) gameState.bestCombo = gameState.combo;
   gameState.solved++;
   gameState.difficultyLevel = gameState.startingDifficulty + Math.floor(gameState.solved / CONFIG.DIFFICULTY_INTERVAL);
 
   const points = CONFIG.POINTS_CORRECT + comboBonus + speedBonus;
   gameState.score += points;
 
+  // Add Coins for this solve
+  const baseCoins = 1;
+  const coinMultBonus = (economy.upgrades.coinMult || 0) * 0.25;
+  let earnedCoins = Math.round(baseCoins * (1 + coinMultBonus));
+  if (gameState.combo >= 5) earnedCoins += 1;
+  if (speedBonus >= 12) earnedCoins += 1;
+  addCoins(earnedCoins);
+
+  // Trigger CrazyGames happytime on milestone streaks
+  if (gameState.combo === 5 || gameState.combo === 10 || gameState.combo === 15) {
+    triggerCrazyHappyTime();
+  }
+
   // Visual slot feedback
   dom.slotA.className = 'slot slot-operand success-flash';
   dom.slotB.className = 'slot slot-operand success-flash';
 
   showFloatingScore(`+${points}`, f1.el, 'plus');
-  if (speedBonus >= 8) showSpeedToast(speedBonus);
+  if (speedBonus >= 8 && !isBomb) showSpeedToast(speedBonus);
 
   removeFloater(f1.id, true);
   removeFloater(f2.id, true);
@@ -602,6 +958,23 @@ function handleCorrect(f1, f2) {
 }
 
 function handleWrong(f1, f2) {
+  if (gameState.shieldCharges > 0) {
+    gameState.shieldCharges--;
+    if (gameState.shieldCharges <= 0) {
+      if (dom.hudShieldIndicator) dom.hudShieldIndicator.style.display = 'none';
+    } else {
+      if (dom.shieldCount) dom.shieldCount.textContent = gameState.shieldCharges;
+    }
+    showFloatingScore('🛡️ SHIELD SAVED!', f1.el, 'plus');
+    playArcadeSound('powerup_shield');
+
+    f1.el.classList.remove('orb-selected');
+    f2.el.classList.remove('orb-selected');
+    resetEquationSlots();
+    gameState.selected = [];
+    return;
+  }
+
   gameState.combo = 0;
   gameState.score = Math.max(0, gameState.score + CONFIG.POINTS_WRONG);
   gameState.wrongAnswers++;
@@ -627,7 +1000,7 @@ function handleWrong(f1, f2) {
   updateHUD();
 }
 
-// ─── 12. SPEED METER GAUGE ───────────────────────────────────
+// ─── 14. SPEED METER GAUGE ───────────────────────────────────
 let speedMeterLoopId = null;
 
 function resetSpeedMeter() {
@@ -638,7 +1011,8 @@ function resetSpeedMeter() {
 
 function updateSpeedMeter() {
   const elapsed = (Date.now() - gameState.questionStartMs) / 1000;
-  const pct = Math.max(0, 1 - elapsed / CONFIG.SPEED_WINDOW) * 100;
+  const speedWindow = getEffectiveSpeedWindow();
+  const pct = Math.max(0, 1 - elapsed / speedWindow) * 100;
   dom.speedMeterBar.style.width = `${pct}%`;
 
   if (pct > 0 && gameState.phase === 'playing') {
@@ -654,7 +1028,7 @@ function showSpeedToast(val) {
   setTimeout(() => dom.speedToast.classList.remove('pop'), 850);
 }
 
-// ─── 13. HUD & SCREEN FX ─────────────────────────────────────
+// ─── 15. HUD & SCREEN FX ─────────────────────────────────────
 function updateHUD() {
   if (dom.scoreDisplay) {
     dom.scoreDisplay.textContent = `${gameState.score} PTS`;
@@ -742,14 +1116,14 @@ function spawnEnergyParticles(refEl) {
   }
 }
 
-// ─── 14. COUNTDOWN TIMER ─────────────────────────────────────
+// ─── 16. COUNTDOWN TIMER ─────────────────────────────────────
 function startTimer() {
-  stopTimer(); // Ensure any existing timer interval is cleared to prevent leaks
-  gameState.timeLeft = gameState.duration || CONFIG.GAME_DURATION;
+  stopTimer();
+  gameState.timeLeft = getBaseDuration();
   updateHUD();
 
   gameState.timerIntervalId = setInterval(() => {
-    if (gameState.phase !== 'playing' || gameState.isPaused) return;
+    if (gameState.phase !== 'playing' || gameState.isPaused || gameState.isFrozen) return;
     gameState.timeLeft--;
     updateHUD();
 
@@ -772,7 +1146,7 @@ function stopTimer() {
   }
 }
 
-// ─── 15. MAIN PHYSICS GAME LOOP (rAF) ────────────────────────
+// ─── 17. MAIN PHYSICS GAME LOOP (rAF) ────────────────────────
 function gameLoop(timestamp) {
   if (gameState.phase !== 'playing') return;
 
@@ -807,7 +1181,7 @@ function gameLoop(timestamp) {
 }
 
 function startGameLoop() {
-  stopGameLoop(); // Ensure any existing game loop is cancelled first
+  stopGameLoop();
   gameState.lastFrameTime = 0;
   gameState.animFrameId = requestAnimationFrame(gameLoop);
 }
@@ -819,7 +1193,7 @@ function stopGameLoop() {
   }
 }
 
-// ─── 16. GAME OVER & RANKING ─────────────────────────────────
+// ─── 18. GAME OVER & RANKING ─────────────────────────────────
 function calculateRank(score, accuracy) {
   if (gameState.theme === 'robotics') {
     if (score >= 400 && accuracy >= 90) return { rank: '🌌 CYBER GOD 🦾', color: '#ff007f' };
@@ -869,6 +1243,7 @@ function endGame() {
   clearAllFloaters();
   stopAllAudio();
   triggerCMGEvent('gameover');
+  triggerCrazyGameplayStop();
 
   const totalAttempts = gameState.solved + gameState.wrongAnswers;
   const accuracy = totalAttempts > 0 ? Math.round(gameState.solved / totalAttempts * 100) : 0;
@@ -882,7 +1257,10 @@ function endGame() {
   dom.finalSolved.textContent   = gameState.solved;
   dom.finalAccuracy.textContent = `${accuracy}%`;
   dom.finalCombo.textContent    = `${gameState.bestCombo}x`;
-  dom.finalSpeed.textContent    = `+${gameState.bestSpeedBonus} PTS`;
+  dom.finalCoins.textContent    = `+${gameState.coinsEarnedThisRound}`;
+
+  if (dom.doubleCoinsBtn) dom.doubleCoinsBtn.style.display = 'flex';
+  if (dom.reviveBtn) dom.reviveBtn.style.display = 'flex';
 
   if (isNewRecord && gameState.score > 0) {
     dom.newRecordBadge.classList.add('show');
@@ -893,7 +1271,20 @@ function endGame() {
   setTimeout(() => showScreen('gameover'), 350);
 }
 
-// ─── 17. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────
+function reviveRound(extraSeconds = 30) {
+  gameState.phase = 'playing';
+  gameState.timeLeft = extraSeconds;
+  if (dom.reviveBtn) dom.reviveBtn.style.display = 'none';
+
+  showScreen('game');
+  updateHUD();
+  generateQuestion();
+  startTimer();
+  startGameLoop();
+  triggerCrazyGameplayStart();
+}
+
+// ─── 19. SYNTHESIZED PROCEDURAL WEB AUDIO ────────────────────
 let audioCtx = null;
 let masterGainNode = null;
 
@@ -983,6 +1374,61 @@ function playArcadeSound(type, comboLevel = 1) {
       osc.start(now);
       osc.stop(now + 0.03);
     }
+    else if (type === 'powerup_bomb') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(30, now + 0.35);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc.connect(gain);
+      gain.connect(masterGainNode);
+      osc.start(now);
+      osc.stop(now + 0.35);
+    }
+    else if (type === 'powerup_freeze') {
+      [900, 1200, 1600].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+        gain.gain.setValueAtTime(0.08, now + idx * 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.25);
+        osc.connect(gain);
+        gain.connect(masterGainNode);
+        osc.start(now + idx * 0.06);
+        osc.stop(now + idx * 0.06 + 0.25);
+      });
+    }
+    else if (type === 'powerup_coin') {
+      [987.77, 1318.51].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+        gain.gain.setValueAtTime(0.08, now + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+        osc.connect(gain);
+        gain.connect(masterGainNode);
+        osc.start(now + idx * 0.08);
+        osc.stop(now + idx * 0.08 + 0.2);
+      });
+    }
+    else if (type === 'powerup_shield') {
+      [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+        gain.gain.setValueAtTime(0.08, now + idx * 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.3);
+        osc.connect(gain);
+        gain.connect(masterGainNode);
+        osc.start(now + idx * 0.05);
+        osc.stop(now + idx * 0.05 + 0.3);
+      });
+    }
     else if (type === 'gameover' || type === 'gameover_record') {
       const notes = type === 'gameover_record' 
         ? [523.25, 659.25, 783.99, 1046.50, 1318.51] 
@@ -1013,14 +1459,25 @@ function playArcadeSound(type, comboLevel = 1) {
   } catch (_) {}
 }
 
-// ─── 18. GAME CONTROLS & FLOW ────────────────────────────────
+// ─── 20. GAME CONTROLS & FLOW ────────────────────────────────
 function startGame() {
   resetState();
   gameState.phase = 'playing';
+  gameState.coinsEarnedThisRound = 0;
+  gameState.shieldCharges = economy.upgrades.comboShield > 0 ? 1 : 0;
+  if (dom.hudShieldIndicator) {
+    dom.hudShieldIndicator.style.display = gameState.shieldCharges > 0 ? 'flex' : 'none';
+    if (dom.shieldCount) dom.shieldCount.textContent = gameState.shieldCharges;
+  }
+  if (dom.freezeOverlay) dom.freezeOverlay.style.display = 'none';
+
   clearAllFloaters();
   if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
   if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
   if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
+  if (dom.shopModal) dom.shopModal.classList.remove('active');
+
+  applyEquippedSkin(economy.activeSkin);
   showScreen('game');
   updateHUD();
   generateQuestion();
@@ -1028,6 +1485,7 @@ function startGame() {
   startGameLoop();
   playArcadeSound('select');
   triggerCMGEvent('start');
+  triggerCrazyGameplayStart();
 }
 
 function resetState() {
@@ -1041,8 +1499,10 @@ function resetState() {
 
   gameState.phase           = 'menu';
   gameState.isPaused        = false;
+  gameState.isFrozen        = false;
+  if (gameState.freezeTimeoutId) clearTimeout(gameState.freezeTimeoutId);
   gameState.score           = 0;
-  gameState.timeLeft        = gameState.duration || CONFIG.GAME_DURATION;
+  gameState.timeLeft        = getBaseDuration();
   gameState.combo           = 0;
   gameState.bestCombo       = 0;
   gameState.solved          = 0;
@@ -1061,6 +1521,7 @@ function resetState() {
   
   if (dom.pauseModal) dom.pauseModal.classList.remove('active');
   if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
+  if (dom.shopModal) dom.shopModal.classList.remove('active');
   if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
   if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
 }
@@ -1072,15 +1533,89 @@ function togglePause() {
     if (dom.pauseModal) dom.pauseModal.classList.add('active');
     playArcadeSound('click');
     triggerCMGEvent('pause');
+    triggerCrazyGameplayStop();
   } else {
     if (dom.pauseModal) dom.pauseModal.classList.remove('active');
     playArcadeSound('select');
     triggerCMGEvent('resume');
+    triggerCrazyGameplayStart();
   }
 }
 
-// ─── 19. EVENT LISTENERS ─────────────────────────────────────
-// Pause & How to Play Controls
+// ─── 21. EVENT LISTENERS ─────────────────────────────────────
+// Shop Controls & Tabs
+if (dom.shopBtn) {
+  dom.shopBtn.addEventListener('click', () => {
+    if (dom.shopModal) {
+      renderShopUI();
+      dom.shopModal.classList.add('active');
+    }
+    playArcadeSound('click');
+  });
+}
+if (dom.closeShopBtn) {
+  dom.closeShopBtn.addEventListener('click', () => {
+    if (dom.shopModal) dom.shopModal.classList.remove('active');
+    playArcadeSound('select');
+  });
+}
+if (dom.shopModal) {
+  dom.shopModal.addEventListener('click', e => {
+    if (e.target === dom.shopModal) {
+      dom.shopModal.classList.remove('active');
+      playArcadeSound('click');
+    }
+  });
+
+  // Shop Tabs
+  dom.shopModal.querySelectorAll('.shop-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      dom.shopModal.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+      dom.shopModal.querySelectorAll('.shop-tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      const targetTab = document.getElementById(`shop-tab-${tab.dataset.tab}`);
+      if (targetTab) targetTab.classList.add('active');
+      playArcadeSound('click');
+    });
+  });
+
+  // Buy Upgrades
+  dom.shopModal.addEventListener('click', e => {
+    const buyBtn = e.target.closest('.u-buy-btn');
+    if (buyBtn && !buyBtn.classList.contains('maxed')) {
+      buyUpgrade(buyBtn.dataset.upgrade);
+    }
+    const skinBtn = e.target.closest('.skin-action-btn');
+    if (skinBtn) {
+      const skinItem = skinBtn.closest('.skin-item');
+      if (skinItem) buyOrEquipSkin(skinItem.dataset.skin);
+    }
+  });
+}
+
+// Rewarded Video Bonus Buttons
+if (dom.doubleCoinsBtn) {
+  dom.doubleCoinsBtn.addEventListener('click', () => {
+    showCrazyRewarded('double_coins', () => {
+      addCoins(gameState.coinsEarnedThisRound);
+      gameState.coinsEarnedThisRound *= 2;
+      dom.finalCoins.textContent = `+${gameState.coinsEarnedThisRound} (2x!)`;
+      dom.doubleCoinsBtn.style.display = 'none';
+      playArcadeSound('powerup_coin');
+      showSpeedToast(25);
+    });
+  });
+}
+
+if (dom.reviveBtn) {
+  dom.reviveBtn.addEventListener('click', () => {
+    showCrazyRewarded('revive', () => {
+      reviveRound(30);
+    });
+  });
+}
+
+// How to Play Controls
 if (dom.howToPlayBtn) {
   dom.howToPlayBtn.addEventListener('click', () => {
     if (dom.howToPlayModal) dom.howToPlayModal.classList.add('active');
@@ -1109,6 +1644,7 @@ if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
   gameState.isPaused = false;
   resetState();
   loadHighScore();
+  updateCoinsDisplay();
   clearAllFloaters();
   cancelAnimationFrame(speedMeterLoopId);
   showScreen('start');
@@ -1123,6 +1659,8 @@ const themeTranslations = {
     '.logo-deco-left': '🌟', '.logo-deco-right': '🌟', '.logo-subline': '🍭 FUN MATH FOR KIDS! 🍭', '.logo-emoji-row': '🌈 ➕ ➖ ✖️ ➗ 🌈',
     '#how-to-play-btn': '❓ HOW TO PLAY', '#how-to-play-title': 'HOW TO PLAY',
     '#close-how-to-play-btn .play-btn-content': '🚀 GOT IT, LET\'S PLAY!',
+    '#shop-btn': '🛒 SHOP', '#shop-title': 'SURGE SHOP',
+    '#close-shop-btn .play-btn-content': '🚀 BACK TO GAME',
     '.mode-add .card-pill': '🍏 PLUS!', '.mode-add .card-tagline': '🤝 Add Together!',
     '.mode-sub .card-pill': '🍊 MINUS!', '.mode-sub .card-tagline': '✂️ Take Away!',
     '.mode-mult .card-pill': '🍇 TIMES!', '.mode-mult .card-tagline': '🚀 Power Up!',
@@ -1148,6 +1686,8 @@ const themeTranslations = {
     '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': '🦾 SYSTEM OVERRIDE 🦾', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
     '#how-to-play-btn': '⚡ PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL 📋',
     '#close-how-to-play-btn .play-btn-content': '⚡ PROTOCOL ACKNOWLEDGED',
+    '#shop-btn': '⚙️ UPGRADES', '#shop-title': 'SYSTEM UPGRADES',
+    '#close-shop-btn .play-btn-content': '⚡ RETURN TO CONSOLE',
     '.mode-add .card-pill': '➕ ADD', '.mode-add .card-tagline': '🔋 System Sum',
     '.mode-sub .card-pill': '➖ SUB', '.mode-sub .card-tagline': '🔧 Drain Core',
     '.mode-mult .card-pill': '✖️ MULT', '.mode-mult .card-tagline': '🚀 Overclock',
@@ -1269,12 +1809,15 @@ if (dom.diffGrid) {
 dom.startBtn.addEventListener('click', startGame);
 dom.playAgainBtn.addEventListener('click', () => {
   triggerCMGEvent('replay');
-  startGame();
+  showCrazyMidroll(() => {
+    startGame();
+  });
 });
 
 dom.menuBtn.addEventListener('click', () => {
   resetState();
   loadHighScore();
+  updateCoinsDisplay();
   clearAllFloaters();
   cancelAnimationFrame(speedMeterLoopId);
   showScreen('start');
@@ -1289,6 +1832,12 @@ dom.soundToggle.addEventListener('click', () => {
 // Keyboard Hotkeys
 document.addEventListener('keydown', e => {
   if (e.code === 'Escape') {
+    if (dom.shopModal && dom.shopModal.classList.contains('active')) {
+      e.preventDefault();
+      dom.shopModal.classList.remove('active');
+      playArcadeSound('click');
+      return;
+    }
     if (dom.howToPlayModal && dom.howToPlayModal.classList.contains('active')) {
       e.preventDefault();
       dom.howToPlayModal.classList.remove('active');
@@ -1302,6 +1851,12 @@ document.addEventListener('keydown', e => {
       togglePause();
     }
   } else if (e.code === 'Space' || e.code === 'Enter') {
+    if (dom.shopModal && dom.shopModal.classList.contains('active')) {
+      e.preventDefault();
+      dom.shopModal.classList.remove('active');
+      playArcadeSound('select');
+      return;
+    }
     if (dom.howToPlayModal && dom.howToPlayModal.classList.contains('active')) {
       e.preventDefault();
       dom.howToPlayModal.classList.remove('active');
@@ -1314,7 +1869,9 @@ document.addEventListener('keydown', e => {
     } else if (gameState.phase === 'gameover') {
       e.preventDefault();
       triggerCMGEvent('replay');
-      startGame();
+      showCrazyMidroll(() => {
+        startGame();
+      });
     }
   }
 });
@@ -1325,8 +1882,12 @@ function randInt(min, max) {
 }
 
 // ─── INITIALIZATION ──────────────────────────────────────────
+initCrazySDK();
 initAmbientCanvas();
 renderAmbientParticles();
 loadHighScore();
+updateCoinsDisplay();
+applyEquippedSkin(economy.activeSkin);
 applyTheme(gameState.theme);
 showScreen('start');
+

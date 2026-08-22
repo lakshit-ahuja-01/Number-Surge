@@ -87,7 +87,7 @@ body.theme-robotics #ambient-canvas {
 
 /* ─── Screen Manager ───────────────────────────────────── */
 .screen {
-  display: none !important;
+  display: none;
   position: absolute;
   inset: 0;
   width: 100%;
@@ -98,7 +98,7 @@ body.theme-robotics #ambient-canvas {
 }
 
 .screen.active {
-  display: flex;
+  display: flex !important;
   animation: screenFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 

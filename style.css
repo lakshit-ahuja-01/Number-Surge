@@ -4090,7 +4090,6 @@ body:not(.theme-robotics) #start-screen {
   --launch-surface: rgba(255, 255, 255, .88);
   --launch-border: rgba(255, 255, 255, .72);
   --launch-accent: #ff6d9d;
-  padding-top: max(16px, env(safe-area-inset-top));
   background:
     radial-gradient(26rem 20rem at 14% 12%, rgba(255, 179, 215, .88), transparent 66%),
     radial-gradient(30rem 22rem at 88% 9%, rgba(163, 225, 255, .9), transparent 65%),
@@ -4136,7 +4135,6 @@ body:not(.theme-robotics) .help-btn { color: #3e87bd; border-color: #b9e4ff; bac
 body:not(.theme-robotics) .theme-btn { color: #8b7b9e; }
 body:not(.theme-robotics) .theme-btn.active { background: linear-gradient(135deg, #ff91ba, #cf81f2); color: #fff; box-shadow: 0 3px 0 #b964da; }
 
-body:not(.theme-robotics) .game-logo-3d { font-size: clamp(3.3rem, 7.4vw, 5.6rem); }
 body:not(.theme-robotics) .logo-row-1 { color: #ff86ad; text-shadow: 0 3px 0 #e45b87, 0 7px 0 #c13c6d, 0 12px 18px rgba(255,119,166,.27); }
 body:not(.theme-robotics) .logo-row-2 { color: #ffb34c; text-shadow: 0 3px 0 #ec8625, 0 7px 0 #ce6413, 0 12px 18px rgba(255,165,52,.25); }
 body:not(.theme-robotics) .logo-subline { border: 2px solid #ffd07a; border-radius: 99px; background: #fff8df; color: #c46a24; box-shadow: 0 3px 0 #f7bf70; font-size: 10px; }
@@ -4149,20 +4147,21 @@ body:not(.theme-robotics) .setup-section-heading h2 { color: #4e3a67; }
 body:not(.theme-robotics) .selection-status { border: 2px solid #bcefd2; background: #effff5; color: #288864; }
 
 body:not(.theme-robotics) .arcade-card {
-  min-height: 158px;
+  min-height: clamp(90px, 15vh, 155px);
+  padding: clamp(5px, 0.9vh, 12px) clamp(4px, 0.7vw, 12px);
   border: 3px solid #fff;
-  border-radius: 23px;
+  border-radius: clamp(12px, 1.8vh, 23px);
   background: #fff;
   box-shadow: 0 7px 0 rgba(92, 63, 112, .16), 0 13px 24px rgba(122, 83, 127, .12);
 }
 body:not(.theme-robotics) .arcade-card::after { display: none; }
 body:not(.theme-robotics) .arcade-card:hover,
-body:not(.theme-robotics) .arcade-card:nth-child(even):hover { transform: translateY(-5px) rotate(-1deg); box-shadow: 0 10px 0 rgba(92,63,112,.17), 0 19px 27px rgba(122,83,127,.16); }
-body:not(.theme-robotics) .arcade-card:nth-child(even):hover { transform: translateY(-5px) rotate(1deg); }
+body:not(.theme-robotics) .arcade-card:nth-child(even):hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 10px 0 rgba(92,63,112,.17), 0 19px 27px rgba(122,83,127,.16); }
+body:not(.theme-robotics) .arcade-card:nth-child(even):hover { transform: translateY(-3px) rotate(1deg); }
 body:not(.theme-robotics) .arcade-card.active,
 body:not(.theme-robotics) .arcade-card.active:hover { transform: translateY(1px); box-shadow: 0 5px 0 rgba(92,63,112,.17), 0 0 0 3px currentColor, 0 12px 20px rgba(122,83,127,.13); }
-body:not(.theme-robotics) .card-pill { padding: 4px 8px; border-radius: 99px; background: rgba(255,255,255,.72) !important; font-size: 9px; }
-body:not(.theme-robotics) .card-glyph { margin: 9px auto auto; font-size: 36px; filter: drop-shadow(0 3px 0 rgba(75,55,94,.16)); }
+body:not(.theme-robotics) .card-pill { padding: clamp(2px, 0.35vh, 4px) clamp(4px, 0.6vw, 8px); border-radius: 99px; background: rgba(255,255,255,.72) !important; font-size: clamp(7.5px, 1.1vh, 9px); }
+body:not(.theme-robotics) .card-glyph { margin: clamp(2px, 0.4vh, 6px) auto auto; font-size: clamp(20px, 3.6vh, 36px); filter: drop-shadow(0 3px 0 rgba(75,55,94,.16)); }
 body:not(.theme-robotics) .card-info { width: 100%; align-items: center; text-align: center; }
 body:not(.theme-robotics) .card-name { color: #514064 !important; font-size: 13px; }
 body:not(.theme-robotics) .card-tagline { color: #776984 !important; font-size: 11px; }

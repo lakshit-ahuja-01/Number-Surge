@@ -3911,7 +3911,7 @@ body.theme-robotics .play-btn-content { color: #021911; }
   box-sizing: border-box;
 }
 
-@media (max-height: 820px) {
+@media (max-height: 670px) {
   #start-screen { padding: 10px 16px 14px; }
   .title-top-bar { min-height: 42px; margin-bottom: 8px; padding: 4px 6px; }
   .title-highscore-pill, .title-coins-pill, .shop-btn, .help-btn, .theme-switcher-bar { height: 32px; font-size: 11px; }
@@ -3919,7 +3919,7 @@ body.theme-robotics .play-btn-content { color: #021911; }
   .game-logo-3d { font-size: clamp(2.2rem, 5vh, 3.4rem); }
   .logo-subline { margin-top: 4px; padding: 3px 8px; font-size: 9px; }
   .setup-section-heading { margin-bottom: 5px; }
-  .arcade-card { min-height: 116px; padding: 8px 6px 8px; }
+  .arcade-card { min-height: 118px; padding: 8px 6px 8px; }
   .card-pill { padding: 2px 6px; font-size: 7.5px; }
   .card-glyph { margin-top: 4px; font-size: 26px; }
   .card-name { font-size: 11.5px; }
@@ -3931,11 +3931,11 @@ body.theme-robotics .play-btn-content { color: #021911; }
   .time-chip-val { font-size: 10px; }
   .arcade-cta-box { gap: 4px; margin-top: 0; }
   .launch-summary { font-size: 11px; }
-  .arcade-play-button { height: 46px; max-width: 440px; }
+  .arcade-play-button { height: 48px; max-width: 440px; }
   .play-btn-content { font-size: 15px; }
 }
 
-@media (max-height: 620px) {
+@media (max-height: 520px) {
   #start-screen { padding: 6px 12px 10px; }
   .title-top-bar { min-height: 36px; margin-bottom: 5px; }
   .title-highscore-pill, .title-coins-pill, .shop-btn, .help-btn, .theme-switcher-bar { height: 28px; font-size: 10px; }

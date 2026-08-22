@@ -3486,13 +3486,22 @@ body.theme-robotics .btn-revive .reward-content {
 }
 
 #start-screen {
-  padding: max(18px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  padding: clamp(6px, 1.2vh, 16px) clamp(10px, 1.8vw, 24px) clamp(8px, 1.5vh, 18px);
   background:
     radial-gradient(55rem 38rem at 50% -14%, rgba(153, 110, 255, 0.45), transparent 58%),
     radial-gradient(42rem 28rem at 8% 88%, rgba(255, 112, 165, 0.25), transparent 68%),
     radial-gradient(40rem 28rem at 94% 70%, rgba(82, 220, 208, 0.18), transparent 68%),
     linear-gradient(145deg, #100d23 0%, #181331 48%, #0c192a 100%);
   color: var(--launch-ink);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 #start-screen::before,
@@ -3522,15 +3531,17 @@ body.theme-robotics .btn-revive .reward-content {
 }
 
 .title-top-bar {
+  width: 100%;
   max-width: 1040px;
-  min-height: 50px;
-  margin-bottom: clamp(14px, 2vh, 26px);
-  padding: 6px 8px;
+  min-height: clamp(36px, 5vh, 48px);
+  margin-bottom: clamp(4px, 1vh, 14px);
+  padding: 4px 8px;
   border: 1px solid var(--launch-border);
   border-radius: 16px;
   background: rgba(12, 10, 29, 0.54);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(14px);
+  flex-shrink: 0;
 }
 
 .title-top-left-stats, .title-actions-bar { gap: 8px; }
@@ -3540,12 +3551,13 @@ body.theme-robotics .btn-revive .reward-content {
 .shop-btn,
 .help-btn,
 .theme-switcher-bar {
-  height: 36px;
+  height: clamp(30px, 4.2vh, 38px);
   border: 1px solid var(--launch-border);
   border-radius: 10px;
   box-shadow: none;
   background: rgba(255, 255, 255, 0.055);
   color: var(--launch-ink);
+  font-size: clamp(10.5px, 1.5vh, 13px);
 }
 
 .title-highscore-pill,
@@ -3565,7 +3577,7 @@ body.theme-robotics .btn-revive .reward-content {
 }
 
 .theme-switcher-bar { padding: 3px; gap: 2px; }
-.theme-btn { height: 28px; border-radius: 7px; color: var(--launch-muted); font-size: 10px; }
+.theme-btn { height: clamp(24px, 3.4vh, 30px); border-radius: 7px; color: var(--launch-muted); font-size: clamp(8.5px, 1.2vh, 10.5px); }
 .theme-btn:hover { color: #fff; }
 .theme-btn.active {
   background: linear-gradient(135deg, #df68ff, #8677ff);
@@ -3573,13 +3585,32 @@ body.theme-robotics .btn-revive .reward-content {
 }
 
 .arcade-title-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   max-width: 1040px;
-  gap: clamp(13px, 1.8vh, 20px);
-  padding-bottom: 4px;
+  gap: clamp(4px, 1vh, 14px);
+  padding-bottom: 0;
 }
 
-.title-logo-block { padding-top: 2px; }
-.game-logo-3d { font-size: clamp(3.1rem, 7vw, 5.3rem); letter-spacing: 0.025em; line-height: 0.82; }
+.title-logo-block {
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 1;
+}
+
+.game-logo-3d {
+  font-size: clamp(2rem, 5.8vh, 4.6rem);
+  letter-spacing: 0.025em;
+  line-height: 0.82;
+}
+
 .logo-row-1 {
   color: #ffe3f0;
   text-shadow: 0 3px 0 #d35487, 0 7px 0 #8a315c, 0 13px 24px rgba(255, 85, 156, 0.36);
@@ -3746,17 +3777,21 @@ body.theme-robotics .btn-revive .reward-content {
   font-weight: 800;
 }
 
-.arcade-mode-selector { grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; }
+.arcade-mode-selector {
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(6px, 1vw, 10px);
+  width: 100%;
+}
 .arcade-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-height: 158px;
-  padding: 14px 12px 12px;
+  min-height: clamp(90px, 15vh, 155px);
+  padding: clamp(5px, 0.9vh, 12px) clamp(4px, 0.7vw, 12px);
   overflow: visible;
   border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 20px;
+  border-radius: clamp(12px, 1.8vh, 20px);
   background: linear-gradient(145deg, rgba(57, 50, 97, 0.94), rgba(26, 23, 53, 0.96));
   box-shadow: 0 8px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
   color: var(--launch-ink);
@@ -3767,32 +3802,32 @@ body.theme-robotics .btn-revive .reward-content {
   display: none;
 }
 .arcade-card:hover, .arcade-card:nth-child(even):hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 28px rgba(0,0,0,.27), inset 0 1px 0 rgba(255,255,255,.13);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.13);
 }
 .arcade-card:hover .card-glyph { transform: scale(1.08); }
 .arcade-card.active, .arcade-card.active:hover {
   transform: translateY(-2px);
   border-color: currentColor;
-  box-shadow: 0 0 0 2px currentColor, 0 15px 28px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.14);
+  box-shadow: 0 0 0 2px currentColor, 0 12px 24px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.14);
 }
 .card-glow-bg { display: none; }
 .card-pill {
   order: 0;
-  padding: 4px 8px;
+  padding: clamp(2px, 0.35vh, 4px) clamp(4px, 0.6vw, 8px);
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.1) !important;
   box-shadow: none;
   color: currentColor !important;
-  font-size: 9px;
+  font-size: clamp(7.5px, 1.1vh, 9px);
   letter-spacing: .1em;
   text-align: center;
 }
 .card-glyph {
   order: 1;
-  margin: 9px auto auto;
+  margin: clamp(2px, 0.4vh, 6px) auto auto;
   color: currentColor !important;
-  font-size: 36px;
+  font-size: clamp(20px, 3.6vh, 36px);
   filter: none;
   text-align: center;
   transition: transform 0.18s ease;
@@ -3804,10 +3839,10 @@ body.theme-robotics .btn-revive .reward-content {
   align-items: center;
   text-align: center;
   width: 100%;
-  gap: 3px;
+  gap: clamp(1px, 0.3vh, 3px);
 }
-.card-name { color: #fff !important; text-shadow: none !important; font-size: 13px; letter-spacing: .03em; text-align: center; }
-.card-tagline { display: block; color: var(--launch-muted) !important; font-family: var(--font-body); font-size: 11px; font-weight: 700; line-height: 1.2; text-align: center; }
+.card-name { color: #fff !important; text-shadow: none !important; font-size: clamp(10px, 1.4vh, 13px); letter-spacing: .03em; text-align: center; }
+.card-tagline { display: block; color: var(--launch-muted) !important; font-family: var(--font-body); font-size: clamp(8px, 1.1vh, 10.5px); font-weight: 700; line-height: 1.15; text-align: center; }
 .mode-add { color: #7cf5b7; }
 .mode-sub { color: #ffb36e; }
 .mode-mult { color: #cf9bff; }
@@ -3820,21 +3855,22 @@ body.theme-robotics .btn-revive .reward-content {
 
 .arcade-settings-bar {
   grid-template-columns: 1.15fr auto 1fr;
-  gap: 18px;
-  padding: 13px 16px;
+  gap: clamp(8px, 1.5vw, 18px);
+  padding: clamp(5px, 0.8vh, 11px) clamp(8px, 1.5vw, 16px);
   border: 1px solid var(--launch-border);
-  border-radius: 15px;
+  border-radius: clamp(10px, 1.5vh, 15px);
   background: var(--launch-surface);
   box-shadow: 0 14px 24px rgba(0, 0, 0, .17), inset 0 1px 0 rgba(255,255,255,.07);
   backdrop-filter: blur(14px);
+  flex-shrink: 0;
 }
-.settings-divider { height: 54px; background: var(--launch-border); }
-.settings-subgroup { gap: 7px; }
-.settings-group-title { color: #d7d5ed; font-size: 9px; letter-spacing: .14em; }
+.settings-divider { height: clamp(28px, 4vh, 48px); background: var(--launch-border); }
+.settings-subgroup { gap: clamp(3px, 0.5vh, 6px); }
+.settings-group-title { color: #d7d5ed; font-size: clamp(7.5px, 1.1vh, 9px); letter-spacing: .14em; }
 .time-chip {
-  height: 42px;
+  height: clamp(28px, 4.2vh, 40px);
   border: 1px solid rgba(255,255,255,.15);
-  border-radius: 9px;
+  border-radius: clamp(6px, 1vh, 9px);
   background: rgba(10, 8, 27, .44);
   box-shadow: none;
   color: #d6d3ed;
@@ -3848,24 +3884,33 @@ body.theme-robotics .btn-revive .reward-content {
   transform: none;
 }
 .time-chip.active .time-chip-val { color: #eafff1; text-shadow: none; }
-.time-chip-icon { font-size: 13px; }
-.time-chip-val { font-size: 11px; }
+.time-chip-icon { font-size: clamp(10px, 1.5vh, 13px); }
+.time-chip-val { font-size: clamp(9px, 1.3vh, 11px); }
 
-.arcade-cta-box { gap: 8px; margin-top: 2px; }
+.arcade-cta-box {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2px, 0.5vh, 6px);
+  margin-top: 0;
+}
 .launch-summary {
   color: var(--launch-muted);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: clamp(9.5px, 1.3vh, 11.5px);
   font-weight: 700;
 }
-.launch-summary span { margin-right: 7px; color: #ffdc80; font-family: var(--font-hud); font-size: 9px; letter-spacing: .12em; }
+.launch-summary span { margin-right: 7px; color: #ffdc80; font-family: var(--font-hud); font-size: clamp(8px, 1.1vh, 9px); letter-spacing: .12em; }
 .arcade-play-button {
-  max-width: 510px;
-  height: 60px;
+  max-width: 480px;
+  width: 100%;
+  height: clamp(38px, 5.8vh, 56px);
   border: 1px solid #a8ffca;
-  border-radius: 13px;
+  border-radius: clamp(10px, 1.5vh, 13px);
   background: linear-gradient(180deg, #80ffc0 0%, #31d987 52%, #10a85e 100%);
-  box-shadow: 0 6px 0 #087242, 0 14px 28px rgba(15, 225, 132, .22), inset 0 1px 0 rgba(255,255,255,.55);
+  box-shadow: 0 5px 0 #087242, 0 12px 24px rgba(15, 225, 132, .22), inset 0 1px 0 rgba(255,255,255,.55);
 }
 .arcade-play-button:hover {
   background: linear-gradient(180deg, #a4ffd0 0%, #48e89a 52%, #13b866 100%);
@@ -4139,12 +4184,12 @@ body.theme-robotics .selection-status {
 }
 body.theme-robotics .launch-step.is-current { color: #a4ffe0; }
 body.theme-robotics .launch-step.is-current b { color: #00f2fe; }
-body.theme-robotics .arcade-mode-selector { grid-template-columns: repeat(6, 1fr); gap: 8px; }
+body.theme-robotics .arcade-mode-selector { grid-template-columns: repeat(6, 1fr); gap: clamp(5px, 0.8vw, 8px); }
 body.theme-robotics .arcade-card {
-  min-height: 158px;
-  padding: 14px 10px 12px;
+  min-height: clamp(90px, 15vh, 155px);
+  padding: clamp(5px, 0.9vh, 12px) clamp(3px, 0.5vw, 10px);
   border: 1px solid rgba(96, 177, 222, .24);
-  border-radius: 16px;
+  border-radius: clamp(10px, 1.6vh, 16px);
   background: linear-gradient(145deg, rgba(15, 35, 57, .96), rgba(6, 17, 32, .98));
   box-shadow: 0 8px 0 #030b14, 0 13px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(118,225,255,.1);
 }
@@ -4158,16 +4203,16 @@ body.theme-robotics .arcade-card.active:hover {
 body.theme-robotics .arcade-card:hover,
 body.theme-robotics .arcade-card:nth-child(even):hover { transform: translateY(-4px); }
 body.theme-robotics .card-pill {
-  padding: 4px 8px;
+  padding: clamp(2px, 0.35vh, 4px) clamp(4px, 0.6vw, 8px);
   border-radius: 99px;
   background: rgba(0, 242, 254, .08) !important;
   border: 1px solid rgba(0, 242, 254, .2);
-  font-size: 8px;
+  font-size: clamp(7px, 1vh, 8px);
   letter-spacing: .13em;
 }
 body.theme-robotics .card-glyph {
-  font-size: 36px;
-  margin: 9px auto auto;
+  font-size: clamp(20px, 3.6vh, 36px);
+  margin: clamp(2px, 0.4vh, 7px) auto auto;
   filter: drop-shadow(0 0 12px currentColor);
 }
 body.theme-robotics .card-info {

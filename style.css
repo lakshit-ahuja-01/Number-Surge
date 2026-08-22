@@ -4003,37 +4003,77 @@ body.theme-robotics .play-btn-content { color: #021911; }
 
 @media (max-width: 720px) {
   #start-screen { align-items: stretch; }
-  .title-top-bar { flex-wrap: wrap; justify-content: center; }
-  .title-top-left-stats, .title-actions-bar { flex-wrap: wrap; justify-content: center; }
+  .title-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  .title-top-left-stats, .title-actions-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+  .title-highscore-pill .hs-txt { display: none; }
+  .title-highscore-pill, .title-coins-pill {
+    height: 34px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+  .shop-btn, .help-btn {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    padding: 0;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .shop-btn .nav-label, .help-btn .nav-label {
+    display: none;
+  }
+  .shop-btn .nav-icon, .help-btn .nav-icon {
+    font-size: 17px;
+    margin: 0;
+  }
+  .theme-switcher-bar {
+    height: 34px;
+    padding: 2px;
+  }
+  .theme-btn {
+    height: 28px;
+    padding: 0 7px;
+    font-size: 8.5px;
+  }
   .arcade-mode-selector, body.theme-robotics .arcade-mode-selector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mode-mix { grid-column: span 2; }
-  .arcade-card { min-height: 132px; }
-  .arcade-settings-bar { grid-template-columns: 1fr; gap: 12px; }
+  .arcade-card { min-height: 110px; }
+  .arcade-settings-bar { grid-template-columns: 1fr; gap: 10px; }
   .settings-divider { display: none; }
   .launch-steps { font-size: 9px; }
 }
 
 @media (max-width: 460px) {
-  #start-screen { padding: 12px 12px 22px; }
+  #start-screen { padding: 8px 10px 14px; }
   .title-top-bar { border-radius: 12px; }
-  .title-highscore-pill .hs-txt, .shop-btn, .help-btn { font-size: 10px; }
-  .title-highscore-pill { padding: 0 9px; }
-  .theme-btn { padding: 0 7px; font-size: 8px; }
-  .game-logo-3d { font-size: 3rem; }
-  .launch-steps { gap: 3px; font-size: 8px; }
-  .launch-step { gap: 3px; }
-  .launch-step:not(:last-child)::after { width: 8px; margin-left: 0; }
+  .theme-btn { padding: 0 5px; font-size: 7.5px; }
+  .game-logo-3d { font-size: 2.6rem; }
   .setup-section-heading h2 { font-size: .95rem; }
-  .selection-status { font-size: 8px; padding: 5px 7px; }
-  .arcade-card { min-height: 122px; padding: 10px; }
-  .card-glyph { margin-top: 7px; font-size: 28px; }
-  .card-name { font-size: 11px; }
-  .card-tagline { font-size: 10px; }
+  .selection-status { font-size: 8px; padding: 4px 6px; }
+  .arcade-card { min-height: 100px; padding: 8px 6px; }
+  .card-glyph { margin-top: 4px; font-size: 24px; }
+  .card-name { font-size: 10.5px; }
+  .card-tagline { font-size: 9px; }
   .time-chips-grid { gap: 5px; }
-  .time-chip { height: 40px; }
+  .time-chip { height: 36px; }
   .time-chip-icon { display: none; }
-  .arcade-play-button { height: 55px; }
-  .play-btn-content { font-size: 16px; }
+  .arcade-play-button { height: 48px; }
+  .play-btn-content { font-size: 15px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

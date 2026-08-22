@@ -1749,7 +1749,7 @@ function applyTheme(theme) {
   
   if (theme === 'robotics') {
     document.body.classList.add('theme-robotics');
-    if (powModeBtn) powModeBtn.style.display = 'flex';
+    if (powModeBtn) powModeBtn.style.display = 'none';
   } else {
     document.body.classList.remove('theme-robotics');
     if (powModeBtn) powModeBtn.style.display = 'none';

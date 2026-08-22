@@ -3737,37 +3737,31 @@ body.theme-robotics .btn-revive .reward-content {
   font-weight: 800;
 }
 
-.arcade-mode-selector { grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.arcade-mode-selector { grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; }
 .arcade-card {
-  min-height: 150px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0;
-  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 158px;
+  padding: 14px 12px 12px;
   overflow: visible;
   border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 14px;
+  border-radius: 20px;
   background: linear-gradient(145deg, rgba(57, 50, 97, 0.94), rgba(26, 23, 53, 0.96));
   box-shadow: 0 8px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
   color: var(--launch-ink);
-  text-align: left;
+  text-align: center;
+  box-sizing: border-box;
 }
 .arcade-card::after {
-  content: '';
-  position: absolute;
-  right: 12px;
-  bottom: 11px;
-  width: 20px;
-  height: 20px;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-  opacity: .34;
+  display: none;
 }
 .arcade-card:hover, .arcade-card:nth-child(even):hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 28px rgba(0,0,0,.27), inset 0 1px 0 rgba(255,255,255,.13);
 }
-.arcade-card:hover .card-glyph { transform: none; }
+.arcade-card:hover .card-glyph { transform: scale(1.08); }
 .arcade-card.active, .arcade-card.active:hover {
   transform: translateY(-2px);
   border-color: currentColor;
@@ -3776,23 +3770,35 @@ body.theme-robotics .btn-revive .reward-content {
 .card-glow-bg { display: none; }
 .card-pill {
   order: 0;
-  padding: 0;
-  background: transparent !important;
+  padding: 4px 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1) !important;
   box-shadow: none;
   color: currentColor !important;
   font-size: 9px;
   letter-spacing: .1em;
+  text-align: center;
 }
 .card-glyph {
   order: 1;
-  margin: 11px 0 auto;
+  margin: 9px auto auto;
   color: currentColor !important;
-  font-size: 34px;
+  font-size: 36px;
   filter: none;
+  text-align: center;
+  transition: transform 0.18s ease;
 }
-.card-info { order: 2; align-items: flex-start; gap: 3px; }
-.card-name { color: #fff !important; text-shadow: none !important; font-size: 13px; letter-spacing: .03em; }
-.card-tagline { display: block; color: var(--launch-muted) !important; font-family: var(--font-body); font-size: 11px; font-weight: 700; line-height: 1.2; }
+.card-info {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  gap: 3px;
+}
+.card-name { color: #fff !important; text-shadow: none !important; font-size: 13px; letter-spacing: .03em; text-align: center; }
+.card-tagline { display: block; color: var(--launch-muted) !important; font-family: var(--font-body); font-size: 11px; font-weight: 700; line-height: 1.2; text-align: center; }
 .mode-add { color: #7cf5b7; }
 .mode-sub { color: #ffb36e; }
 .mode-mult { color: #cf9bff; }
@@ -4083,38 +4089,42 @@ body.theme-robotics .selection-status {
 body.theme-robotics .launch-step.is-current { color: #a4ffe0; }
 body.theme-robotics .launch-step.is-current b { color: #00f2fe; }
 body.theme-robotics .arcade-card {
-  min-height: 156px;
-  padding: 13px;
-  border-color: rgba(96, 177, 222, .2);
+  min-height: 158px;
+  padding: 14px 12px 12px;
+  border: 1px solid rgba(96, 177, 222, .24);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(15, 35, 57, .96), rgba(6, 17, 32, .98));
   box-shadow: 0 8px 0 #030b14, 0 13px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(118,225,255,.1);
 }
-body.theme-robotics .arcade-card::before {
-  content: '';
-  position: absolute;
-  inset: 7px;
-  pointer-events: none;
-  border-top: 1px solid rgba(0, 242, 254, .16);
-  border-left: 1px solid rgba(0, 242, 254, .16);
-}
-body.theme-robotics .arcade-card::after {
-  display: block;
-  right: 8px;
-  bottom: 8px;
-  width: 12px;
-  height: 12px;
-  color: currentColor;
-  opacity: .55;
-}
+body.theme-robotics .arcade-card::before { display: none; }
+body.theme-robotics .arcade-card::after { display: none; }
 body.theme-robotics .arcade-card.active,
 body.theme-robotics .arcade-card.active:hover {
-  box-shadow: 0 0 0 1px currentColor, 0 7px 0 #030b14, 0 0 22px color-mix(in srgb, currentColor 27%, transparent), inset 0 1px 0 rgba(198,255,255,.22);
+  background: linear-gradient(145deg, rgba(15, 49, 70, .98), rgba(5, 23, 38, 1));
+  box-shadow: 0 0 0 2px currentColor, 0 7px 0 #030b14, 0 0 22px color-mix(in srgb, currentColor 27%, transparent), inset 0 1px 0 rgba(198,255,255,.22);
 }
 body.theme-robotics .arcade-card:hover,
-body.theme-robotics .arcade-card:nth-child(even):hover { transform: translateY(-3px); }
-body.theme-robotics .card-pill { font-size: 8px; letter-spacing: .13em; }
-body.theme-robotics .card-glyph { font-size: 32px; margin: 12px 0 auto; }
-body.theme-robotics .card-name { font-size: 12px; letter-spacing: .06em; }
-body.theme-robotics .card-tagline { font-size: 11px; color: #91a8be !important; }
+body.theme-robotics .arcade-card:nth-child(even):hover { transform: translateY(-4px); }
+body.theme-robotics .card-pill {
+  padding: 4px 8px;
+  border-radius: 99px;
+  background: rgba(0, 242, 254, .08) !important;
+  border: 1px solid rgba(0, 242, 254, .2);
+  font-size: 8px;
+  letter-spacing: .13em;
+}
+body.theme-robotics .card-glyph {
+  font-size: 36px;
+  margin: 9px auto auto;
+  filter: drop-shadow(0 0 12px currentColor);
+}
+body.theme-robotics .card-info {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+body.theme-robotics .card-name { font-size: 13px; letter-spacing: .06em; text-align: center; }
+body.theme-robotics .card-tagline { font-size: 11px; color: #91a8be !important; text-align: center; }
 body.theme-robotics .arcade-settings-bar { border-radius: 8px; border-color: rgba(0,242,254,.24); }
 body.theme-robotics .settings-group-title { color: #84eaff; letter-spacing: .14em; }
 body.theme-robotics .time-chip { border-radius: 5px; }

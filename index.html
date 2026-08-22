@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800;900&family=Outfit:wght@500;700;800;900&family=Press+Start+2P&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- CrazyGames HTML5 SDK v3 -->
+  <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>
 </head>
 <body>
 
@@ -23,14 +25,22 @@
       
       <!-- Top Title Screen Bar with Highscore and Theme Switcher -->
       <div class="title-top-bar">
-        <div class="title-highscore-pill">
-          <span class="trophy-icon">🏆</span>
-          <span class="hs-txt">HIGH SCORE:</span>
-          <span id="start-highscore" class="hs-num">0 PTS</span>
+        <div class="title-top-left-stats">
+          <div class="title-highscore-pill">
+            <span class="trophy-icon">🏆</span>
+            <span class="hs-txt">HIGH SCORE:</span>
+            <span id="start-highscore" class="hs-num">0 PTS</span>
+          </div>
+
+          <div class="title-coins-pill">
+            <span class="coin-icon">🪙</span>
+            <span id="coins-display" class="coin-num">0</span>
+          </div>
         </div>
 
-        <!-- Controls: How to play & Theme Switcher -->
+        <!-- Controls: Shop, How to play & Theme Switcher -->
         <div class="title-actions-bar">
+          <button id="shop-btn" class="shop-btn" aria-label="Shop & Upgrades" title="Shop & Upgrades">🛒 SHOP</button>
           <button id="how-to-play-btn" class="help-btn" aria-label="How to Play" title="How to Play">❓ HOW TO PLAY</button>
 
           <!-- Theme Switcher -->
@@ -237,8 +247,13 @@
           </div>
         </div>
 
-        <!-- Right: Combo Flame & Controls -->
+        <!-- Right: Combo Flame, Shield & Controls -->
         <div class="hud-right-cluster">
+          <div id="hud-shield-indicator" class="hud-shield-badge" title="Combo Shield Active" style="display: none;">
+            <span class="shield-badge-icon">🛡️</span>
+            <span id="shield-count" class="shield-badge-count">1</span>
+          </div>
+
           <div class="hud-dashboard-box" id="hud-combo-box">
             <div class="hud-subhead">
               <span class="hud-tag">🔥 STREAK</span>
@@ -310,6 +325,12 @@
           <div class="sky-star star-3">✨</div>
         </div>
 
+        <!-- Freeze Timer Frost Overlay -->
+        <div id="freeze-overlay" class="freeze-overlay" style="display: none;">
+          <div class="freeze-glow"></div>
+          <div class="freeze-pill">❄️ TIME FROZEN! ❄️</div>
+        </div>
+
         <div class="river-grid-bg"></div>
         <!-- Floating orbs injected by script.js -->
       </main>
@@ -373,12 +394,31 @@
               <span class="m-val" id="final-combo">0x</span>
             </div>
             <div class="mini-stat">
-              <span class="m-icon">⚡</span>
-              <span class="m-label">SPEED BONUS</span>
-              <span class="m-val" id="final-speed">+0 PTS</span>
+              <span class="m-icon">🪙</span>
+              <span class="m-label">COINS WON</span>
+              <span class="m-val" id="final-coins">+0</span>
             </div>
           </div>
 
+        </div>
+
+        <!-- CrazyGames Rewarded Video Bonus Actions -->
+        <div class="gameover-reward-actions">
+          <button id="double-coins-btn" class="arcade-reward-btn">
+            <span class="reward-tag">⚡ 2X BONUS</span>
+            <span class="reward-content">
+              <span class="reward-icon">📺</span>
+              <span>DOUBLE COINS (2x)</span>
+            </span>
+          </button>
+
+          <button id="revive-btn" class="arcade-reward-btn btn-revive">
+            <span class="reward-tag">❤️ EXTRA TIME</span>
+            <span class="reward-content">
+              <span class="reward-icon">📺</span>
+              <span>REVIVE (+30s)</span>
+            </span>
+          </button>
         </div>
 
         <!-- Action Buttons -->
@@ -398,7 +438,7 @@
       </div>
     </div>
 
-    <!-- HOW TO PLAY MODAL (COOLMATH & CLASSROOM COMPLIANT) -->
+    <!-- HOW TO PLAY MODAL (COOLMATH & CRAZYGAMES COMPLIANT) -->
     <div id="how-to-play-modal" class="pause-modal" role="dialog" aria-modal="true" aria-labelledby="how-to-play-title">
       <div class="pause-card how-to-play-card">
         <div class="pause-icon">🎯 🧠 ⚡</div>
@@ -408,19 +448,32 @@
           <div class="instruction-step">
             <div class="step-badge">1</div>
             <div class="step-content">
-              <strong>Check the Target:</strong> Look at the equation goal in the top console (e.g. <code>_ + _ = 40</code>).
+              <strong>Check Target Goal:</strong> Look at the top console equation to find your target (e.g. <code>_ + _ = 40</code>).
             </div>
           </div>
           <div class="instruction-step">
             <div class="step-badge">2</div>
             <div class="step-content">
-              <strong>Click 2 Bubbles:</strong> Click two floating numbers that solve the equation correctly.
+              <strong>Pop Two Bubbles:</strong> Click or tap two floating number bubbles that solve the equation correctly.
             </div>
           </div>
           <div class="instruction-step">
             <div class="step-badge">3</div>
             <div class="step-content">
-              <strong>Score & Streaks:</strong> Solve fast for Speed Surges and build streaks for high score multipliers!
+              <strong>Grab Power-Up Orbs:</strong>
+              <div style="margin-top: 4px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 12px; line-height: 1.4;">
+                <span>💣 <b>Bomb:</b> Instant Solve</span>
+                <span>❄️ <b>Freeze:</b> 5s Time Freeze</span>
+                <span>💡 <b>Radar:</b> Glowing Hints</span>
+                <span>🛡️ <b>Shield:</b> Protects Streak</span>
+                <span>🪙 <b>Coins:</b> Instant +15 Coins</span>
+              </div>
+            </div>
+          </div>
+          <div class="instruction-step">
+            <div class="step-badge">4</div>
+            <div class="step-content">
+              <strong>Surge Shop & Skins:</strong> Spend Surge Coins to upgrade stats (+Time, +Shield, +Speed) and unlock 6 custom 3D orb skins!
             </div>
           </div>
         </div>
@@ -430,6 +483,165 @@
             <span class="play-btn-content">🚀 GOT IT, LET'S PLAY!</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- ===== 🛒 SURGE SHOP & UPGRADES MODAL ===== -->
+    <div id="shop-modal" class="pause-modal" role="dialog" aria-modal="true" aria-labelledby="shop-title">
+      <div class="pause-card shop-card">
+        
+        <div class="shop-header">
+          <div class="shop-header-left">
+            <div class="shop-icon">🛒</div>
+            <div>
+              <h3 id="shop-title" class="shop-title">SURGE SHOP</h3>
+              <div class="shop-sub">Power up your stats & unlock custom orb skins!</div>
+            </div>
+          </div>
+          <div class="shop-coins-badge">
+            <span class="coin-icon">🪙</span>
+            <span id="shop-coins-val">0</span>
+          </div>
+        </div>
+
+        <!-- Shop Navigation Tabs -->
+        <div class="shop-tabs">
+          <button class="shop-tab active" data-tab="upgrades">⚡ PERK UPGRADES</button>
+          <button class="shop-tab" data-tab="skins">🎨 ORB SKINS</button>
+        </div>
+
+        <!-- Tab 1: Upgrades Content -->
+        <div id="shop-tab-upgrades" class="shop-tab-content active">
+          <div class="upgrades-grid">
+            <!-- 1. Time Booster -->
+            <div class="upgrade-item" data-upgrade="timeBoost">
+              <div class="u-icon">⏱️</div>
+              <div class="u-info">
+                <div class="u-name">TIME SURGE</div>
+                <div class="u-desc">+5s Base round duration per level</div>
+                <div class="u-level" id="u-timeBoost-level">Level 0/5</div>
+              </div>
+              <button class="u-buy-btn" data-upgrade="timeBoost">
+                <span class="u-cost-icon">🪙</span>
+                <span class="u-cost-val" id="u-timeBoost-cost">50</span>
+              </button>
+            </div>
+
+            <!-- 2. Combo Shield -->
+            <div class="upgrade-item" data-upgrade="comboShield">
+              <div class="u-icon">🛡️</div>
+              <div class="u-info">
+                <div class="u-name">STREAK SHIELD</div>
+                <div class="u-desc">Start round with 1 shield (absorbs 1 mistake)</div>
+                <div class="u-level" id="u-comboShield-level">Level 0/1</div>
+              </div>
+              <button class="u-buy-btn" data-upgrade="comboShield">
+                <span class="u-cost-icon">🪙</span>
+                <span class="u-cost-val" id="u-comboShield-cost">120</span>
+              </button>
+            </div>
+
+            <!-- 3. Speed Extender -->
+            <div class="upgrade-item" data-upgrade="speedBoost">
+              <div class="u-icon">⚡</div>
+              <div class="u-info">
+                <div class="u-name">SPEED EXTENDER</div>
+                <div class="u-desc">+1.5s longer window for max speed points</div>
+                <div class="u-level" id="u-speedBoost-level">Level 0/4</div>
+              </div>
+              <button class="u-buy-btn" data-upgrade="speedBoost">
+                <span class="u-cost-icon">🪙</span>
+                <span class="u-cost-val" id="u-speedBoost-cost">75</span>
+              </button>
+            </div>
+
+            <!-- 4. Coin Multiplier -->
+            <div class="upgrade-item" data-upgrade="coinMult">
+              <div class="u-icon">🪙</div>
+              <div class="u-info">
+                <div class="u-name">COIN MULTIPLIER</div>
+                <div class="u-desc">+25% bonus coins from all solved equations</div>
+                <div class="u-level" id="u-coinMult-level">Level 0/4</div>
+              </div>
+              <button class="u-buy-btn" data-upgrade="coinMult">
+                <span class="u-cost-icon">🪙</span>
+                <span class="u-cost-val" id="u-coinMult-cost">100</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Orb Skins Content -->
+        <div id="shop-tab-skins" class="shop-tab-content">
+          <div class="skins-grid">
+            <!-- Skin 1: Candy Bubble (Default) -->
+            <div class="skin-item active" data-skin="candy">
+              <div class="skin-preview skin-candy">
+                <div class="bubble-shine"></div>
+                <span class="bubble-num">7</span>
+              </div>
+              <div class="skin-name">CANDY BUBBLE</div>
+              <button class="skin-action-btn" data-skin="candy">EQUIPPED</button>
+            </div>
+
+            <!-- Skin 2: Cyber Neon -->
+            <div class="skin-item" data-skin="cyber">
+              <div class="skin-preview skin-cyber">
+                <div class="bubble-shine"></div>
+                <span class="bubble-num">8</span>
+              </div>
+              <div class="skin-name">CYBER NEON</div>
+              <button class="skin-action-btn btn-buy" data-skin="cyber" data-cost="100">🪙 100</button>
+            </div>
+
+            <!-- Skin 3: Magma Surge -->
+            <div class="skin-item" data-skin="magma">
+              <div class="skin-preview skin-magma">
+                <div class="bubble-shine"></div>
+                <span class="bubble-num">9</span>
+              </div>
+              <div class="skin-name">MAGMA SURGE</div>
+              <button class="skin-action-btn btn-buy" data-skin="magma" data-cost="200">🪙 200</button>
+            </div>
+
+            <!-- Skin 4: Glacial Frost -->
+            <div class="skin-item" data-skin="frost">
+              <div class="skin-preview skin-frost">
+                <div class="bubble-shine"></div>
+                <span class="bubble-num">4</span>
+              </div>
+              <div class="skin-name">GLACIAL FROST</div>
+              <button class="skin-action-btn btn-buy" data-skin="frost" data-cost="300">🪙 300</button>
+            </div>
+
+            <!-- Skin 5: Golden Royale -->
+            <div class="skin-item" data-skin="gold">
+              <div class="skin-preview skin-gold">
+                <div class="bubble-shine"></div>
+                <span class="bubble-num">👑</span>
+              </div>
+              <div class="skin-name">GOLDEN ROYALE</div>
+              <button class="skin-action-btn btn-buy" data-skin="gold" data-cost="500">🪙 500</button>
+            </div>
+
+            <!-- Skin 6: Galaxy Nebula -->
+            <div class="skin-item" data-skin="galaxy">
+              <div class="skin-preview skin-galaxy">
+                <div class="bubble-shine"></div>
+                <span class="bubble-num">✨</span>
+              </div>
+              <div class="skin-name">GALAXY NEBULA</div>
+              <button class="skin-action-btn btn-buy" data-skin="galaxy" data-cost="750">🪙 750</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pause-actions">
+          <button id="close-shop-btn" class="arcade-play-button">
+            <span class="play-btn-content">🚀 BACK TO GAME</span>
+          </button>
+        </div>
+
       </div>
     </div>
 

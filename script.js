@@ -157,19 +157,28 @@ const UPGRADES_CONFIG = {
 };
 
 const SKINS_CONFIG = {
-  candy:  { name: 'CANDY BUBBLE', cost: 0 },
-  cyber:  { name: 'CYBER NEON',   cost: 100 },
-  magma:  { name: 'MAGMA SURGE',  cost: 200 },
-  frost:  { name: 'GLACIAL FROST',cost: 300 },
-  gold:   { name: 'GOLDEN ROYALE',cost: 500 },
-  galaxy: { name: 'GALAXY NEBULA',cost: 750 },
+  classic: { name: 'CLASSIC BUBBLE', cost: 0 },
+  candy:   { name: 'CANDY SWIRL',    cost: 150 },
+  cyber:   { name: 'CYBER NEON',     cost: 100 },
+  magma:   { name: 'MAGMA SURGE',    cost: 200 },
+  frost:   { name: 'GLACIAL FROST',  cost: 300 },
+  gold:    { name: 'GOLDEN ROYALE',  cost: 500 },
+  galaxy:  { name: 'GALAXY NEBULA',  cost: 750 },
 };
+
+let savedOwnedSkins = JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["classic"]');
+if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
+
+let savedActiveSkin = localStorage.getItem('number_surge_active_skin') || 'classic';
+if (savedActiveSkin === 'candy' && !savedOwnedSkins.includes('candy')) {
+  savedActiveSkin = 'classic';
+}
 
 const economy = {
   coins: parseInt(localStorage.getItem('number_surge_coins') || '0', 10),
   upgrades: JSON.parse(localStorage.getItem('number_surge_upgrades') || '{"timeBoost":0,"comboShield":0,"speedBoost":0,"coinMult":0}'),
-  ownedSkins: JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["candy"]'),
-  activeSkin: localStorage.getItem('number_surge_active_skin') || 'candy',
+  ownedSkins: savedOwnedSkins,
+  activeSkin: savedActiveSkin,
 };
 
 // ─── 5. CRAZYGAMES SDK V3 MANAGER ────────────────────────────
@@ -503,9 +512,11 @@ function applyEquippedSkin(skinId) {
   economy.activeSkin = skinId;
   saveEconomy();
 
-  const skinClasses = ['skin-applied-candy', 'skin-applied-cyber', 'skin-applied-magma', 'skin-applied-frost', 'skin-applied-gold', 'skin-applied-galaxy'];
+  const skinClasses = ['skin-applied-classic', 'skin-applied-candy', 'skin-applied-cyber', 'skin-applied-magma', 'skin-applied-frost', 'skin-applied-gold', 'skin-applied-galaxy'];
   skinClasses.forEach(cls => dom.river && dom.river.classList.remove(cls));
-  if (dom.river) dom.river.classList.add(`skin-applied-${skinId}`);
+  if (skinId !== 'classic' && dom.river) {
+    dom.river.classList.add(`skin-applied-${skinId}`);
+  }
 }
 
 function renderShopUI() {

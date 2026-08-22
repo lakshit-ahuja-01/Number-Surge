@@ -1515,22 +1515,30 @@ html, body {
 
 /* ── 1. Strawberry Bubble ── */
 .orb-amber {
-  background: #ff6b8a;
+  background: radial-gradient(circle at 35% 35%, #ff8da6 0%, #ff6b8a 60%, #e84865 100%);
+  border-color: #ff477e;
+  box-shadow: 0 5px 14px rgba(255, 107, 138, 0.35), 0 3px 0 #c13055;
 }
 
 /* ── 2. Mint Green Bubble ── */
 .orb-emerald {
-  background: #2ed573;
+  background: radial-gradient(circle at 35% 35%, #55e695 0%, #2ed573 60%, #1db85b 100%);
+  border-color: #20bf6b;
+  box-shadow: 0 5px 14px rgba(46, 213, 115, 0.35), 0 3px 0 #139746;
 }
 
 /* ── 3. Grape Purple Bubble ── */
 .orb-violet {
-  background: #a55eea;
+  background: radial-gradient(circle at 35% 35%, #ba7eff 0%, #a55eea 60%, #8839d4 100%);
+  border-color: #8854d0;
+  box-shadow: 0 5px 14px rgba(165, 94, 234, 0.35), 0 3px 0 #7227b8;
 }
 
 /* ── 4. Juicy Orange Bubble ── */
 .orb-coral {
-  background: #ff9f43;
+  background: radial-gradient(circle at 35% 35%, #ffb669 0%, #ff9f43 60%, #e67e22 100%);
+  border-color: #fa8231;
+  box-shadow: 0 5px 14px rgba(255, 159, 67, 0.35), 0 3px 0 #cc6600;
 }
 
 /* Custom Equipped Orb Skin Classes */
@@ -4301,6 +4309,7 @@ body:not(.theme-robotics) .u-buy-btn { min-width: 68px; border: 2px solid #f3bb3
 .skin-preview::before { inset: 5px; z-index: 1; border-radius: inherit; }
 .skin-preview::after { z-index: 2; }
 .skin-preview .bubble-num { z-index: 4; }
+.skin-classic { border-color: #ff477e; background: radial-gradient(circle at 35% 35%, #ff8da6 0%, #ff6b8a 60%, #e84865 100%); }
 .skin-candy { border-color: #f14d7d; background: conic-gradient(from 25deg, #ff6f99, #ffb14a, #ffde71, #ff6f99); }
 .skin-candy::before { background: repeating-linear-gradient(-44deg, rgba(255,255,255,.36) 0 5px, transparent 5px 13px); }
 .skin-cyber { border-color: #00f2fe; background: radial-gradient(circle at 50% 50%, #173c5b 0 27%, #07111d 29% 56%, #00d2df 57% 60%, #07111d 61%); }

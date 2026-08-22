@@ -31,22 +31,18 @@
             <span class="hs-txt">HIGH SCORE:</span>
             <span id="start-highscore" class="hs-num">0 PTS</span>
           </div>
-
           <div class="title-coins-pill">
             <span class="coin-icon">🪙</span>
             <span id="coins-display" class="coin-num">0</span>
           </div>
         </div>
 
-        <!-- Controls: Shop, How to play & Theme Switcher -->
         <div class="title-actions-bar">
-          <button id="shop-btn" class="shop-btn" aria-label="Shop & Upgrades" title="Shop & Upgrades">🛒 SHOP</button>
-          <button id="how-to-play-btn" class="help-btn" aria-label="How to Play" title="How to Play">❓ HOW TO PLAY</button>
-
-          <!-- Theme Switcher -->
+          <button id="shop-btn" class="shop-btn" aria-label="Shop & Upgrades" title="Shop & Upgrades"><span class="nav-icon nav-shop-icon" aria-hidden="true">🛒</span><span class="nav-label">UPGRADES</span></button>
+          <button id="how-to-play-btn" class="help-btn" aria-label="How to Play" title="How to Play"><span class="nav-icon nav-help-icon" aria-hidden="true">❓</span><span class="nav-label">HOW TO PLAY</span></button>
           <div class="theme-switcher-bar">
-            <button class="theme-btn active" data-theme="kids">🍭 KIDS CANDY</button>
-            <button class="theme-btn" data-theme="robotics">🤖 CYBER ROBOTICS</button>
+            <button class="theme-btn active" data-theme="kids" title="Kids Candy Theme">🍭 KIDS CANDY</button>
+            <button class="theme-btn" data-theme="robotics" title="Cyber Robotics Theme">🤖 CYBER ROBOTICS</button>
           </div>
         </div>
       </div>
@@ -63,23 +59,27 @@
             <span class="logo-row-1">NUMBER</span>
             <span class="logo-row-2">SURGE</span>
           </h1>
-          <div class="logo-subline">🍭 FUN MATH FOR KIDS! 🍭</div>
-          <div class="logo-emoji-row">🌈 ➕ ➖ ✖️ ➗ 🌈</div>
+          <div class="logo-subline">SWEET MATH ADVENTURE</div>
         </div>
 
         <!-- Arcade Operation Mode Selector -->
         <div class="arcade-mode-panel">
-          <div class="panel-header">🎯 STEP 1 — PICK YOUR ADVENTURE!</div>
-          
+          <div class="setup-section-heading">
+            <div>
+              <span class="eyebrow">PICK YOUR FAVOURITE</span>
+              <h2>Choose your math magic!</h2>
+            </div>
+            <span class="selection-status" aria-live="polite">Addition selected</span>
+          </div>
           <div class="arcade-mode-selector" id="mode-grid" role="group" aria-label="Game mode selector">
             <!-- Addition Card -->
             <button class="arcade-card mode-add active" data-mode="addition" aria-pressed="true">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍏 PLUS!</div>
+              <div class="card-pill">BERRY ADD</div>
               <div class="card-glyph">➕</div>
               <div class="card-info">
                 <span class="card-name">ADDITION</span>
-                <span class="card-tagline">🤝 Add Together!</span>
+                <span class="card-tagline">Make a tasty total!</span>
               </div>
               <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
@@ -87,11 +87,11 @@
             <!-- Subtraction Card -->
             <button class="arcade-card mode-sub" data-mode="subtraction" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍊 MINUS!</div>
+              <div class="card-pill">LEMON SUB</div>
               <div class="card-glyph">➖</div>
               <div class="card-info">
                 <span class="card-name">SUBTRACT</span>
-                <span class="card-tagline">✂️ Take Away!</span>
+                <span class="card-tagline">Take a little away!</span>
               </div>
               <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
@@ -99,11 +99,11 @@
             <!-- Multiplication Card -->
             <button class="arcade-card mode-mult" data-mode="multiplication" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍇 TIMES!</div>
+              <div class="card-pill">GRAPE MULTIPLY</div>
               <div class="card-glyph">✖️</div>
               <div class="card-info">
                 <span class="card-name">MULTIPLY</span>
-                <span class="card-tagline">🚀 Power Up!</span>
+                <span class="card-tagline">Make numbers grow!</span>
               </div>
               <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
@@ -111,11 +111,11 @@
             <!-- Division Card -->
             <button class="arcade-card mode-div" data-mode="division" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🍓 SHARE!</div>
+              <div class="card-pill">CANDY DIVIDE</div>
               <div class="card-glyph">➗</div>
               <div class="card-info">
                 <span class="card-name">DIVISION</span>
-                <span class="card-tagline">🍕 Share It!</span>
+                <span class="card-tagline">Share the treats!</span>
               </div>
               <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
@@ -135,70 +135,68 @@
             <!-- Surge Mix Card -->
             <button class="arcade-card mode-mix" data-mode="mixed" aria-pressed="false">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">🎉 ALL MIX!</div>
+              <div class="card-pill">RAINBOW MIX</div>
               <div class="card-glyph">🎲</div>
               <div class="card-info">
                 <span class="card-name">SURGE MIX</span>
-                <span class="card-tagline">🌈 Wild Surprise!</span>
+                <span class="card-tagline">A sweet surprise!</span>
               </div>
               <div class="card-check-tag">⭐ LET'S GO!</div>
             </button>
           </div>
         </div>
 
-        <!-- Duration Time Selector -->
-        <div class="arcade-time-panel">
-          <div class="panel-header">⏰ STEP 2 — HOW LONG DO YOU PLAY?</div>
-          
-          <div class="time-chips-grid" id="time-grid" role="group" aria-label="Round duration selector">
-            <button class="time-chip" data-time="30" aria-pressed="false">
-              <span class="time-chip-icon">⚡</span>
-              <span class="time-chip-val">30s</span>
-              <span class="time-chip-label">⚡ SPEEDY!</span>
-            </button>
-            <button class="time-chip active" data-time="60" aria-pressed="true">
-              <span class="time-chip-icon">⏰</span>
-              <span class="time-chip-val">60s</span>
-              <span class="time-chip-label">🌟 CLASSIC!</span>
-            </button>
-            <button class="time-chip" data-time="90" aria-pressed="false">
-              <span class="time-chip-icon">⏳</span>
-              <span class="time-chip-val">90s</span>
-              <span class="time-chip-label">🏃 LONG GO!</span>
-            </button>
-            <button class="time-chip" data-time="120" aria-pressed="false">
-              <span class="time-chip-icon">🦸</span>
-              <span class="time-chip-val">120s</span>
-              <span class="time-chip-label">🦸 HERO!</span>
-            </button>
+        <!-- Unified Settings Deck -->
+        <div class="arcade-settings-bar">
+          <!-- Time Subgroup -->
+          <div class="settings-subgroup">
+            <div class="settings-group-title">⏱️ ROUND TIME</div>
+            <div class="time-chips-grid" id="time-grid" role="group" aria-label="Round duration selector">
+              <button class="time-chip" data-time="30" aria-pressed="false">
+                <span class="time-chip-icon">⚡</span>
+                <span class="time-chip-val">30s</span>
+              </button>
+              <button class="time-chip active" data-time="60" aria-pressed="true">
+                <span class="time-chip-icon">⏰</span>
+                <span class="time-chip-val">60s</span>
+              </button>
+              <button class="time-chip" data-time="90" aria-pressed="false">
+                <span class="time-chip-icon">⏳</span>
+                <span class="time-chip-val">90s</span>
+              </button>
+              <button class="time-chip" data-time="120" aria-pressed="false">
+                <span class="time-chip-icon">🦸</span>
+                <span class="time-chip-val">120s</span>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Difficulty Selector -->
-        <div class="arcade-time-panel">
-          <div class="panel-header">🏅 STEP 3 — HOW HARD?</div>
-          
-          <div class="time-chips-grid diff-grid" id="diff-grid" role="group" aria-label="Difficulty selector">
-            <button class="time-chip active" data-diff="0" aria-pressed="true">
-              <span class="time-chip-icon">🌱</span>
-              <span class="time-chip-val">EASY</span>
-              <span class="time-chip-label">RELAXED</span>
-            </button>
-            <button class="time-chip" data-diff="3" aria-pressed="false">
-              <span class="time-chip-icon">🌟</span>
-              <span class="time-chip-val">NORMAL</span>
-              <span class="time-chip-label">CLASSIC</span>
-            </button>
-            <button class="time-chip" data-diff="6" aria-pressed="false">
-              <span class="time-chip-icon">🔥</span>
-              <span class="time-chip-val">HARD</span>
-              <span class="time-chip-label">FAST!</span>
-            </button>
+          <!-- Divider -->
+          <div class="settings-divider"></div>
+
+          <!-- Difficulty Subgroup -->
+          <div class="settings-subgroup">
+            <div class="settings-group-title">🎯 DIFFICULTY</div>
+            <div class="time-chips-grid diff-grid" id="diff-grid" role="group" aria-label="Difficulty selector">
+              <button class="time-chip active" data-diff="0" aria-pressed="true">
+                <span class="time-chip-icon">🌱</span>
+                <span class="time-chip-val">EASY</span>
+              </button>
+              <button class="time-chip" data-diff="3" aria-pressed="false">
+                <span class="time-chip-icon">🌟</span>
+                <span class="time-chip-val">NORMAL</span>
+              </button>
+              <button class="time-chip" data-diff="6" aria-pressed="false">
+                <span class="time-chip-icon">🔥</span>
+                <span class="time-chip-val">HARD</span>
+              </button>
+            </div>
           </div>
         </div>
 
         <!-- Big Play Button -->
         <div class="arcade-cta-box">
+          <p class="launch-summary"><span>READY TO PLAY</span> 60-second addition sprint · Easy</p>
           <button id="start-btn" class="arcade-play-button">
             <span class="play-btn-bevel"></span>
             <span class="play-btn-content">
@@ -441,26 +439,32 @@
     <!-- HOW TO PLAY MODAL (COOLMATH & CRAZYGAMES COMPLIANT) -->
     <div id="how-to-play-modal" class="pause-modal" role="dialog" aria-modal="true" aria-labelledby="how-to-play-title">
       <div class="pause-card how-to-play-card">
-        <div class="pause-icon">🎯 🧠 ⚡</div>
-        <h3 id="how-to-play-title" class="how-to-play-title">HOW TO PLAY</h3>
+        <div class="guide-hero">
+          <div class="guide-orb" aria-hidden="true">?</div>
+          <div>
+            <span class="guide-eyebrow">QUICK START</span>
+            <h3 id="how-to-play-title" class="how-to-play-title">HOW TO PLAY</h3>
+          </div>
+        </div>
+        <p class="guide-intro">Match the numbers, build your streak, and beat your best score.</p>
         
         <div class="how-to-play-steps">
           <div class="instruction-step">
             <div class="step-badge">1</div>
             <div class="step-content">
-              <strong>Check Target Goal:</strong> Look at the top console equation to find your target (e.g. <code>_ + _ = 40</code>).
+              <strong>Read the target:</strong> Look at the equation at the top (for example <code>_ + _ = 40</code>).
             </div>
           </div>
           <div class="instruction-step">
             <div class="step-badge">2</div>
             <div class="step-content">
-              <strong>Pop Two Bubbles:</strong> Click or tap two floating number bubbles that solve the equation correctly.
+              <strong>Choose two orbs:</strong> Tap the pair of floating numbers that solves it.
             </div>
           </div>
           <div class="instruction-step">
             <div class="step-badge">3</div>
             <div class="step-content">
-              <strong>Grab Power-Up Orbs:</strong>
+              <strong>Catch power-ups:</strong>
               <div style="margin-top: 4px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 12px; line-height: 1.4;">
                 <span>💣 <b>Bomb:</b> Instant Solve</span>
                 <span>❄️ <b>Freeze:</b> 5s Time Freeze</span>
@@ -473,7 +477,7 @@
           <div class="instruction-step">
             <div class="step-badge">4</div>
             <div class="step-content">
-              <strong>Surge Shop & Skins:</strong> Spend Surge Coins to upgrade stats (+Time, +Shield, +Speed) and unlock 6 custom 3D orb skins!
+              <strong>Grow your collection:</strong> Spend coins on upgrades and collectible orb skins.
             </div>
           </div>
         </div>

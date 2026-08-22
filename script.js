@@ -271,6 +271,8 @@ const dom = {
   modeGrid:        document.getElementById('mode-grid'),
   timeGrid:        document.getElementById('time-grid'),
   diffGrid:        document.getElementById('diff-grid'),
+  selectionStatus: document.querySelector('.selection-status'),
+  launchSummary:   document.querySelector('.launch-summary'),
 
   coinsDisplay:    document.getElementById('coins-display'),
   shopBtn:         document.getElementById('shop-btn'),
@@ -319,6 +321,21 @@ const dom = {
   rankBadge:       document.getElementById('rank-badge'),
   newRecordBadge:  document.getElementById('new-record-badge'),
 };
+
+function updateLaunchPreview() {
+  const modeNames = {
+    addition: 'Addition', subtraction: 'Subtraction', multiplication: 'Multiplication',
+    division: 'Division', powers: 'Powers', mixed: 'Surge Mix'
+  };
+  const difficultyNames = { 0: 'Easy', 3: 'Normal', 6: 'Hard' };
+  const modeName = modeNames[gameState.mode] || 'Addition';
+  const difficulty = difficultyNames[gameState.startingDifficulty] || 'Easy';
+
+  if (dom.selectionStatus) dom.selectionStatus.textContent = `${modeName} selected`;
+  if (dom.launchSummary) {
+    dom.launchSummary.innerHTML = `<span>READY TO PLAY</span> ${gameState.duration}-second ${modeName.toLowerCase()} sprint · ${difficulty}`;
+  }
+}
 
 // ─── 5. AMBIENT BACKGROUND PARTICLES & MATRIX CANVAS ──────────
 const ambientCanvas = document.getElementById('ambient-canvas');
@@ -1656,16 +1673,18 @@ const powModeBtn = document.querySelector('.mode-pow');
 
 const themeTranslations = {
   kids: {
-    '.logo-deco-left': '🌟', '.logo-deco-right': '🌟', '.logo-subline': '🍭 FUN MATH FOR KIDS! 🍭', '.logo-emoji-row': '🌈 ➕ ➖ ✖️ ➗ 🌈',
-    '#how-to-play-btn': '❓ HOW TO PLAY', '#how-to-play-title': 'HOW TO PLAY',
+    '.logo-deco-left': '🌟', '.logo-deco-right': '🌟', '.logo-subline': 'SWEET MATH ADVENTURE', '.logo-emoji-row': '🌈 ➕ ➖ ✖️ ➗ 🌈',
+    '.eyebrow': 'PICK YOUR FAVOURITE', '.setup-section-heading h2': 'Choose your math magic!',
+    '.nav-shop-icon': '🛒', '.nav-help-icon': '❓',
+    '#how-to-play-btn .nav-label': 'HOW TO PLAY', '#how-to-play-title': 'HOW TO PLAY',
     '#close-how-to-play-btn .play-btn-content': '🚀 GOT IT, LET\'S PLAY!',
-    '#shop-btn': '🛒 SHOP', '#shop-title': 'SURGE SHOP',
+    '#shop-btn .nav-label': 'UPGRADES', '#shop-title': 'SURGE SHOP',
     '#close-shop-btn .play-btn-content': '🚀 BACK TO GAME',
-    '.mode-add .card-pill': '🍏 PLUS!', '.mode-add .card-tagline': '🤝 Add Together!',
-    '.mode-sub .card-pill': '🍊 MINUS!', '.mode-sub .card-tagline': '✂️ Take Away!',
-    '.mode-mult .card-pill': '🍇 TIMES!', '.mode-mult .card-tagline': '🚀 Power Up!',
-    '.mode-div .card-pill': '🍓 SHARE!', '.mode-div .card-tagline': '🍕 Share It!',
-    '.mode-mix .card-pill': '🎉 ALL MIX!', '.mode-mix .card-tagline': '🌈 Wild Surprise!',
+    '.mode-add .card-pill': 'BERRY ADD', '.mode-add .card-tagline': 'Make a tasty total!',
+    '.mode-sub .card-pill': 'LEMON SUB', '.mode-sub .card-tagline': 'Take a little away!',
+    '.mode-mult .card-pill': 'GRAPE MULTIPLY', '.mode-mult .card-tagline': 'Make numbers grow!',
+    '.mode-div .card-pill': 'CANDY DIVIDE', '.mode-div .card-tagline': 'Share the treats!',
+    '.mode-mix .card-pill': 'RAINBOW MIX', '.mode-mix .card-tagline': 'A sweet surprise!',
     '.card-check-tag': '⭐ LET\'S GO!',
     '[data-time="30"] .time-chip-icon': '⚡', '[data-time="30"] .time-chip-label': '⚡ SPEEDY!',
     '[data-time="60"] .time-chip-icon': '⏰', '[data-time="60"] .time-chip-label': '🌟 CLASSIC!',
@@ -1684,15 +1703,17 @@ const themeTranslations = {
   },
   robotics: {
     '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': '🦾 SYSTEM OVERRIDE 🦾', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
-    '#how-to-play-btn': '⚡ PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL 📋',
+    '.eyebrow': 'SYSTEM SETUP', '.setup-section-heading h2': 'Choose a training protocol',
+    '.nav-shop-icon': '⚙️', '.nav-help-icon': '⚡',
+    '#how-to-play-btn .nav-label': 'PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL 📋',
     '#close-how-to-play-btn .play-btn-content': '⚡ PROTOCOL ACKNOWLEDGED',
-    '#shop-btn': '⚙️ UPGRADES', '#shop-title': 'SYSTEM UPGRADES',
+    '#shop-btn .nav-label': 'UPGRADES', '#shop-title': 'SYSTEM UPGRADES',
     '#close-shop-btn .play-btn-content': '⚡ RETURN TO CONSOLE',
-    '.mode-add .card-pill': '➕ ADD', '.mode-add .card-tagline': '🔋 System Sum',
-    '.mode-sub .card-pill': '➖ SUB', '.mode-sub .card-tagline': '🔧 Drain Core',
-    '.mode-mult .card-pill': '✖️ MULT', '.mode-mult .card-tagline': '🚀 Overclock',
-    '.mode-div .card-pill': '➗ DIV', '.mode-div .card-tagline': '📡 Split Signal',
-    '.mode-mix .card-pill': '🎲 MIX', '.mode-mix .card-tagline': '⚠️ Chaos Mode',
+    '.mode-add .card-pill': 'ADD · 01', '.mode-add .card-tagline': 'System sum',
+    '.mode-sub .card-pill': 'SUBTRACT · 02', '.mode-sub .card-tagline': 'Drain core',
+    '.mode-mult .card-pill': 'MULTIPLY · 03', '.mode-mult .card-tagline': 'Overclock',
+    '.mode-div .card-pill': 'DIVIDE · 04', '.mode-div .card-tagline': 'Split signal',
+    '.mode-mix .card-pill': 'SURGE MIX · 06', '.mode-mix .card-tagline': 'Chaos mode',
     '.card-check-tag': '⚡ ENGAGE',
     '[data-time="30"] .time-chip-icon': '⏱️', '[data-time="30"] .time-chip-label': 'BLITZ',
     '[data-time="60"] .time-chip-icon': '⏲️', '[data-time="60"] .time-chip-label': 'STANDARD',
@@ -1748,6 +1769,7 @@ function applyTheme(theme) {
     if (btn.dataset.theme === theme) btn.classList.add('active');
     else btn.classList.remove('active');
   });
+  updateLaunchPreview();
 }
 
 themeBtns.forEach(btn => {
@@ -1768,6 +1790,7 @@ dom.modeGrid.addEventListener('click', e => {
   card.classList.add('active');
   card.setAttribute('aria-pressed', 'true');
   gameState.mode = card.dataset.mode;
+  updateLaunchPreview();
   playArcadeSound('click');
 });
 
@@ -1786,6 +1809,7 @@ if (dom.timeGrid) {
     if (dom.playBtnLabel) {
       dom.playBtnLabel.textContent = gameState.theme === 'robotics' ? `SYSTEM START (${gameState.duration}s)` : `LET'S PLAY! (${gameState.duration}s)`;
     }
+    updateLaunchPreview();
     playArcadeSound('click');
   });
 }
@@ -1802,6 +1826,7 @@ if (dom.diffGrid) {
     chip.classList.add('active');
     chip.setAttribute('aria-pressed', 'true');
     gameState.startingDifficulty = parseInt(chip.dataset.diff, 10);
+    updateLaunchPreview();
     playArcadeSound('click');
   });
 }
@@ -1890,4 +1915,3 @@ updateCoinsDisplay();
 applyEquippedSkin(economy.activeSkin);
 applyTheme(gameState.theme);
 showScreen('start');
-

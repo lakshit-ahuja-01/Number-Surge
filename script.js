@@ -166,29 +166,57 @@ const SKINS_CONFIG = {
   galaxy:  { name: 'GALAXY NEBULA',  cost: 750 },
 };
 
+// ─── 4.5 UNIFIED STORAGE ADAPTER (CrazyGames Data Module + LocalStorage) ──
+const storage = {
+  getItem: (key) => {
+    try {
+      if (isCrazySDKInitialized && crazySDK?.data?.getItem) {
+        const val = crazySDK.data.getItem(key);
+        if (val !== null && val !== undefined) return val;
+      }
+    } catch (_) {}
+    try {
+      return localStorage.getItem(key);
+    } catch (_) {
+      return null;
+    }
+  },
+  setItem: (key, value) => {
+    const str = String(value);
+    try {
+      localStorage.setItem(key, str);
+    } catch (_) {}
+    try {
+      if (isCrazySDKInitialized && crazySDK?.data?.setItem) {
+        crazySDK.data.setItem(key, str);
+      }
+    } catch (_) {}
+  }
+};
+
 // Migration: Ensure 'classic' is the sole free default, and 'candy' requires purchase (50 coins)
-let savedOwnedSkins = JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["classic"]');
-const hasMigratedSkinsV2 = localStorage.getItem('number_surge_skins_v2_migrated');
+let savedOwnedSkins = JSON.parse(storage.getItem('number_surge_owned_skins') || '["classic"]');
+const hasMigratedSkinsV2 = storage.getItem('number_surge_skins_v2_migrated');
 
 if (!hasMigratedSkinsV2) {
   // Remove legacy free candy default so it displays purchase cost of 50 coins
   savedOwnedSkins = savedOwnedSkins.filter(s => s !== 'candy');
   if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
-  localStorage.setItem('number_surge_owned_skins', JSON.stringify(savedOwnedSkins));
-  localStorage.setItem('number_surge_active_skin', 'classic');
-  localStorage.setItem('number_surge_skins_v2_migrated', 'true');
+  storage.setItem('number_surge_owned_skins', JSON.stringify(savedOwnedSkins));
+  storage.setItem('number_surge_active_skin', 'classic');
+  storage.setItem('number_surge_skins_v2_migrated', 'true');
 }
 
 if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
 
-let savedActiveSkin = localStorage.getItem('number_surge_active_skin') || 'classic';
+let savedActiveSkin = storage.getItem('number_surge_active_skin') || 'classic';
 if (!savedOwnedSkins.includes(savedActiveSkin)) {
   savedActiveSkin = 'classic';
 }
 
 const economy = {
-  coins: parseInt(localStorage.getItem('number_surge_coins') || '0', 10),
-  upgrades: JSON.parse(localStorage.getItem('number_surge_upgrades') || '{"timeBoost":0,"comboShield":0,"speedBoost":0,"coinMult":0}'),
+  coins: parseInt(storage.getItem('number_surge_coins') || '0', 10),
+  upgrades: JSON.parse(storage.getItem('number_surge_upgrades') || '{"timeBoost":0,"comboShield":0,"speedBoost":0,"coinMult":0}'),
   ownedSkins: savedOwnedSkins,
   activeSkin: savedActiveSkin,
 };
@@ -204,9 +232,67 @@ async function initCrazySDK() {
       await crazySDK.init();
       isCrazySDKInitialized = true;
       if (crazySDK.game?.loadingStop) crazySDK.game.loadingStop();
+      
+      // Synchronize Cloud Save Data from CrazyGames Data Module
+      syncCloudData();
     }
   } catch (err) {
     console.warn('CrazyGames SDK init fallback (offline/standalone mode):', err);
+  }
+}
+
+function syncCloudData() {
+  if (!isCrazySDKInitialized || !crazySDK?.data) return;
+  try {
+    const cloudHighScore = crazySDK.data.getItem('number_surge_high_score');
+    if (cloudHighScore !== null) {
+      const parsed = parseInt(cloudHighScore, 10);
+      if (!isNaN(parsed) && parsed > gameState.highScore) {
+        gameState.highScore = parsed;
+        loadHighScore();
+      }
+    }
+
+    const cloudCoins = crazySDK.data.getItem('number_surge_coins');
+    if (cloudCoins !== null) {
+      const parsed = parseInt(cloudCoins, 10);
+      if (!isNaN(parsed)) {
+        economy.coins = Math.max(economy.coins, parsed);
+      }
+    }
+
+    const cloudUpgrades = crazySDK.data.getItem('number_surge_upgrades');
+    if (cloudUpgrades) {
+      try {
+        const parsed = JSON.parse(cloudUpgrades);
+        economy.upgrades = Object.assign(economy.upgrades, parsed);
+      } catch (_) {}
+    }
+
+    const cloudSkins = crazySDK.data.getItem('number_surge_owned_skins');
+    if (cloudSkins) {
+      try {
+        const parsed = JSON.parse(cloudSkins);
+        if (Array.isArray(parsed)) {
+          parsed.forEach(s => {
+            if (!economy.ownedSkins.includes(s)) economy.ownedSkins.push(s);
+          });
+        }
+      } catch (_) {}
+    }
+
+    const cloudActiveSkin = crazySDK.data.getItem('number_surge_active_skin');
+    if (cloudActiveSkin && economy.ownedSkins.includes(cloudActiveSkin)) {
+      economy.activeSkin = cloudActiveSkin;
+      applyEquippedSkin(cloudActiveSkin);
+    }
+
+    saveHighScoreIfRecord(gameState.highScore);
+    saveEconomy();
+    updateCoinsDisplay();
+    renderShopUI();
+  } catch (err) {
+    console.warn('Error syncing CrazyGames cloud data:', err);
   }
 }
 
@@ -479,9 +565,9 @@ window.addEventListener('resize', () => {
   }
 });
 
-// ─── 6. LOCAL STORAGE HIGH SCORE ─────────────────────────────
+// ─── 6. LOCAL & CLOUD STORAGE HIGH SCORE ────────────────────
 function loadHighScore() {
-  const saved = localStorage.getItem('number_surge_high_score');
+  const saved = storage.getItem('number_surge_high_score');
   gameState.highScore = saved ? parseInt(saved, 10) : 0;
   if (dom.startHighScore) {
     dom.startHighScore.textContent = `${gameState.highScore} PTS`;
@@ -491,7 +577,7 @@ function loadHighScore() {
 function saveHighScoreIfRecord(score) {
   if (score > gameState.highScore) {
     gameState.highScore = score;
-    localStorage.setItem('number_surge_high_score', score.toString());
+    storage.setItem('number_surge_high_score', score.toString());
     return true;
   }
   return false;
@@ -499,10 +585,10 @@ function saveHighScoreIfRecord(score) {
 
 // ─── 7. ECONOMY & SHOP LOGIC ─────────────────────────────────
 function saveEconomy() {
-  localStorage.setItem('number_surge_coins', economy.coins.toString());
-  localStorage.setItem('number_surge_upgrades', JSON.stringify(economy.upgrades));
-  localStorage.setItem('number_surge_owned_skins', JSON.stringify(economy.ownedSkins));
-  localStorage.setItem('number_surge_active_skin', economy.activeSkin);
+  storage.setItem('number_surge_coins', economy.coins.toString());
+  storage.setItem('number_surge_upgrades', JSON.stringify(economy.upgrades));
+  storage.setItem('number_surge_owned_skins', JSON.stringify(economy.ownedSkins));
+  storage.setItem('number_surge_active_skin', economy.activeSkin);
   updateCoinsDisplay();
   renderShopUI();
 }

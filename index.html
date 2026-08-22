@@ -29,10 +29,15 @@
           <span id="start-highscore" class="hs-num">0 PTS</span>
         </div>
 
-        <!-- Theme Switcher -->
-        <div class="theme-switcher-bar">
-          <button class="theme-btn active" data-theme="kids">🍭 KIDS CANDY</button>
-          <button class="theme-btn" data-theme="robotics">🤖 CYBER ROBOTICS</button>
+        <!-- Controls: How to play & Theme Switcher -->
+        <div class="title-actions-bar">
+          <button id="how-to-play-btn" class="help-btn" aria-label="How to Play" title="How to Play">❓ HOW TO PLAY</button>
+
+          <!-- Theme Switcher -->
+          <div class="theme-switcher-bar">
+            <button class="theme-btn active" data-theme="kids">🍭 KIDS CANDY</button>
+            <button class="theme-btn" data-theme="robotics">🤖 CYBER ROBOTICS</button>
+          </div>
         </div>
       </div>
 
@@ -390,6 +395,41 @@
           </button>
         </div>
 
+      </div>
+    </div>
+
+    <!-- HOW TO PLAY MODAL (COOLMATH & CLASSROOM COMPLIANT) -->
+    <div id="how-to-play-modal" class="pause-modal" role="dialog" aria-modal="true" aria-labelledby="how-to-play-title">
+      <div class="pause-card how-to-play-card">
+        <div class="pause-icon">🎯 🧠 ⚡</div>
+        <h3 id="how-to-play-title" class="how-to-play-title">HOW TO PLAY</h3>
+        
+        <div class="how-to-play-steps">
+          <div class="instruction-step">
+            <div class="step-badge">1</div>
+            <div class="step-content">
+              <strong>Check the Target:</strong> Look at the equation goal in the top console (e.g. <code>_ + _ = 40</code>).
+            </div>
+          </div>
+          <div class="instruction-step">
+            <div class="step-badge">2</div>
+            <div class="step-content">
+              <strong>Click 2 Bubbles:</strong> Click two floating numbers that solve the equation correctly.
+            </div>
+          </div>
+          <div class="instruction-step">
+            <div class="step-badge">3</div>
+            <div class="step-content">
+              <strong>Score & Streaks:</strong> Solve fast for Speed Surges and build streaks for high score multipliers!
+            </div>
+          </div>
+        </div>
+
+        <div class="pause-actions">
+          <button id="close-how-to-play-btn" class="arcade-play-button">
+            <span class="play-btn-content">🚀 GOT IT, LET'S PLAY!</span>
+          </button>
+        </div>
       </div>
     </div>
 

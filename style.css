@@ -34,9 +34,9 @@
   --text-muted:     #b2bec3;
 
   /* Typography */
-  --font-hud:       'Fredoka', 'Outfit', system-ui, sans-serif;
-  --font-retro:     'Press Start 2P', monospace;
-  --font-body:      'Outfit', system-ui, sans-serif;
+  --font-hud:       'Fredoka', 'Outfit', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-retro:     'Press Start 2P', 'Rajdhani', 'Courier New', monospace;
+  --font-body:      'Outfit', 'Fredoka', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Sizing */
   --orb-size:       68px;
@@ -136,6 +136,41 @@ html, body {
   margin-bottom: 12px;
   padding: 0 4px;
   box-sizing: border-box;
+}
+
+.title-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.help-btn {
+  background: #ffffff;
+  border: 2.5px solid #7dd3fc;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-family: var(--font-hud);
+  font-size: 13px;
+  font-weight: 800;
+  color: #0284c7;
+  box-shadow: 0 4px 0 #38bdf8;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.help-btn:hover {
+  transform: translateY(-2px);
+  background: #f0f9ff;
+  border-color: #38bdf8;
+  box-shadow: 0 6px 0 #0284c7;
+}
+
+.help-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #38bdf8;
 }
 
 .title-highscore-pill {
@@ -1457,18 +1492,18 @@ html, body {
    ======================================================== */
 .pause-modal {
   display: none;
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(220, 240, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 50;
+  z-index: 100;
   align-items: center;
   justify-content: center;
 }
 
 .pause-modal.active {
-  display: flex;
+  display: flex !important;
   animation: screenFadeIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
@@ -1525,6 +1560,79 @@ html, body {
   gap: 12px;
   width: 100%;
   margin-top: 8px;
+}
+
+/* How to Play Card & Steps */
+.how-to-play-card {
+  max-width: 490px;
+  padding: 26px 22px;
+}
+
+.how-to-play-title {
+  font-family: var(--font-hud);
+  font-size: 28px;
+  font-weight: 900;
+  color: #ff9f43;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 0 #ffe0b2;
+}
+
+.how-to-play-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  margin: 6px 0 10px 0;
+}
+
+.instruction-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 0 #cbd5e1;
+}
+
+.step-badge {
+  background: #ff9f43;
+  color: #ffffff;
+  font-family: var(--font-hud);
+  font-weight: 900;
+  font-size: 14px;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 #ea580c;
+  flex-shrink: 0;
+}
+
+.step-content {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.35;
+}
+
+.step-content strong {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.step-content code {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-family: var(--font-retro);
+  font-size: 11px;
+  font-weight: bold;
 }
 
 /* ========================================================
@@ -2015,8 +2123,54 @@ body.theme-robotics .pause-title {
   color: #00f2fe;
   text-shadow: 0 2px 4px rgba(0,242,254,0.4);
 }
+body.theme-robotics .how-to-play-title {
+  color: #00f2fe;
+  text-shadow: 0 2px 4px rgba(0,242,254,0.4);
+}
 body.theme-robotics .pause-desc {
   color: #94a3b8;
+}
+
+body.theme-robotics .help-btn {
+  background: rgba(10, 14, 23, 0.92);
+  border-color: #00f2fe;
+  color: #00f2fe;
+  box-shadow: 0 4px 0 #005577;
+}
+
+body.theme-robotics .help-btn:hover {
+  background: #121826;
+  box-shadow: 0 6px 0 #005577, 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+body.theme-robotics .help-btn:active {
+  box-shadow: 0 1px 0 #005577;
+}
+
+body.theme-robotics .instruction-step {
+  background: #121826;
+  border-color: #1d283a;
+  box-shadow: 0 2px 0 #0a0e17;
+}
+
+body.theme-robotics .step-badge {
+  background: #00f2fe;
+  color: #0a0e17;
+  box-shadow: 0 2px 0 #0088aa;
+}
+
+body.theme-robotics .step-content {
+  color: #94a3b8;
+}
+
+body.theme-robotics .step-content strong {
+  color: #00f2fe;
+}
+
+body.theme-robotics .step-content code {
+  background: #0a0e17;
+  border: 1px solid #00f2fe;
+  color: #00ff88;
 }
 
 body.theme-robotics #start-screen,

@@ -184,6 +184,10 @@ const dom = {
   pauseMenuBtn:    document.getElementById('pause-menu-btn'),
   pauseModal:      document.getElementById('pause-modal'),
 
+  howToPlayBtn:      document.getElementById('how-to-play-btn'),
+  howToPlayModal:    document.getElementById('how-to-play-modal'),
+  closeHowToPlayBtn: document.getElementById('close-how-to-play-btn'),
+
   finalScore:      document.getElementById('final-score'),
   finalSolved:     document.getElementById('final-solved'),
   finalAccuracy:   document.getElementById('final-accuracy'),
@@ -846,6 +850,16 @@ function stopAllAudio() {
   }
 }
 
+function triggerCMGEvent(eventType) {
+  try {
+    if (window.parent && typeof window.parent.cmg_game_event === 'function') {
+      window.parent.cmg_game_event(eventType);
+    } else if (typeof window.cmg_game_event === 'function') {
+      window.cmg_game_event(eventType);
+    }
+  } catch (_) {}
+}
+
 function endGame() {
   if (gameState.phase !== 'playing') return;
   gameState.phase = 'gameover';
@@ -854,6 +868,7 @@ function endGame() {
   cancelAnimationFrame(speedMeterLoopId);
   clearAllFloaters();
   stopAllAudio();
+  triggerCMGEvent('gameover');
 
   const totalAttempts = gameState.solved + gameState.wrongAnswers;
   const accuracy = totalAttempts > 0 ? Math.round(gameState.solved / totalAttempts * 100) : 0;
@@ -1005,12 +1020,14 @@ function startGame() {
   clearAllFloaters();
   if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
   if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
+  if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
   showScreen('game');
   updateHUD();
   generateQuestion();
   startTimer();
   startGameLoop();
   playArcadeSound('select');
+  triggerCMGEvent('start');
 }
 
 function resetState() {
@@ -1043,6 +1060,7 @@ function resetState() {
   gameState.bestSpeedBonus  = 0;
   
   if (dom.pauseModal) dom.pauseModal.classList.remove('active');
+  if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
   if (dom.timerBadge) dom.timerBadge.classList.remove('timer-low');
   if (dom.hudComboBox) dom.hudComboBox.classList.remove('combo-fire');
 }
@@ -1053,14 +1071,37 @@ function togglePause() {
   if (gameState.isPaused) {
     if (dom.pauseModal) dom.pauseModal.classList.add('active');
     playArcadeSound('click');
+    triggerCMGEvent('pause');
   } else {
     if (dom.pauseModal) dom.pauseModal.classList.remove('active');
     playArcadeSound('select');
+    triggerCMGEvent('resume');
   }
 }
 
 // ─── 19. EVENT LISTENERS ─────────────────────────────────────
-// Pause Controls
+// Pause & How to Play Controls
+if (dom.howToPlayBtn) {
+  dom.howToPlayBtn.addEventListener('click', () => {
+    if (dom.howToPlayModal) dom.howToPlayModal.classList.add('active');
+    playArcadeSound('click');
+  });
+}
+if (dom.closeHowToPlayBtn) {
+  dom.closeHowToPlayBtn.addEventListener('click', () => {
+    if (dom.howToPlayModal) dom.howToPlayModal.classList.remove('active');
+    playArcadeSound('select');
+  });
+}
+if (dom.howToPlayModal) {
+  dom.howToPlayModal.addEventListener('click', e => {
+    if (e.target === dom.howToPlayModal) {
+      dom.howToPlayModal.classList.remove('active');
+      playArcadeSound('click');
+    }
+  });
+}
+
 if (dom.pauseBtn) dom.pauseBtn.addEventListener('click', togglePause);
 if (dom.resumeBtn) dom.resumeBtn.addEventListener('click', togglePause);
 if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
@@ -1080,6 +1121,8 @@ const powModeBtn = document.querySelector('.mode-pow');
 const themeTranslations = {
   kids: {
     '.logo-deco-left': '🌟', '.logo-deco-right': '🌟', '.logo-subline': '🍭 FUN MATH FOR KIDS! 🍭', '.logo-emoji-row': '🌈 ➕ ➖ ✖️ ➗ 🌈',
+    '#how-to-play-btn': '❓ HOW TO PLAY', '#how-to-play-title': 'HOW TO PLAY',
+    '#close-how-to-play-btn .play-btn-content': '🚀 GOT IT, LET\'S PLAY!',
     '.mode-add .card-pill': '🍏 PLUS!', '.mode-add .card-tagline': '🤝 Add Together!',
     '.mode-sub .card-pill': '🍊 MINUS!', '.mode-sub .card-tagline': '✂️ Take Away!',
     '.mode-mult .card-pill': '🍇 TIMES!', '.mode-mult .card-tagline': '🚀 Power Up!',
@@ -1103,6 +1146,8 @@ const themeTranslations = {
   },
   robotics: {
     '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': '🦾 SYSTEM OVERRIDE 🦾', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
+    '#how-to-play-btn': '⚡ PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL 📋',
+    '#close-how-to-play-btn .play-btn-content': '⚡ PROTOCOL ACKNOWLEDGED',
     '.mode-add .card-pill': '➕ ADD', '.mode-add .card-tagline': '🔋 System Sum',
     '.mode-sub .card-pill': '➖ SUB', '.mode-sub .card-tagline': '🔧 Drain Core',
     '.mode-mult .card-pill': '✖️ MULT', '.mode-mult .card-tagline': '🚀 Overclock',
@@ -1222,7 +1267,10 @@ if (dom.diffGrid) {
 }
 
 dom.startBtn.addEventListener('click', startGame);
-dom.playAgainBtn.addEventListener('click', startGame);
+dom.playAgainBtn.addEventListener('click', () => {
+  triggerCMGEvent('replay');
+  startGame();
+});
 
 dom.menuBtn.addEventListener('click', () => {
   resetState();
@@ -1240,17 +1288,32 @@ dom.soundToggle.addEventListener('click', () => {
 
 // Keyboard Hotkeys
 document.addEventListener('keydown', e => {
+  if (e.code === 'Escape') {
+    if (dom.howToPlayModal && dom.howToPlayModal.classList.contains('active')) {
+      e.preventDefault();
+      dom.howToPlayModal.classList.remove('active');
+      playArcadeSound('click');
+      return;
+    }
+  }
   if (e.code === 'KeyP' || e.code === 'Escape') {
     if (gameState.phase === 'playing') {
       e.preventDefault();
       togglePause();
     }
   } else if (e.code === 'Space' || e.code === 'Enter') {
+    if (dom.howToPlayModal && dom.howToPlayModal.classList.contains('active')) {
+      e.preventDefault();
+      dom.howToPlayModal.classList.remove('active');
+      playArcadeSound('select');
+      return;
+    }
     if (gameState.phase === 'menu') {
       e.preventDefault();
       startGame();
     } else if (gameState.phase === 'gameover') {
       e.preventDefault();
+      triggerCMGEvent('replay');
       startGame();
     }
   }

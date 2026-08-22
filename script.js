@@ -166,11 +166,23 @@ const SKINS_CONFIG = {
   galaxy:  { name: 'GALAXY NEBULA',  cost: 750 },
 };
 
+// Migration: Ensure 'classic' is the sole free default, and 'candy' requires purchase (50 coins)
 let savedOwnedSkins = JSON.parse(localStorage.getItem('number_surge_owned_skins') || '["classic"]');
+const hasMigratedSkinsV2 = localStorage.getItem('number_surge_skins_v2_migrated');
+
+if (!hasMigratedSkinsV2) {
+  // Remove legacy free candy default so it displays purchase cost of 50 coins
+  savedOwnedSkins = savedOwnedSkins.filter(s => s !== 'candy');
+  if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
+  localStorage.setItem('number_surge_owned_skins', JSON.stringify(savedOwnedSkins));
+  localStorage.setItem('number_surge_active_skin', 'classic');
+  localStorage.setItem('number_surge_skins_v2_migrated', 'true');
+}
+
 if (!savedOwnedSkins.includes('classic')) savedOwnedSkins.unshift('classic');
 
 let savedActiveSkin = localStorage.getItem('number_surge_active_skin') || 'classic';
-if (savedActiveSkin === 'candy' && !savedOwnedSkins.includes('candy')) {
+if (!savedOwnedSkins.includes(savedActiveSkin)) {
   savedActiveSkin = 'classic';
 }
 

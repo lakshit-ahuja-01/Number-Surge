@@ -3809,9 +3809,10 @@ body.theme-robotics .btn-revive .reward-content {
 .mode-sub { color: #ffb36e; }
 .mode-mult { color: #cf9bff; }
 .mode-div { color: #ff91ab; }
+.mode-pow { color: #00f2fe; }
 .mode-mix { color: #ffe578; }
-.mode-add, .mode-sub, .mode-mult, .mode-div, .mode-mix { border-color: rgba(255,255,255,.13); box-shadow: 0 8px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08); }
-.mode-add.active, .mode-sub.active, .mode-mult.active, .mode-div.active, .mode-mix.active { background: linear-gradient(145deg, rgba(72, 65, 114, .96), rgba(29, 26, 58, .98)); }
+.mode-add, .mode-sub, .mode-mult, .mode-div, .mode-pow, .mode-mix { border-color: rgba(255,255,255,.13); box-shadow: 0 8px 18px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08); }
+.mode-add.active, .mode-sub.active, .mode-mult.active, .mode-div.active, .mode-pow.active, .mode-mix.active { background: linear-gradient(145deg, rgba(72, 65, 114, .96), rgba(29, 26, 58, .98)); }
 .card-check-tag { display: none; }
 
 .arcade-settings-bar {
@@ -4094,9 +4095,10 @@ body.theme-robotics .selection-status {
 }
 body.theme-robotics .launch-step.is-current { color: #a4ffe0; }
 body.theme-robotics .launch-step.is-current b { color: #00f2fe; }
+body.theme-robotics .arcade-mode-selector { grid-template-columns: repeat(6, 1fr); gap: 8px; }
 body.theme-robotics .arcade-card {
   min-height: 158px;
-  padding: 14px 12px 12px;
+  padding: 14px 10px 12px;
   border: 1px solid rgba(96, 177, 222, .24);
   border-radius: 16px;
   background: linear-gradient(145deg, rgba(15, 35, 57, .96), rgba(6, 17, 32, .98));

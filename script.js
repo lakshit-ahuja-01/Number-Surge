@@ -446,7 +446,7 @@ function loadHighScore() {
   const saved = localStorage.getItem('number_surge_high_score');
   gameState.highScore = saved ? parseInt(saved, 10) : 0;
   if (dom.startHighScore) {
-    dom.startHighScore.textContent = `${gameState.highScore} PTS`;
+    dom.startHighScore.textContent = `${gameState.highScore}`;
   }
 }
 

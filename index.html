@@ -28,25 +28,20 @@
         <div class="title-top-left-stats">
           <div class="title-highscore-pill">
             <span class="trophy-icon">🏆</span>
-            <span class="hs-txt">HIGH SCORE:</span>
-            <span id="start-highscore" class="hs-num">0 PTS</span>
+            <span id="start-highscore" class="hs-num">0</span>
           </div>
-
           <div class="title-coins-pill">
             <span class="coin-icon">🪙</span>
             <span id="coins-display" class="coin-num">0</span>
           </div>
         </div>
 
-        <!-- Controls: Shop, How to play & Theme Switcher -->
         <div class="title-actions-bar">
-          <button id="shop-btn" class="shop-btn" aria-label="Shop & Upgrades" title="Shop & Upgrades">🛒 SHOP</button>
-          <button id="how-to-play-btn" class="help-btn" aria-label="How to Play" title="How to Play">❓ HOW TO PLAY</button>
-
-          <!-- Theme Switcher -->
+          <button id="shop-btn" class="shop-btn" aria-label="Shop & Upgrades" title="Shop & Upgrades">🛒</button>
+          <button id="how-to-play-btn" class="help-btn" aria-label="How to Play" title="How to Play">❓</button>
           <div class="theme-switcher-bar">
-            <button class="theme-btn active" data-theme="kids">🍭 KIDS CANDY</button>
-            <button class="theme-btn" data-theme="robotics">🤖 CYBER ROBOTICS</button>
+            <button class="theme-btn active" data-theme="kids" title="Kids Candy Theme">🍭</button>
+            <button class="theme-btn" data-theme="robotics" title="Cyber Robotics Theme">🤖</button>
           </div>
         </div>
       </div>
@@ -64,12 +59,10 @@
             <span class="logo-row-2">SURGE</span>
           </h1>
           <div class="logo-subline">🍭 FUN MATH FOR KIDS! 🍭</div>
-          <div class="logo-emoji-row">🌈 ➕ ➖ ✖️ ➗ 🌈</div>
         </div>
 
         <!-- Arcade Operation Mode Selector -->
         <div class="arcade-mode-panel">
-          <div class="panel-header">🎯 STEP 1 — PICK YOUR ADVENTURE!</div>
           
           <div class="arcade-mode-selector" id="mode-grid" role="group" aria-label="Game mode selector">
             <!-- Addition Card -->
@@ -146,11 +139,11 @@
           </div>
         </div>
 
-        <!-- Unified Settings Deck (Time & Difficulty Side-by-Side) -->
+        <!-- Unified Settings Deck -->
         <div class="arcade-settings-bar">
           <!-- Time Subgroup -->
           <div class="settings-subgroup">
-            <div class="settings-group-title">⏱️ ROUND TIME</div>
+            <div class="settings-group-title">⏱️ TIME</div>
             <div class="time-chips-grid" id="time-grid" role="group" aria-label="Round duration selector">
               <button class="time-chip" data-time="30" aria-pressed="false">
                 <span class="time-chip-icon">⚡</span>
@@ -173,7 +166,7 @@
 
           <!-- Difficulty Subgroup -->
           <div class="settings-subgroup">
-            <div class="settings-group-title">🎯 DIFFICULTY</div>
+            <div class="settings-group-title">🎯 LEVEL</div>
             <div class="time-chips-grid diff-grid" id="diff-grid" role="group" aria-label="Difficulty selector">
               <button class="time-chip active" data-diff="0" aria-pressed="true">
                 <span class="time-chip-icon">🌱</span>
@@ -195,15 +188,12 @@
         <div class="arcade-cta-box">
           <button id="start-btn" class="arcade-play-button">
             <span class="play-btn-bevel"></span>
+            <span class="play-btn-glow"></span>
             <span class="play-btn-content">
-              <span class="play-arrow">🚀</span>
-              <span id="play-btn-label" class="play-label">LET'S PLAY! (60s)</span>
+              <span class="play-arrow">▶</span>
+              <span id="play-btn-label" class="play-label">PLAY</span>
             </span>
           </button>
-          
-          <div class="press-space-prompt">
-            <span class="blink-dot">🎯</span> PRESS <kbd>SPACEBAR</kbd> TO START!
-          </div>
         </div>
 
       </div>

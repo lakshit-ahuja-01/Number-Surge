@@ -3905,14 +3905,55 @@ body.theme-robotics .arcade-play-button { border-radius: 8px; background: linear
 body.theme-robotics .arcade-play-button:hover { background: linear-gradient(180deg, #5affe0 0%, #00dfa0 52%, #00ad65 100%); box-shadow: 0 9px 0 #006e47, 0 0 32px rgba(0,255,166,.32); }
 body.theme-robotics .play-btn-content { color: #021911; }
 
-@media (max-height: 760px) and (min-width: 700px) {
-  #start-screen { padding-top: 12px; }
-  .title-top-bar { margin-bottom: 11px; }
-  .arcade-title-stage { gap: 11px; }
-  .game-logo-3d { font-size: clamp(2.7rem, 5.5vw, 4.2rem); }
-  .arcade-card { min-height: 124px; padding: 10px 12px; }
-  .card-glyph { margin-top: 7px; font-size: 29px; }
-  .arcade-play-button { height: 52px; }
+#start-screen {
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+@media (max-height: 820px) {
+  #start-screen { padding: 10px 16px 14px; }
+  .title-top-bar { min-height: 42px; margin-bottom: 8px; padding: 4px 6px; }
+  .title-highscore-pill, .title-coins-pill, .shop-btn, .help-btn, .theme-switcher-bar { height: 32px; font-size: 11px; }
+  .arcade-title-stage { gap: 8px; }
+  .game-logo-3d { font-size: clamp(2.2rem, 5vh, 3.4rem); }
+  .logo-subline { margin-top: 4px; padding: 3px 8px; font-size: 9px; }
+  .setup-section-heading { margin-bottom: 5px; }
+  .arcade-card { min-height: 116px; padding: 8px 6px 8px; }
+  .card-pill { padding: 2px 6px; font-size: 7.5px; }
+  .card-glyph { margin-top: 4px; font-size: 26px; }
+  .card-name { font-size: 11.5px; }
+  .card-tagline { font-size: 9.5px; }
+  .arcade-settings-bar { padding: 8px 12px; gap: 10px; }
+  .settings-divider { height: 38px; }
+  .settings-subgroup { gap: 4px; }
+  .time-chip { height: 34px; }
+  .time-chip-val { font-size: 10px; }
+  .arcade-cta-box { gap: 4px; margin-top: 0; }
+  .launch-summary { font-size: 11px; }
+  .arcade-play-button { height: 46px; max-width: 440px; }
+  .play-btn-content { font-size: 15px; }
+}
+
+@media (max-height: 620px) {
+  #start-screen { padding: 6px 12px 10px; }
+  .title-top-bar { min-height: 36px; margin-bottom: 5px; }
+  .title-highscore-pill, .title-coins-pill, .shop-btn, .help-btn, .theme-switcher-bar { height: 28px; font-size: 10px; }
+  .arcade-title-stage { gap: 5px; }
+  .game-logo-3d { font-size: clamp(1.8rem, 4vh, 2.6rem); }
+  .logo-subline { display: none; }
+  .setup-section-heading { margin-bottom: 3px; }
+  .eyebrow { font-size: 7.5px; margin-bottom: 2px; }
+  .setup-section-heading h2 { font-size: 0.95rem; }
+  .arcade-card { min-height: 98px; padding: 6px 4px 6px; }
+  .card-glyph { font-size: 22px; margin-top: 2px; }
+  .card-name { font-size: 10.5px; }
+  .card-tagline { display: none; }
+  .arcade-settings-bar { padding: 6px 10px; }
+  .time-chip { height: 30px; }
+  .time-chip-icon { display: none; }
+  .arcade-play-button { height: 42px; }
+  .play-btn-content { font-size: 14px; }
 }
 
 @media (max-width: 720px) {

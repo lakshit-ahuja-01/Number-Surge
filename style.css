@@ -4601,6 +4601,118 @@ body:not(.theme-robotics) .play-btn-content { color: #fff; font-size: 18px; text
 body:not(.theme-robotics) .press-space-prompt { color: #806e89; }
 body:not(.theme-robotics) .press-space-prompt kbd { border: 1px solid #efd7e6; background: #fff; color: #d76c98; }
 
+@media (max-height: 720px) {
+  body:not(.theme-robotics) #start-screen {
+    padding: max(6px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    gap: 6px;
+  }
+  body:not(.theme-robotics) .title-top-bar {
+    min-height: 38px;
+    padding: 3px 8px;
+    border-radius: 16px;
+    margin-bottom: 0;
+  }
+  body:not(.theme-robotics) .title-highscore-pill,
+  body:not(.theme-robotics) .title-coins-pill,
+  body:not(.theme-robotics) .shop-btn,
+  body:not(.theme-robotics) .help-btn,
+  body:not(.theme-robotics) .theme-switcher-bar {
+    height: 30px;
+    font-size: 10px;
+    border-radius: 10px;
+  }
+  body:not(.theme-robotics) .theme-btn {
+    height: 24px;
+    font-size: 8.5px;
+  }
+  body:not(.theme-robotics) .arcade-title-stage {
+    gap: 6px;
+  }
+  body:not(.theme-robotics) .game-logo-3d {
+    font-size: 2.35rem;
+    line-height: 0.84;
+  }
+  body:not(.theme-robotics) .logo-subline {
+    font-size: 8.5px;
+    padding: 2px 10px;
+    margin-top: 2px;
+  }
+  body:not(.theme-robotics) .setup-section-heading {
+    margin-bottom: 2px;
+  }
+  body:not(.theme-robotics) .eyebrow {
+    font-size: 7.5px;
+    margin-bottom: 1px;
+  }
+  body:not(.theme-robotics) .setup-section-heading h2 {
+    font-size: 0.9rem;
+  }
+  body:not(.theme-robotics) .selection-status {
+    font-size: 9px;
+    padding: 2px 8px;
+  }
+  body:not(.theme-robotics) .arcade-card {
+    min-height: 108px;
+    padding: 6px 5px 4px;
+    border-radius: 16px;
+    border-width: 2.5px;
+  }
+  body:not(.theme-robotics) .card-pill {
+    padding: 2px 6px;
+    font-size: 7.5px;
+  }
+  body:not(.theme-robotics) .card-glyph {
+    font-size: 26px;
+    margin: 2px auto auto;
+  }
+  body:not(.theme-robotics) .card-name {
+    font-size: 11px;
+  }
+  body:not(.theme-robotics) .card-tagline {
+    font-size: 8.5px;
+  }
+  body:not(.theme-robotics) .arcade-settings-bar {
+    padding: 5px 12px;
+    border-radius: 16px;
+    border-width: 2.5px;
+    gap: 8px;
+  }
+  body:not(.theme-robotics) .settings-divider {
+    height: 30px;
+  }
+  body:not(.theme-robotics) .settings-group-title {
+    font-size: 8.5px;
+  }
+  body:not(.theme-robotics) .time-chip {
+    height: 32px;
+    border-radius: 10px;
+    border-width: 2px;
+  }
+  body:not(.theme-robotics) .time-chip-val {
+    font-size: 10px;
+  }
+  body:not(.theme-robotics) .time-chip-icon {
+    font-size: 12px;
+  }
+  body:not(.theme-robotics) .arcade-cta-box {
+    gap: 2px;
+  }
+  body:not(.theme-robotics) .launch-summary {
+    font-size: 10px;
+  }
+  body:not(.theme-robotics) .arcade-play-button {
+    height: 44px;
+    max-width: 400px;
+    border-radius: 14px;
+  }
+  body:not(.theme-robotics) .play-btn-content {
+    font-size: 15px;
+  }
+  body:not(.theme-robotics) .press-space-prompt {
+    font-size: 9.5px;
+  }
+}
+
 /* Cyber Robotics: a focused neon command deck. */
 body.theme-robotics #start-screen::after {
   right: 5%;

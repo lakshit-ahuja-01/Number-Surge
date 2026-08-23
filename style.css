@@ -3492,8 +3492,8 @@ body.theme-robotics .btn-revive .reward-content {
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-  gap: 16px;
+  padding: max(clamp(10px, 1.8vh, 22px), env(safe-area-inset-top)) max(clamp(14px, 2vw, 28px), env(safe-area-inset-right)) max(clamp(12px, 2vh, 24px), env(safe-area-inset-bottom)) max(clamp(14px, 2vw, 28px), env(safe-area-inset-left));
+  gap: clamp(8px, 1.5vh, 18px);
   background:
     radial-gradient(55rem 38rem at 50% -14%, rgba(153, 110, 255, 0.45), transparent 58%),
     radial-gradient(42rem 28rem at 8% 88%, rgba(255, 112, 165, 0.25), transparent 68%),
@@ -3533,9 +3533,9 @@ body.theme-robotics .btn-revive .reward-content {
 .title-top-bar {
   width: 100%;
   max-width: min(1260px, 94vw);
-  min-height: 48px;
+  min-height: clamp(38px, 5vh, 48px);
   margin-bottom: 0;
-  padding: 5px 10px;
+  padding: clamp(3px, 0.6vh, 5px) clamp(8px, 1vw, 12px);
   border: 1px solid var(--launch-border);
   border-radius: 16px;
   background: rgba(12, 10, 29, 0.54);
@@ -3551,13 +3551,13 @@ body.theme-robotics .btn-revive .reward-content {
 .shop-btn,
 .help-btn,
 .theme-switcher-bar {
-  height: 36px;
+  height: clamp(30px, 4.2vh, 36px);
   border: 1px solid var(--launch-border);
   border-radius: 10px;
   box-shadow: none;
   background: rgba(255, 255, 255, 0.055);
   color: var(--launch-ink);
-  font-size: 12px;
+  font-size: clamp(10.5px, 1.4vh, 12px);
 }
 
 .title-highscore-pill,
@@ -3577,7 +3577,7 @@ body.theme-robotics .btn-revive .reward-content {
 }
 
 .theme-switcher-bar { padding: 3px; gap: 2px; }
-.theme-btn { height: 28px; border-radius: 7px; color: var(--launch-muted); font-size: 9.5px; }
+.theme-btn { height: clamp(24px, 3.4vh, 28px); border-radius: 7px; color: var(--launch-muted); font-size: clamp(8.5px, 1.1vh, 9.5px); }
 .theme-btn:hover { color: #fff; }
 .theme-btn.active {
   background: linear-gradient(135deg, #df68ff, #8677ff);
@@ -3591,7 +3591,7 @@ body.theme-robotics .btn-revive .reward-content {
   align-items: center;
   width: 100%;
   max-width: min(1260px, 94vw);
-  gap: clamp(12px, 2vh, 18px);
+  gap: clamp(8px, 1.5vh, 18px);
   padding-bottom: 0;
 }
 
@@ -3606,7 +3606,7 @@ body.theme-robotics .btn-revive .reward-content {
 }
 
 .game-logo-3d {
-  font-size: clamp(3.8rem, 8vw, 6.2rem);
+  font-size: clamp(2.8rem, min(6.8vh, 7vw), 5.6rem);
   letter-spacing: 0.03em;
   line-height: 0.86;
 }
@@ -4215,7 +4215,7 @@ body:not(.theme-robotics) .theme-btn { color: #8b7b9e; }
 body:not(.theme-robotics) .theme-btn.active { background: linear-gradient(135deg, #ff91ba, #cf81f2); color: #fff; box-shadow: 0 3px 0 #b964da; }
 
 body:not(.theme-robotics) .game-logo-3d {
-  font-size: clamp(4.2rem, 8.8vw, 6.8rem);
+  font-size: clamp(2.8rem, min(7.2vh, 7.5vw), 5.8rem);
   line-height: 0.86;
 }
 body:not(.theme-robotics) .logo-row-1 { color: #ff86ad; text-shadow: 0 4px 0 #e45b87, 0 9px 0 #c13c6d, 0 16px 26px rgba(255,119,166,.3); }
@@ -4226,9 +4226,9 @@ body:not(.theme-robotics) .logo-subline {
   background: #fff8df;
   color: #c46a24;
   box-shadow: 0 3px 0 #f7bf70;
-  font-size: clamp(10.5px, 1.3vw, 13px);
-  padding: 4px 16px;
-  margin-top: 6px;
+  font-size: clamp(9.5px, 1.2vh, 12.5px);
+  padding: clamp(3px, 0.5vh, 5px) clamp(10px, 1.2vw, 16px);
+  margin-top: clamp(3px, 0.6vh, 6px);
   letter-spacing: 0.12em;
   font-weight: 900;
 }
@@ -4241,10 +4241,10 @@ body:not(.theme-robotics) .setup-section-heading h2 { color: #4e3a67; }
 body:not(.theme-robotics) .selection-status { border: 2px solid #bcefd2; background: #effff5; color: #288864; }
 
 body:not(.theme-robotics) .arcade-card {
-  min-height: 156px;
-  padding: 14px 10px 12px;
+  min-height: clamp(118px, 17vh, 162px);
+  padding: clamp(7px, 1.1vh, 13px) clamp(5px, 0.8vw, 11px);
   border: 3.5px solid #ffffff;
-  border-radius: 24px;
+  border-radius: clamp(16px, 2.4vh, 24px);
   background: #ffffff;
   box-shadow: 0 9px 0 rgba(108, 70, 130, 0.16), 0 16px 28px rgba(122, 83, 127, 0.14), inset 0 2px 0 rgba(255, 255, 255, 0.9);
   transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -4325,17 +4325,17 @@ body:not(.theme-robotics) .mode-mix .card-pill {
 }
 
 body:not(.theme-robotics) .arcade-card:hover {
-  transform: translateY(-6px) scale(1.03) rotate(-1deg);
+  transform: translateY(-5px) scale(1.025) rotate(-1deg);
 }
 body:not(.theme-robotics) .arcade-card:nth-child(even):hover {
-  transform: translateY(-6px) scale(1.03) rotate(1deg);
+  transform: translateY(-5px) scale(1.025) rotate(1deg);
 }
 body:not(.theme-robotics) .arcade-card:hover .card-glyph {
-  transform: scale(1.18) rotate(6deg);
+  transform: scale(1.15) rotate(5deg);
 }
 
 body:not(.theme-robotics) .arcade-card.active {
-  transform: translateY(-2px) scale(1.04);
+  transform: translateY(-2px) scale(1.03);
   border: 4px solid #ffffff;
 }
 body:not(.theme-robotics) .mode-add.active {
@@ -4355,16 +4355,16 @@ body:not(.theme-robotics) .mode-mix.active {
 }
 
 body:not(.theme-robotics) .card-pill {
-  padding: 4px 10px;
+  padding: clamp(3px, 0.5vh, 4px) clamp(6px, 0.8vw, 10px);
   border-radius: 99px;
   font-family: var(--font-hud);
-  font-size: 9.5px;
+  font-size: clamp(8px, 1.1vh, 9.5px);
   font-weight: 800;
   letter-spacing: 0.08em;
 }
 body:not(.theme-robotics) .card-glyph {
-  margin: 6px auto auto;
-  font-size: 40px;
+  margin: clamp(3px, 0.6vh, 6px) auto auto;
+  font-size: clamp(28px, 4.4vh, 40px);
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -4372,7 +4372,7 @@ body:not(.theme-robotics) .card-info { width: 100%; align-items: center; text-al
 body:not(.theme-robotics) .card-name {
   color: #3b284c !important;
   font-family: var(--font-title);
-  font-size: 14.5px;
+  font-size: clamp(12px, 1.6vh, 14.5px);
   font-weight: 900;
   letter-spacing: 0.04em;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -4380,35 +4380,35 @@ body:not(.theme-robotics) .card-name {
 body:not(.theme-robotics) .card-tagline {
   color: #5c476f !important;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: clamp(9px, 1.2vh, 11px);
   font-weight: 800;
   line-height: 1.15;
 }
 
 body:not(.theme-robotics) .arcade-settings-bar {
   border: 3.5px solid #ffffff;
-  border-radius: 24px;
+  border-radius: clamp(16px, 2.4vh, 24px);
   background: rgba(255, 255, 255, 0.88);
   box-shadow: 0 8px 0 rgba(142, 102, 160, 0.16), 0 18px 30px rgba(115, 80, 130, 0.12), inset 0 2px 0 #ffffff;
-  padding: 12px 20px;
+  padding: clamp(6px, 1.1vh, 12px) clamp(12px, 1.8vw, 20px);
 }
 body:not(.theme-robotics) .settings-divider {
   background: #f1c9dd;
   width: 2px;
-  height: 46px;
+  height: clamp(32px, 4.4vh, 46px);
 }
 body:not(.theme-robotics) .settings-group-title {
   color: #8b5a91;
   font-family: var(--font-hud);
-  font-size: 10px;
+  font-size: clamp(8.5px, 1.1vh, 10px);
   font-weight: 900;
   letter-spacing: 0.12em;
 }
 
 body:not(.theme-robotics) .time-chip {
-  height: 44px;
+  height: clamp(34px, 4.8vh, 44px);
   border: 2.5px solid #ffffff;
-  border-radius: 16px;
+  border-radius: clamp(12px, 1.8vh, 16px);
   background: #ffffff;
   color: #5c4b6e;
   box-shadow: 0 4px 0 #d9c7e3, 0 6px 12px rgba(120, 80, 140, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.9);

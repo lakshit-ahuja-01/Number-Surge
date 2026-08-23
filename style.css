@@ -4277,25 +4277,38 @@ body:not(.theme-robotics) .mode-mix.active {
 body:not(.theme-robotics) .card-pill {
   padding: 4px 10px;
   border-radius: 99px;
-  font-family: var(--font-hud);
+  font-family: 'Fredoka', var(--font-hud);
   font-size: 9.5px;
   font-weight: 800;
   letter-spacing: 0.08em;
 }
 body:not(.theme-robotics) .card-glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   margin: 6px auto auto;
-  font-size: 40px;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+  font-size: 30px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+body:not(.theme-robotics) .glyph-mascot {
+  font-size: 34px;
+  filter: drop-shadow(0 3px 0 rgba(0,0,0,0.1));
+}
+body:not(.theme-robotics) .glyph-symbol {
+  font-size: 26px;
+  font-weight: 900;
+  filter: drop-shadow(0 2px 0 rgba(0,0,0,0.12));
 }
 body:not(.theme-robotics) .card-info { width: 100%; align-items: center; text-align: center; }
 body:not(.theme-robotics) .card-name {
   color: #3b284c !important;
-  font-family: var(--font-title);
-  font-size: 14.5px;
+  font-family: 'Fredoka', var(--font-hud) !important;
+  font-size: 15px;
   font-weight: 900;
-  letter-spacing: 0.04em;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 0 #ffffff;
 }
 body:not(.theme-robotics) .card-tagline {
   color: #5c476f !important;

@@ -146,6 +146,8 @@ const gameState = {
   isFrozen:        false,
   freezeTimeoutId: null,
   coinsEarnedThisRound: 0,
+  lastRiverW:      0,
+  lastRiverH:      0,
 };
 
 // ─── 4. ECONOMY & UPGRADES SYSTEM ────────────────────────────
@@ -582,9 +584,32 @@ function renderAmbientParticles(timestamp = 0) {
   requestAnimationFrame(renderAmbientParticles);
 }
 
-window.addEventListener('resize', () => {
+function handleWindowResize() {
   resizeAmbientCanvas();
-});
+  if (gameState.phase === 'playing' && dom.river && gameState.floaters.length > 0) {
+    const rw = dom.river.clientWidth;
+    const rh = dom.river.clientHeight;
+    const sz = CONFIG.ORB_SIZE;
+    if (gameState.lastRiverW && gameState.lastRiverH && (gameState.lastRiverW !== rw || gameState.lastRiverH !== rh) && rw > sz && rh > sz) {
+      const scaleX = (rw - sz) / Math.max(1, gameState.lastRiverW - sz);
+      const scaleY = (rh - sz) / Math.max(1, gameState.lastRiverH - sz);
+      gameState.floaters.forEach(f => {
+        f.x = Math.max(0, Math.min(rw - sz, f.x * scaleX));
+        f.y = Math.max(0, Math.min(rh - sz, f.y * scaleY));
+        f.el.style.left = `${f.x}px`;
+        f.el.style.top  = `${f.y}px`;
+      });
+    }
+    gameState.lastRiverW = rw;
+    gameState.lastRiverH = rh;
+  }
+}
+
+window.addEventListener('resize', handleWindowResize);
+document.addEventListener('fullscreenchange', handleWindowResize);
+document.addEventListener('webkitfullscreenchange', handleWindowResize);
+document.addEventListener('mozfullscreenchange', handleWindowResize);
+document.addEventListener('MSFullscreenChange', handleWindowResize);
 
 // ─── 6. LOCAL & CLOUD STORAGE HIGH SCORE ────────────────────
 function loadHighScore() {
@@ -1325,6 +1350,18 @@ function gameLoop(timestamp) {
   const rh = dom.river.clientHeight;
   const sz = CONFIG.ORB_SIZE;
 
+  // Auto-redistribute floaters instantly if river dimensions changed (e.g. F11 Fullscreen toggle)
+  if (gameState.lastRiverW && gameState.lastRiverH && (gameState.lastRiverW !== rw || gameState.lastRiverH !== rh) && rw > sz && rh > sz) {
+    const scaleX = (rw - sz) / Math.max(1, gameState.lastRiverW - sz);
+    const scaleY = (rh - sz) / Math.max(1, gameState.lastRiverH - sz);
+    gameState.floaters.forEach(f => {
+      f.x = Math.max(0, Math.min(rw - sz, f.x * scaleX));
+      f.y = Math.max(0, Math.min(rh - sz, f.y * scaleY));
+    });
+  }
+  gameState.lastRiverW = rw;
+  gameState.lastRiverH = rh;
+
   gameState.floaters.forEach(f => {
     f.x += f.vx * dt;
     f.y += f.vy * dt;
@@ -1826,15 +1863,10 @@ const themeTranslations = {
     '#close-shop-btn .play-btn-content': '🚀 BACK TO GAME',
     '.skin-classic-icon': '🍓', '.skin-classic-name': 'CLASSIC BUBBLE',
     '.mode-add .card-pill': '🍓 BERRY ADD', '.mode-add .card-tagline': 'Make a tasty total!',
-    '.mode-add .glyph-mascot': '🍓', '.mode-add .glyph-symbol': '➕',
     '.mode-sub .card-pill': '🍋 LEMON SUB', '.mode-sub .card-tagline': 'Take a little away!',
-    '.mode-sub .glyph-mascot': '🍋', '.mode-sub .glyph-symbol': '➖',
     '.mode-mult .card-pill': '🍇 GRAPE MULTIPLY', '.mode-mult .card-tagline': 'Make numbers grow!',
-    '.mode-mult .glyph-mascot': '🍇', '.mode-mult .glyph-symbol': '✖️',
     '.mode-div .card-pill': '🍬 CANDY DIVIDE', '.mode-div .card-tagline': 'Share the treats!',
-    '.mode-div .glyph-mascot': '🍬', '.mode-div .glyph-symbol': '➗',
     '.mode-mix .card-pill': '🌈 RAINBOW MIX', '.mode-mix .card-tagline': 'A sweet surprise!',
-    '.mode-mix .glyph-mascot': '🌈', '.mode-mix .glyph-symbol': '🎲',
     '.card-check-tag': '⭐ LET\'S GO!',
     '[data-time="30"] .time-chip-icon': '⚡', '[data-time="30"] .time-chip-label': '⚡ SPEEDY!',
     '[data-time="60"] .time-chip-icon': '⏰', '[data-time="60"] .time-chip-label': '🌟 CLASSIC!',
@@ -1861,15 +1893,10 @@ const themeTranslations = {
     '#close-shop-btn .play-btn-content': '⚡ RETURN TO CONSOLE',
     '.skin-classic-icon': '🤖', '.skin-classic-name': 'CLASSIC CORE',
     '.mode-add .card-pill': 'ADD · 01', '.mode-add .card-tagline': 'System sum',
-    '.mode-add .glyph-mascot': '🤖', '.mode-add .glyph-symbol': '➕',
     '.mode-sub .card-pill': 'SUBTRACT · 02', '.mode-sub .card-tagline': 'Drain core',
-    '.mode-sub .glyph-mascot': '⚙️', '.mode-sub .glyph-symbol': '➖',
     '.mode-mult .card-pill': 'MULTIPLY · 03', '.mode-mult .card-tagline': 'Overclock',
-    '.mode-mult .glyph-mascot': '⚡', '.mode-mult .glyph-symbol': '✖️',
     '.mode-div .card-pill': 'DIVIDE · 04', '.mode-div .card-tagline': 'Split signal',
-    '.mode-div .glyph-mascot': '🔮', '.mode-div .glyph-symbol': '➗',
     '.mode-mix .card-pill': 'SURGE MIX · 06', '.mode-mix .card-tagline': 'Chaos mode',
-    '.mode-mix .glyph-mascot': '🌀', '.mode-mix .glyph-symbol': '🎲',
     '.card-check-tag': '⚡ ENGAGE',
     '[data-time="30"] .time-chip-icon': '⏱️', '[data-time="30"] .time-chip-label': 'BLITZ',
     '[data-time="60"] .time-chip-icon': '⏲️', '[data-time="60"] .time-chip-label': 'STANDARD',

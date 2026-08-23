@@ -3532,7 +3532,7 @@ body.theme-robotics .btn-revive .reward-content {
 
 .title-top-bar {
   width: 100%;
-  max-width: 1040px;
+  max-width: min(1260px, 94vw);
   min-height: 48px;
   margin-bottom: 0;
   padding: 5px 10px;
@@ -3590,7 +3590,7 @@ body.theme-robotics .btn-revive .reward-content {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 1040px;
+  max-width: min(1260px, 94vw);
   gap: clamp(12px, 2vh, 18px);
   padding-bottom: 0;
 }
@@ -3956,6 +3956,67 @@ body.theme-robotics .play-btn-content { color: #021911; }
   overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
+}
+
+@media (min-height: 760px) and (min-width: 960px) {
+  #start-screen {
+    padding: max(22px, env(safe-area-inset-top)) max(28px, env(safe-area-inset-right)) max(30px, env(safe-area-inset-bottom)) max(28px, env(safe-area-inset-left));
+    gap: clamp(16px, 2.5vh, 26px);
+  }
+  .title-top-bar {
+    max-width: min(1280px, 94vw);
+    min-height: 52px;
+    padding: 6px 14px;
+  }
+  .title-highscore-pill, .title-coins-pill, .shop-btn, .help-btn, .theme-switcher-bar {
+    height: 40px;
+    font-size: 13px;
+  }
+  .arcade-title-stage {
+    max-width: min(1280px, 94vw);
+    gap: clamp(16px, 2.6vh, 28px);
+  }
+  .game-logo-3d {
+    font-size: clamp(4.5rem, 8vw, 6.8rem);
+  }
+  body:not(.theme-robotics) .game-logo-3d {
+    font-size: clamp(5rem, 9.2vw, 7.6rem);
+  }
+  .arcade-card {
+    min-height: 175px;
+    padding: 16px 12px 14px;
+    border-radius: 26px;
+  }
+  .card-glyph {
+    font-size: 44px;
+    margin: 8px auto auto;
+  }
+  .card-name {
+    font-size: 15.5px;
+  }
+  .card-tagline {
+    font-size: 12px;
+  }
+  .arcade-settings-bar {
+    padding: 14px 24px;
+    border-radius: 24px;
+    gap: 22px;
+  }
+  .time-chip {
+    height: 48px;
+    border-radius: 16px;
+  }
+  .time-chip-val {
+    font-size: 12.5px;
+  }
+  .arcade-play-button {
+    height: 64px;
+    max-width: 560px;
+    border-radius: 20px;
+  }
+  .play-btn-content {
+    font-size: 20px;
+  }
 }
 
 @media (max-height: 640px) {

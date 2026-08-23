@@ -4511,8 +4511,8 @@ body.theme-robotics .launch-step.is-current { color: #a4ffe0; }
 body.theme-robotics .launch-step.is-current b { color: #00f2fe; }
 body.theme-robotics .arcade-mode-selector { grid-template-columns: repeat(6, 1fr); gap: clamp(5px, 0.8vw, 8px); }
 body.theme-robotics .arcade-card {
-  min-height: clamp(90px, 15vh, 155px);
-  padding: clamp(5px, 0.9vh, 12px) clamp(3px, 0.5vw, 10px);
+  min-height: clamp(118px, 17vh, 162px);
+  padding: clamp(7px, 1.1vh, 13px) clamp(4px, 0.6vw, 10px);
   border: 1px solid rgba(96, 177, 222, .24);
   border-radius: clamp(10px, 1.6vh, 16px);
   background: linear-gradient(145deg, rgba(15, 35, 57, .96), rgba(6, 17, 32, .98));
@@ -4528,16 +4528,16 @@ body.theme-robotics .arcade-card.active:hover {
 body.theme-robotics .arcade-card:hover,
 body.theme-robotics .arcade-card:nth-child(even):hover { transform: translateY(-4px); }
 body.theme-robotics .card-pill {
-  padding: clamp(2px, 0.35vh, 4px) clamp(4px, 0.6vw, 8px);
+  padding: clamp(3px, 0.45vh, 4px) clamp(5px, 0.7vw, 8px);
   border-radius: 99px;
   background: rgba(0, 242, 254, .08) !important;
   border: 1px solid rgba(0, 242, 254, .2);
-  font-size: clamp(7px, 1vh, 8px);
+  font-size: clamp(7.5px, 1vh, 8.5px);
   letter-spacing: .13em;
 }
 body.theme-robotics .card-glyph {
-  font-size: clamp(20px, 3.6vh, 36px);
-  margin: clamp(2px, 0.4vh, 7px) auto auto;
+  font-size: clamp(26px, 4.2vh, 38px);
+  margin: clamp(3px, 0.6vh, 6px) auto auto;
   filter: drop-shadow(0 0 12px currentColor);
 }
 body.theme-robotics .card-info {
@@ -4545,11 +4545,18 @@ body.theme-robotics .card-info {
   align-items: center;
   text-align: center;
 }
-body.theme-robotics .card-name { font-size: 13px; letter-spacing: .06em; text-align: center; }
-body.theme-robotics .card-tagline { font-size: 11px; color: #91a8be !important; text-align: center; }
-body.theme-robotics .arcade-settings-bar { border-radius: 8px; border-color: rgba(0,242,254,.24); }
+body.theme-robotics .card-name { font-size: clamp(11.5px, 1.5vh, 13.5px); letter-spacing: .06em; text-align: center; }
+body.theme-robotics .card-tagline { font-size: clamp(9px, 1.2vh, 11px); color: #91a8be !important; text-align: center; }
+body.theme-robotics .arcade-settings-bar {
+  border-radius: clamp(8px, 1.4vh, 14px);
+  border-color: rgba(0,242,254,.24);
+  padding: clamp(6px, 1.1vh, 12px) clamp(12px, 1.8vw, 20px);
+}
 body.theme-robotics .settings-group-title { color: #84eaff; letter-spacing: .14em; }
-body.theme-robotics .time-chip { border-radius: 5px; }
+body.theme-robotics .time-chip {
+  height: clamp(34px, 4.8vh, 44px);
+  border-radius: clamp(5px, 0.8vh, 8px);
+}
 body.theme-robotics .time-chip.active,
 body.theme-robotics .diff-grid .time-chip[data-diff="0"].active,
 body.theme-robotics .diff-grid .time-chip[data-diff="3"].active,

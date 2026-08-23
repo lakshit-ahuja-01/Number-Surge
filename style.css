@@ -4161,47 +4161,213 @@ body:not(.theme-robotics) .setup-section-heading h2 { color: #4e3a67; }
 body:not(.theme-robotics) .selection-status { border: 2px solid #bcefd2; background: #effff5; color: #288864; }
 
 body:not(.theme-robotics) .arcade-card {
-  min-height: clamp(90px, 15vh, 155px);
-  padding: clamp(5px, 0.9vh, 12px) clamp(4px, 0.7vw, 12px);
-  border: 3px solid #fff;
-  border-radius: clamp(12px, 1.8vh, 23px);
-  background: #fff;
-  box-shadow: 0 7px 0 rgba(92, 63, 112, .16), 0 13px 24px rgba(122, 83, 127, .12);
+  min-height: 156px;
+  padding: 14px 10px 12px;
+  border: 3.5px solid #ffffff;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 9px 0 rgba(108, 70, 130, 0.16), 0 16px 28px rgba(122, 83, 127, 0.14), inset 0 2px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+body:not(.theme-robotics) .arcade-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 20px 20px 60px 60px;
+  pointer-events: none;
 }
 body:not(.theme-robotics) .arcade-card::after { display: none; }
-body:not(.theme-robotics) .arcade-card:hover,
-body:not(.theme-robotics) .arcade-card:nth-child(even):hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 10px 0 rgba(92,63,112,.17), 0 19px 27px rgba(122,83,127,.16); }
-body:not(.theme-robotics) .arcade-card:nth-child(even):hover { transform: translateY(-3px) rotate(1deg); }
-body:not(.theme-robotics) .arcade-card.active,
-body:not(.theme-robotics) .arcade-card.active:hover { transform: translateY(1px); box-shadow: 0 5px 0 rgba(92,63,112,.17), 0 0 0 3px currentColor, 0 12px 20px rgba(122,83,127,.13); }
-body:not(.theme-robotics) .card-pill { padding: clamp(2px, 0.35vh, 4px) clamp(4px, 0.6vw, 8px); border-radius: 99px; background: rgba(255,255,255,.72) !important; font-size: clamp(7.5px, 1.1vh, 9px); }
-body:not(.theme-robotics) .card-glyph { margin: clamp(2px, 0.4vh, 6px) auto auto; font-size: clamp(20px, 3.6vh, 36px); filter: drop-shadow(0 3px 0 rgba(75,55,94,.16)); }
-body:not(.theme-robotics) .card-info { width: 100%; align-items: center; text-align: center; }
-body:not(.theme-robotics) .card-name { color: #514064 !important; font-size: 13px; }
-body:not(.theme-robotics) .card-tagline { color: #776984 !important; font-size: 11px; }
-body:not(.theme-robotics) .mode-add { color: #32bb83; background: linear-gradient(160deg, #e5fff2, #c8f9df); }
-body:not(.theme-robotics) .mode-sub { color: #ef8b34; background: linear-gradient(160deg, #fff4d8, #ffdc9f); }
-body:not(.theme-robotics) .mode-mult { color: #9a62d6; background: linear-gradient(160deg, #f8ecff, #e7c7ff); }
-body:not(.theme-robotics) .mode-div { color: #ec6c89; background: linear-gradient(160deg, #ffeaf1, #ffc9da); }
-body:not(.theme-robotics) .mode-mix { color: #c88915; background: linear-gradient(160deg, #fffbdc, #ffeba3); }
-body:not(.theme-robotics) .mode-add.active { background: linear-gradient(160deg, #d6ffeb, #aaf4ca); }
-body:not(.theme-robotics) .mode-sub.active { background: linear-gradient(160deg, #fff1cd, #ffd48b); }
-body:not(.theme-robotics) .mode-mult.active { background: linear-gradient(160deg, #f5e4ff, #dcaeff); }
-body:not(.theme-robotics) .mode-div.active { background: linear-gradient(160deg, #ffe2eb, #ffb2cb); }
-body:not(.theme-robotics) .mode-mix.active { background: linear-gradient(160deg, #fff9c8, #ffe47c); }
 
-body:not(.theme-robotics) .arcade-settings-bar { border: 3px solid rgba(255,255,255,.95); border-radius: 23px; background: rgba(255,255,255,.81); box-shadow: 0 7px 0 rgba(126,91,141,.14), 0 14px 26px rgba(115,80,130,.1); }
-body:not(.theme-robotics) .settings-divider { background: #f1c9dd; }
-body:not(.theme-robotics) .settings-group-title { color: #7d537e; }
-body:not(.theme-robotics) .time-chip { border: 2px solid #e5d8ec; border-radius: 13px; background: #fff; color: #6f6680; box-shadow: 0 3px 0 #d7c7dd; }
-body:not(.theme-robotics) .time-chip.active,
-body:not(.theme-robotics) .diff-grid .time-chip[data-diff="0"].active,
-body:not(.theme-robotics) .diff-grid .time-chip[data-diff="3"].active,
-body:not(.theme-robotics) .diff-grid .time-chip[data-diff="6"].active { border-color: #ff8b76; background: #ffac76; color: #fff; box-shadow: 0 3px 0 #e46d45; }
-body:not(.theme-robotics) .diff-grid .time-chip[data-diff="0"].active { border-color: #53c994; background: #67dcaa; box-shadow: 0 3px 0 #37a774; }
-body:not(.theme-robotics) .diff-grid .time-chip[data-diff="3"].active { border-color: #edaf43; background: #ffcf62; box-shadow: 0 3px 0 #d79426; }
-body:not(.theme-robotics) .diff-grid .time-chip[data-diff="6"].active { border-color: #f06d89; background: #ff91ab; box-shadow: 0 3px 0 #d94f70; }
-body:not(.theme-robotics) .time-chip.active .time-chip-val { color: #fff; }
+body:not(.theme-robotics) .mode-add {
+  color: #199e63;
+  background: linear-gradient(175deg, #dcfce7 0%, #bbf7d0 50%, #86efac 100%);
+  box-shadow: 0 8px 0 #16a34a, 0 16px 26px rgba(22, 163, 74, 0.22), inset 0 2px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-add .card-pill {
+  background: #ffffff !important;
+  color: #15803d !important;
+  border: 1.5px solid #bbf7d0;
+  box-shadow: 0 2px 0 #86efac;
+}
+
+body:not(.theme-robotics) .mode-sub {
+  color: #c2410c;
+  background: linear-gradient(175deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
+  box-shadow: 0 8px 0 #d97706, 0 16px 26px rgba(217, 119, 6, 0.22), inset 0 2px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-sub .card-pill {
+  background: #ffffff !important;
+  color: #b45309 !important;
+  border: 1.5px solid #fde68a;
+  box-shadow: 0 2px 0 #fcd34d;
+}
+
+body:not(.theme-robotics) .mode-mult {
+  color: #7e22ce;
+  background: linear-gradient(175deg, #f3e8ff 0%, #e9d5ff 50%, #d8b4fe 100%);
+  box-shadow: 0 8px 0 #9333ea, 0 16px 26px rgba(147, 51, 234, 0.22), inset 0 2px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-mult .card-pill {
+  background: #ffffff !important;
+  color: #7e22ce !important;
+  border: 1.5px solid #e9d5ff;
+  box-shadow: 0 2px 0 #d8b4fe;
+}
+
+body:not(.theme-robotics) .mode-div {
+  color: #be185d;
+  background: linear-gradient(175deg, #fce7f3 0%, #fbcfe8 50%, #f472b6 100%);
+  box-shadow: 0 8px 0 #db2777, 0 16px 26px rgba(219, 39, 119, 0.22), inset 0 2px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-div .card-pill {
+  background: #ffffff !important;
+  color: #be185d !important;
+  border: 1.5px solid #fbcfe8;
+  box-shadow: 0 2px 0 #f472b6;
+}
+
+body:not(.theme-robotics) .mode-mix {
+  color: #a16207;
+  background: linear-gradient(175deg, #fef9c3 0%, #fef08a 50%, #fde047 100%);
+  box-shadow: 0 8px 0 #ca8a04, 0 16px 26px rgba(202, 138, 4, 0.22), inset 0 2px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-mix .card-pill {
+  background: #ffffff !important;
+  color: #a16207 !important;
+  border: 1.5px solid #fef08a;
+  box-shadow: 0 2px 0 #fde047;
+}
+
+body:not(.theme-robotics) .arcade-card:hover {
+  transform: translateY(-6px) scale(1.03) rotate(-1deg);
+}
+body:not(.theme-robotics) .arcade-card:nth-child(even):hover {
+  transform: translateY(-6px) scale(1.03) rotate(1deg);
+}
+body:not(.theme-robotics) .arcade-card:hover .card-glyph {
+  transform: scale(1.18) rotate(6deg);
+}
+
+body:not(.theme-robotics) .arcade-card.active {
+  transform: translateY(-2px) scale(1.04);
+  border: 4px solid #ffffff;
+}
+body:not(.theme-robotics) .mode-add.active {
+  box-shadow: 0 11px 0 #15803d, 0 0 0 4px #22c55e, 0 20px 32px rgba(22, 163, 74, 0.35), inset 0 3px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-sub.active {
+  box-shadow: 0 11px 0 #b45309, 0 0 0 4px #f59e0b, 0 20px 32px rgba(217, 119, 6, 0.35), inset 0 3px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-mult.active {
+  box-shadow: 0 11px 0 #7e22ce, 0 0 0 4px #a855f7, 0 20px 32px rgba(147, 51, 234, 0.35), inset 0 3px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-div.active {
+  box-shadow: 0 11px 0 #be185d, 0 0 0 4px #ec4899, 0 20px 32px rgba(219, 39, 119, 0.35), inset 0 3px 0 #ffffff;
+}
+body:not(.theme-robotics) .mode-mix.active {
+  box-shadow: 0 11px 0 #a16207, 0 0 0 4px #eab308, 0 20px 32px rgba(202, 138, 4, 0.35), inset 0 3px 0 #ffffff;
+}
+
+body:not(.theme-robotics) .card-pill {
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-family: var(--font-hud);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+body:not(.theme-robotics) .card-glyph {
+  margin: 6px auto auto;
+  font-size: 40px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+body:not(.theme-robotics) .card-info { width: 100%; align-items: center; text-align: center; }
+body:not(.theme-robotics) .card-name {
+  color: #3b284c !important;
+  font-family: var(--font-title);
+  font-size: 14.5px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+body:not(.theme-robotics) .card-tagline {
+  color: #5c476f !important;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+body:not(.theme-robotics) .arcade-settings-bar {
+  border: 3.5px solid #ffffff;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 0 rgba(142, 102, 160, 0.16), 0 18px 30px rgba(115, 80, 130, 0.12), inset 0 2px 0 #ffffff;
+  padding: 12px 20px;
+}
+body:not(.theme-robotics) .settings-divider {
+  background: #f1c9dd;
+  width: 2px;
+  height: 46px;
+}
+body:not(.theme-robotics) .settings-group-title {
+  color: #8b5a91;
+  font-family: var(--font-hud);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+body:not(.theme-robotics) .time-chip {
+  height: 44px;
+  border: 2.5px solid #ffffff;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #5c4b6e;
+  box-shadow: 0 4px 0 #d9c7e3, 0 6px 12px rgba(120, 80, 140, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.9);
+  font-weight: 800;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+body:not(.theme-robotics) .time-chip:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 7px 0 #d9c7e3, 0 10px 18px rgba(120, 80, 140, 0.14);
+}
+body:not(.theme-robotics) .time-chip.active {
+  transform: translateY(-2px);
+  border-color: #ffffff;
+  background: linear-gradient(180deg, #ff9f52 0%, #ff7f32 100%);
+  color: #ffffff;
+  box-shadow: 0 5px 0 #c25114, 0 8px 18px rgba(255, 127, 50, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+body:not(.theme-robotics) .diff-grid .time-chip[data-diff="0"].active {
+  background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+  box-shadow: 0 5px 0 #15803d, 0 8px 18px rgba(34, 197, 94, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+body:not(.theme-robotics) .diff-grid .time-chip[data-diff="3"].active {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 5px 0 #b45309, 0 8px 18px rgba(245, 158, 11, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+body:not(.theme-robotics) .diff-grid .time-chip[data-diff="6"].active {
+  background: linear-gradient(180deg, #fb7185 0%, #f43f5e 100%);
+  box-shadow: 0 5px 0 #be123c, 0 8px 18px rgba(244, 63, 94, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+body:not(.theme-robotics) .time-chip-val {
+  font-family: var(--font-title);
+  font-size: 11.5px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+body:not(.theme-robotics) .time-chip.active .time-chip-val {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
 body:not(.theme-robotics) .launch-summary { color: #7c6786; }
 body:not(.theme-robotics) .launch-summary span { color: #dc6f94; }
 body:not(.theme-robotics) .arcade-play-button { border: 3px solid #fff0b1; border-radius: 22px; background: linear-gradient(180deg, #ffc46c 0%, #ff9f52 55%, #f27c32 100%); box-shadow: 0 7px 0 #ca5c20, 0 15px 24px rgba(255,143,75,.31), inset 0 2px 0 rgba(255,255,255,.58); }

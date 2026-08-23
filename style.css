@@ -3606,18 +3606,18 @@ body.theme-robotics .btn-revive .reward-content {
 }
 
 .game-logo-3d {
-  font-size: clamp(3.2rem, 6.8vw, 4.8rem);
-  letter-spacing: 0.025em;
-  line-height: 0.84;
+  font-size: clamp(3.8rem, 8vw, 6.2rem);
+  letter-spacing: 0.03em;
+  line-height: 0.86;
 }
 
 .logo-row-1 {
   color: #ffe3f0;
-  text-shadow: 0 3px 0 #d35487, 0 7px 0 #8a315c, 0 13px 24px rgba(255, 85, 156, 0.36);
+  text-shadow: 0 4px 0 #d35487, 0 8px 0 #8a315c, 0 16px 26px rgba(255, 85, 156, 0.36);
 }
 .logo-row-2 {
   color: #ffd772;
-  text-shadow: 0 3px 0 #de8c32, 0 7px 0 #9c4b1d, 0 13px 24px rgba(255, 181, 68, 0.28);
+  text-shadow: 0 4px 0 #de8c32, 0 8px 0 #9c4b1d, 0 16px 26px rgba(255, 181, 68, 0.28);
 }
 .shop-btn {
   display: inline-flex;
@@ -4153,9 +4153,24 @@ body:not(.theme-robotics) .help-btn { color: #3e87bd; border-color: #b9e4ff; bac
 body:not(.theme-robotics) .theme-btn { color: #8b7b9e; }
 body:not(.theme-robotics) .theme-btn.active { background: linear-gradient(135deg, #ff91ba, #cf81f2); color: #fff; box-shadow: 0 3px 0 #b964da; }
 
-body:not(.theme-robotics) .logo-row-1 { color: #ff86ad; text-shadow: 0 3px 0 #e45b87, 0 7px 0 #c13c6d, 0 12px 18px rgba(255,119,166,.27); }
-body:not(.theme-robotics) .logo-row-2 { color: #ffb34c; text-shadow: 0 3px 0 #ec8625, 0 7px 0 #ce6413, 0 12px 18px rgba(255,165,52,.25); }
-body:not(.theme-robotics) .logo-subline { border: 2px solid #ffd07a; border-radius: 99px; background: #fff8df; color: #c46a24; box-shadow: 0 3px 0 #f7bf70; font-size: 10px; }
+body:not(.theme-robotics) .game-logo-3d {
+  font-size: clamp(4.2rem, 8.8vw, 6.8rem);
+  line-height: 0.86;
+}
+body:not(.theme-robotics) .logo-row-1 { color: #ff86ad; text-shadow: 0 4px 0 #e45b87, 0 9px 0 #c13c6d, 0 16px 26px rgba(255,119,166,.3); }
+body:not(.theme-robotics) .logo-row-2 { color: #ffb34c; text-shadow: 0 4px 0 #ec8625, 0 9px 0 #ce6413, 0 16px 26px rgba(255,165,52,.28); }
+body:not(.theme-robotics) .logo-subline {
+  border: 2.5px solid #ffd07a;
+  border-radius: 99px;
+  background: #fff8df;
+  color: #c46a24;
+  box-shadow: 0 3px 0 #f7bf70;
+  font-size: clamp(10.5px, 1.3vw, 13px);
+  padding: 4px 16px;
+  margin-top: 6px;
+  letter-spacing: 0.12em;
+  font-weight: 900;
+}
 body:not(.theme-robotics) .launch-steps { color: #927e99; }
 body:not(.theme-robotics) .launch-step.is-current { color: #d85283; }
 body:not(.theme-robotics) .launch-step.is-current b { color: #ff8b47; }

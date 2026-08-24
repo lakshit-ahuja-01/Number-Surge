@@ -114,9 +114,43 @@ const MODES = {
   },
 };
 
-// ─── 3. STATE MANAGEMENT ─────────────────────────────────────
+// ─── 3. FAIL-SAFE STORAGE ADAPTER (CrazyGames Cloud + LocalStorage + In-Memory Fallback) ──
+const memStorage = {};
+const storage = {
+  getItem: (key) => {
+    try {
+      if (typeof isCrazySDKInitialized !== 'undefined' && isCrazySDKInitialized && crazySDK?.data?.getItem) {
+        const val = crazySDK.data.getItem(key);
+        if (val !== null && val !== undefined) return val;
+      }
+    } catch (_) {}
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const val = window.localStorage.getItem(key);
+        if (val !== null && val !== undefined) return val;
+      }
+    } catch (_) {}
+    return memStorage[key] !== undefined ? memStorage[key] : null;
+  },
+  setItem: (key, value) => {
+    const str = String(value);
+    memStorage[key] = str;
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, str);
+      }
+    } catch (_) {}
+    try {
+      if (typeof isCrazySDKInitialized !== 'undefined' && isCrazySDKInitialized && crazySDK?.data?.setItem) {
+        crazySDK.data.setItem(key, str);
+      }
+    } catch (_) {}
+  }
+};
+
+// ─── 4. STATE MANAGEMENT ─────────────────────────────────────
 const gameState = {
-  theme:           localStorage.getItem('number_surge_theme') || 'kids',
+  theme:           storage.getItem('number_surge_theme') || 'kids',
   phase:           'menu',       // 'menu' | 'playing' | 'gameover'
   mode:            'addition',
   score:           0,
@@ -150,7 +184,7 @@ const gameState = {
   lastRiverH:      0,
 };
 
-// ─── 4. ECONOMY & UPGRADES SYSTEM ────────────────────────────
+// ─── 5. ECONOMY & UPGRADES SYSTEM ────────────────────────────
 const UPGRADES_CONFIG = {
   timeBoost:   { max: 5, costs: [50, 100, 200, 350, 500], bonus: 5 },
   comboShield: { max: 1, costs: [120],                    bonus: 1 },
@@ -166,34 +200,6 @@ const SKINS_CONFIG = {
   frost:   { name: 'GLACIAL FROST',  cost: 300 },
   gold:    { name: 'GOLDEN ROYALE',  cost: 500 },
   galaxy:  { name: 'GALAXY NEBULA',  cost: 750 },
-};
-
-// ─── 4.5 UNIFIED STORAGE ADAPTER (CrazyGames Data Module + LocalStorage) ──
-const storage = {
-  getItem: (key) => {
-    try {
-      if (isCrazySDKInitialized && crazySDK?.data?.getItem) {
-        const val = crazySDK.data.getItem(key);
-        if (val !== null && val !== undefined) return val;
-      }
-    } catch (_) {}
-    try {
-      return localStorage.getItem(key);
-    } catch (_) {
-      return null;
-    }
-  },
-  setItem: (key, value) => {
-    const str = String(value);
-    try {
-      localStorage.setItem(key, str);
-    } catch (_) {}
-    try {
-      if (isCrazySDKInitialized && crazySDK?.data?.setItem) {
-        crazySDK.data.setItem(key, str);
-      }
-    } catch (_) {}
-  }
 };
 
 // Migration: Ensure 'classic' is the sole free default, and 'candy' requires purchase (50 coins)
@@ -223,7 +229,7 @@ const economy = {
   activeSkin: savedActiveSkin,
 };
 
-// ─── 5. CRAZYGAMES SDK V3 MANAGER ────────────────────────────
+// ─── 6. CRAZYGAMES SDK V3 MANAGER ────────────────────────────
 let crazySDK = null;
 let isCrazySDKInitialized = false;
 
@@ -1917,7 +1923,7 @@ const themeTranslations = {
 
 function applyTheme(theme) {
   gameState.theme = theme;
-  localStorage.setItem('number_surge_theme', theme);
+  storage.setItem('number_surge_theme', theme);
   
   if (theme === 'robotics') {
     document.body.classList.add('theme-robotics');

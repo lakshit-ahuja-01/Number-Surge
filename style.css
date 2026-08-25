@@ -39,7 +39,7 @@
   --font-body:      'Outfit', 'Fredoka', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Sizing */
-  --orb-size:       clamp(44px, 12vw, 66px);
+  --orb-size:       68px;
   --dock-height:    82px;
   --hud-height:     68px;
 }

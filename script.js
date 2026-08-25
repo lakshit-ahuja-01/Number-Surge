@@ -28,6 +28,16 @@ const CONFIG = Object.freeze({
   ORB_THEMES: ['orb-amber', 'orb-emerald', 'orb-violet', 'orb-coral'],
 });
 
+function getResponsiveOrbSize() {
+  if (typeof window === 'undefined') return 68;
+  const rw = (dom && dom.river && dom.river.clientWidth) ? dom.river.clientWidth : window.innerWidth;
+  const rh = (dom && dom.river && dom.river.clientHeight) ? dom.river.clientHeight : window.innerHeight;
+  const minDim = Math.min(rw, rh);
+  if (minDim <= 400) return 46;
+  if (minDim <= 600) return 52;
+  return 68; // Desktop & Windows mode: full 68px original size
+}
+
 // ─── 2. GAME MODES ───────────────────────────────────────────
 const MODES = {
   addition: {

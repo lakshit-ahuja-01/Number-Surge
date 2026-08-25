@@ -872,8 +872,21 @@ function createOrbFloater(value, isPowerUp = false, powerUpType = null) {
   const sz = getResponsiveOrbSize();
   const m = Math.min(CONFIG.SPAWN_MARGIN, Math.floor(rw / 4), Math.floor(rh / 4));
 
-  const x = randInt(m, Math.max(m + 1, rw - sz - m));
-  const y = randInt(m, Math.max(m + 1, rh - sz - m));
+  // Find non-overlapping spawn point
+  let x = randInt(m, Math.max(m + 1, rw - sz - m));
+  let y = randInt(m, Math.max(m + 1, rh - sz - m));
+  const minDistSq = sz * sz;
+
+  for (let attempt = 0; attempt < 12; attempt++) {
+    const isOverlapping = gameState.floaters.some(f => {
+      const dx = f.x - x;
+      const dy = f.y - y;
+      return (dx * dx + dy * dy) < minDistSq;
+    });
+    if (!isOverlapping) break;
+    x = randInt(m, Math.max(m + 1, rw - sz - m));
+    y = randInt(m, Math.max(m + 1, rh - sz - m));
+  }
 
   const speed = getCurrentSpeed();
   const angle = Math.random() * Math.PI * 2;
@@ -1375,7 +1388,12 @@ function gameLoop(timestamp) {
   gameState.lastRiverW = rw;
   gameState.lastRiverH = rh;
 
-  gameState.floaters.forEach(f => {
+  const floaters = gameState.floaters;
+  const numFloaters = floaters.length;
+
+  // 1. Move each floater and resolve wall boundaries
+  for (let i = 0; i < numFloaters; i++) {
+    const f = floaters[i];
     f.x += f.vx * dt;
     f.y += f.vy * dt;
 
@@ -1383,10 +1401,61 @@ function gameLoop(timestamp) {
     else if (f.x >= rw - sz) { f.x = rw - sz;     f.vx = -Math.abs(f.vx); }
     if (f.y <= 0)            { f.y = 0;            f.vy = Math.abs(f.vy); }
     else if (f.y >= rh - sz) { f.y = rh - sz;     f.vy = -Math.abs(f.vy); }
+  }
 
+  // 2. Orb-to-Orb Elastic Collision & Diversion
+  const minDist = sz;
+  const minDistSq = minDist * minDist;
+
+  for (let i = 0; i < numFloaters; i++) {
+    const a = floaters[i];
+    for (let j = i + 1; j < numFloaters; j++) {
+      const b = floaters[j];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const distSq = dx * dx + dy * dy;
+
+      if (distSq < minDistSq && distSq > 0.0001) {
+        const dist = Math.sqrt(distSq);
+        const nx = dx / dist;
+        const ny = dy / dist;
+
+        // Separate them to completely prevent overlapping
+        const overlap = (minDist - dist) * 0.5;
+        a.x -= nx * overlap;
+        a.y -= ny * overlap;
+        b.x += nx * overlap;
+        b.y += ny * overlap;
+
+        // Keep within bounds after separation
+        a.x = Math.max(0, Math.min(rw - sz, a.x));
+        a.y = Math.max(0, Math.min(rh - sz, a.y));
+        b.x = Math.max(0, Math.min(rw - sz, b.x));
+        b.y = Math.max(0, Math.min(rh - sz, b.y));
+
+        // Velocity exchange along collision normal (Elastic bounce & track diversion)
+        const rvx = b.vx - a.vx;
+        const rvy = b.vy - a.vy;
+        const velAlongNormal = rvx * nx + rvy * ny;
+
+        if (velAlongNormal < 0) {
+          const restitution = 0.98; // Bouncy elastic response
+          const impulse = -(1 + restitution) * velAlongNormal * 0.5;
+          a.vx -= impulse * nx;
+          a.vy -= impulse * ny;
+          b.vx += impulse * nx;
+          b.vy += impulse * ny;
+        }
+      }
+    }
+  }
+
+  // 3. Render final DOM coordinates
+  for (let i = 0; i < numFloaters; i++) {
+    const f = floaters[i];
     f.el.style.left = `${f.x}px`;
     f.el.style.top  = `${f.y}px`;
-  });
+  }
 
   gameState.animFrameId = requestAnimationFrame(gameLoop);
 }

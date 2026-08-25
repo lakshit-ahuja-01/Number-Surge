@@ -131,13 +131,13 @@
             <!-- Powers Card (Robotics Mode Only) -->
             <button class="arcade-card mode-pow" data-mode="powers" aria-pressed="false" style="display: none;">
               <div class="card-glow-bg"></div>
-              <div class="card-pill">⚡ POWERS!</div>
+              <div class="card-pill"> POWERS!</div>
               <div class="card-glyph">A<sup>B</sup></div>
               <div class="card-info">
                 <span class="card-name">POWERS</span>
-                <span class="card-tagline">🔋 Exponents!</span>
+                <span class="card-tagline">Exponents!</span>
               </div>
-              <div class="card-check-tag">⭐ LET'S GO!</div>
+              <div class="card-check-tag">LET'S GO!</div>
             </button>
 
             <!-- Surge Mix Card -->
@@ -358,42 +358,37 @@
       <div class="gameover-stage">
 
         <div class="go-header">
-          <div class="gameover-banner">🎊 ROUND COMPLETE! 🎊</div>
-          <h2 class="gameover-title">YOU DID IT! 🎉</h2>
-          <div class="gameover-stars">⭐ ⭐ ⭐</div>
-          <div id="rank-badge" class="rank-badge">🌟 SUPERSTAR ⭐⭐</div>
+          <div class="gameover-banner">ROUND COMPLETE</div>
+          <h2 class="gameover-title">YOU DID IT!</h2>
+          <div class="gameover-stars"></div>
+          <div id="rank-badge" class="rank-badge">SUPERSTAR</div>
         </div>
 
         <!-- Stats Breakdown Matrix -->
         <div class="stats-matrix">
 
           <div class="stat-card stat-main">
-            <div class="stat-icon">🏆</div>
             <div class="stat-data">
               <div class="stat-sub">TOTAL SCORE</div>
               <div class="stat-big" id="final-score">0 PTS</div>
             </div>
-            <div id="new-record-badge" class="new-record-pill">⭐ NEW RECORD! ⭐</div>
+            <div id="new-record-badge" class="new-record-pill">NEW RECORD!</div>
           </div>
 
           <div class="stats-mini-grid">
-            <div class="mini-stat">
-              <span class="m-icon">🎯</span>
+            <div class="mini-stat stat-accuracy">
               <span class="m-label">ACCURACY</span>
               <span class="m-val" id="final-accuracy">0%</span>
             </div>
-            <div class="mini-stat">
-              <span class="m-icon">⭐</span>
+            <div class="mini-stat stat-solved">
               <span class="m-label">SOLVED</span>
               <span class="m-val" id="final-solved">0</span>
             </div>
-            <div class="mini-stat">
-              <span class="m-icon">🔥</span>
+            <div class="mini-stat stat-streak">
               <span class="m-label">BEST STREAK</span>
               <span class="m-val" id="final-combo">0x</span>
             </div>
-            <div class="mini-stat">
-              <span class="m-icon">🪙</span>
+            <div class="mini-stat stat-coins">
               <span class="m-label">COINS WON</span>
               <span class="m-val" id="final-coins">+0</span>
             </div>
@@ -403,20 +398,12 @@
 
         <!-- CrazyGames Rewarded Video Bonus Actions -->
         <div class="gameover-reward-actions">
-          <button id="double-coins-btn" class="arcade-reward-btn">
-            <span class="reward-tag">⚡ 2X BONUS</span>
-            <span class="reward-content">
-              <span class="reward-icon">📺</span>
-              <span>DOUBLE COINS (2x)</span>
-            </span>
+          <button id="double-coins-btn" class="arcade-reward-btn btn-double-coins">
+            <span class="reward-btn-text">DOUBLE COINS (2x)</span>
           </button>
 
           <button id="revive-btn" class="arcade-reward-btn btn-revive">
-            <span class="reward-tag">❤️ EXTRA TIME</span>
-            <span class="reward-content">
-              <span class="reward-icon">📺</span>
-              <span>REVIVE (+30s)</span>
-            </span>
+            <span class="reward-btn-text">REVIVE (+30s)</span>
           </button>
         </div>
 

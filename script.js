@@ -28,6 +28,16 @@ const CONFIG = Object.freeze({
   ORB_THEMES: ['orb-amber', 'orb-emerald', 'orb-violet', 'orb-coral'],
 });
 
+function getResponsiveOrbSize() {
+  if (typeof window === 'undefined') return 68;
+  const rw = (dom && dom.river && dom.river.clientWidth) ? dom.river.clientWidth : window.innerWidth;
+  const rh = (dom && dom.river && dom.river.clientHeight) ? dom.river.clientHeight : window.innerHeight;
+  const minDim = Math.min(rw, rh);
+  if (minDim <= 400) return 46;
+  if (minDim <= 600) return 52;
+  return 68; // Desktop & Windows mode: full 68px original size
+}
+
 // ─── 2. GAME MODES ───────────────────────────────────────────
 const MODES = {
   addition: {
@@ -519,48 +529,45 @@ function renderAmbientParticles(timestamp = 0) {
   if (!ambientCtx || !ambientCanvas) return;
 
   if (gameState.theme === 'robotics') {
-    if (gameState.phase === 'playing') {
-      // MATRIX DIGITAL RAIN (Active Gameplay Arena across full viewport)
-      resizeAmbientCanvas();
+    resizeAmbientCanvas();
 
-      if (!lastMatrixFrame) lastMatrixFrame = timestamp;
-      const elapsed = timestamp - lastMatrixFrame;
-      
-      if (elapsed > 33) {
-        lastMatrixFrame = timestamp;
-        ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.16)';
-        ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+    if (!lastMatrixFrame) lastMatrixFrame = timestamp;
+    const isMenu = gameState.phase !== 'playing';
+    const interval = isMenu ? 55 : 33;
+    const elapsed = timestamp - lastMatrixFrame;
+    
+    if (elapsed > interval) {
+      lastMatrixFrame = timestamp;
+      ambientCtx.fillStyle = isMenu ? 'rgba(10, 14, 23, 0.22)' : 'rgba(10, 14, 23, 0.16)';
+      ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
-        ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
+      ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
 
-        const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
-        for (let i = 0; i < columns; i++) {
-          if (matrixDrops[i] === undefined) {
-            matrixDrops[i] = Math.floor(Math.random() * -30);
-          }
-          const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
-          const x = i * MATRIX_FONT_SIZE;
-          const y = matrixDrops[i] * MATRIX_FONT_SIZE;
+      const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+      for (let i = 0; i < columns; i++) {
+        if (isMenu && i % 3 !== 0) continue; // Elegant spaced columns on menu
 
-          if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE * 2) {
-            // Leading glyph is bright glowing white/cyan, body is matrix neon green
-            const isLead = Math.random() > 0.86;
-            ambientCtx.fillStyle = isLead ? '#ffffff' : (i % 4 === 0 ? '#00f2fe' : '#00ff88');
-            ambientCtx.shadowColor = isLead ? '#00f2fe' : '#00ff88';
-            ambientCtx.shadowBlur = isLead ? 6 : 3;
-            ambientCtx.fillText(char, x, y);
-            ambientCtx.shadowBlur = 0;
-          }
-
-          if (y > ambientCanvas.height && Math.random() > 0.975) {
-            matrixDrops[i] = 0;
-          }
-          matrixDrops[i]++;
+        if (matrixDrops[i] === undefined) {
+          matrixDrops[i] = Math.floor(Math.random() * -30);
         }
+        const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+        const x = i * MATRIX_FONT_SIZE;
+        const y = matrixDrops[i] * MATRIX_FONT_SIZE;
+
+        if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE * 2) {
+          const isLead = Math.random() > 0.9;
+          ambientCtx.fillStyle = isLead ? (isMenu ? 'rgba(255,255,255,0.7)' : '#ffffff') : (i % 4 === 0 ? (isMenu ? 'rgba(0,242,254,0.45)' : '#00f2fe') : (isMenu ? 'rgba(0,255,136,0.35)' : '#00ff88'));
+          ambientCtx.shadowColor = i % 4 === 0 ? '#00f2fe' : '#00ff88';
+          ambientCtx.shadowBlur = isLead ? 4 : (isMenu ? 1 : 3);
+          ambientCtx.fillText(char, x, y);
+          ambientCtx.shadowBlur = 0;
+        }
+
+        if (y > ambientCanvas.height && Math.random() > (isMenu ? 0.985 : 0.975)) {
+          matrixDrops[i] = 0;
+        }
+        matrixDrops[i]++;
       }
-    } else {
-      // On menu / setup screens, clear canvas so home menu remains clean and uncluttered
-      ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
     }
   } else {
     // PASTEL FLOATING BUBBLES (Kids Candy Theme)
@@ -595,7 +602,7 @@ function handleWindowResize() {
   if (gameState.phase === 'playing' && dom.river && gameState.floaters.length > 0) {
     const rw = dom.river.clientWidth;
     const rh = dom.river.clientHeight;
-    const sz = CONFIG.ORB_SIZE;
+    const sz = getResponsiveOrbSize();
     if (gameState.lastRiverW && gameState.lastRiverH && (gameState.lastRiverW !== rw || gameState.lastRiverH !== rh) && rw > sz && rh > sz) {
       const scaleX = (rw - sz) / Math.max(1, gameState.lastRiverW - sz);
       const scaleY = (rh - sz) / Math.max(1, gameState.lastRiverH - sz);
@@ -862,11 +869,24 @@ function buildNumberPool(q, diff) {
 function createOrbFloater(value, isPowerUp = false, powerUpType = null) {
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
-  const sz = CONFIG.ORB_SIZE;
+  const sz = getResponsiveOrbSize();
   const m = Math.min(CONFIG.SPAWN_MARGIN, Math.floor(rw / 4), Math.floor(rh / 4));
 
-  const x = randInt(m, Math.max(m + 1, rw - sz - m));
-  const y = randInt(m, Math.max(m + 1, rh - sz - m));
+  // Find non-overlapping spawn point
+  let x = randInt(m, Math.max(m + 1, rw - sz - m));
+  let y = randInt(m, Math.max(m + 1, rh - sz - m));
+  const minDistSq = sz * sz;
+
+  for (let attempt = 0; attempt < 12; attempt++) {
+    const isOverlapping = gameState.floaters.some(f => {
+      const dx = f.x - x;
+      const dy = f.y - y;
+      return (dx * dx + dy * dy) < minDistSq;
+    });
+    if (!isOverlapping) break;
+    x = randInt(m, Math.max(m + 1, rw - sz - m));
+    y = randInt(m, Math.max(m + 1, rh - sz - m));
+  }
 
   const speed = getCurrentSpeed();
   const angle = Math.random() * Math.PI * 2;
@@ -1354,7 +1374,7 @@ function gameLoop(timestamp) {
 
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
-  const sz = CONFIG.ORB_SIZE;
+  const sz = getResponsiveOrbSize();
 
   // Auto-redistribute floaters instantly if river dimensions changed (e.g. F11 Fullscreen toggle)
   if (gameState.lastRiverW && gameState.lastRiverH && (gameState.lastRiverW !== rw || gameState.lastRiverH !== rh) && rw > sz && rh > sz) {
@@ -1368,7 +1388,15 @@ function gameLoop(timestamp) {
   gameState.lastRiverW = rw;
   gameState.lastRiverH = rh;
 
-  gameState.floaters.forEach(f => {
+  const floaters = gameState.floaters;
+  const numFloaters = floaters.length;
+  const targetSpeed = getCurrentSpeed();
+  const minSpeed = targetSpeed * 0.65;
+  const maxSpeed = targetSpeed * 1.6;
+
+  // 1. Move each floater and resolve wall boundaries
+  for (let i = 0; i < numFloaters; i++) {
+    const f = floaters[i];
     f.x += f.vx * dt;
     f.y += f.vy * dt;
 
@@ -1376,10 +1404,92 @@ function gameLoop(timestamp) {
     else if (f.x >= rw - sz) { f.x = rw - sz;     f.vx = -Math.abs(f.vx); }
     if (f.y <= 0)            { f.y = 0;            f.vy = Math.abs(f.vy); }
     else if (f.y >= rh - sz) { f.y = rh - sz;     f.vy = -Math.abs(f.vy); }
+  }
 
+  // 2. Multi-Pass Orb-to-Orb Elastic Collision & Diversion Solver (Resolves 2-3+ multi-clashes)
+  const minDist = sz;
+  const minDistSq = minDist * minDist;
+
+  for (let pass = 0; pass < 2; pass++) {
+    for (let i = 0; i < numFloaters; i++) {
+      const a = floaters[i];
+      for (let j = i + 1; j < numFloaters; j++) {
+        const b = floaters[j];
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        let distSq = dx * dx + dy * dy;
+
+        // If directly on top of each other, give an arbitrary separation vector
+        if (distSq < 0.0001) {
+          dx = (Math.random() - 0.5) * 2;
+          dy = (Math.random() - 0.5) * 2;
+          distSq = dx * dx + dy * dy || 1;
+        }
+
+        if (distSq < minDistSq) {
+          const dist = Math.sqrt(distSq);
+          const nx = dx / dist;
+          const ny = dy / dist;
+
+          // Separate them completely to prevent overlaps
+          const overlap = (minDist - dist) * 0.55;
+          a.x -= nx * overlap;
+          a.y -= ny * overlap;
+          b.x += nx * overlap;
+          b.y += ny * overlap;
+
+          // Keep within bounds after separation
+          a.x = Math.max(0, Math.min(rw - sz, a.x));
+          a.y = Math.max(0, Math.min(rh - sz, a.y));
+          b.x = Math.max(0, Math.min(rw - sz, b.x));
+          b.y = Math.max(0, Math.min(rh - sz, b.y));
+
+          // Velocity exchange along collision normal (Elastic bounce & track diversion)
+          const rvx = b.vx - a.vx;
+          const rvy = b.vy - a.vy;
+          const velAlongNormal = rvx * nx + rvy * ny;
+
+          if (velAlongNormal < 0) {
+            const restitution = 1.02; // Bouncy elastic response with scattering impulse
+            const impulse = -(1 + restitution) * velAlongNormal * 0.5;
+            a.vx -= impulse * nx;
+            a.vy -= impulse * ny;
+            b.vx += impulse * nx;
+            b.vy += impulse * ny;
+          }
+        }
+      }
+    }
+  }
+
+  // 3. Anti-Stall & Continuous Momentum Guarantee (Prevents stopping on multi-clashes)
+  for (let i = 0; i < numFloaters; i++) {
+    const f = floaters[i];
+    let spd = Math.sqrt(f.vx * f.vx + f.vy * f.vy);
+
+    // If speed died out from multi-way collision cancellation, reignite momentum!
+    if (spd < minSpeed || isNaN(spd)) {
+      const angle = Math.random() * Math.PI * 2;
+      f.vx = Math.cos(angle) * targetSpeed;
+      f.vy = Math.sin(angle) * targetSpeed;
+    } else if (spd > maxSpeed) {
+      const scale = maxSpeed / spd;
+      f.vx *= scale;
+      f.vy *= scale;
+    }
+
+    // Ensure minimum velocity on both axes so floaters don't get trapped in 1D
+    if (Math.abs(f.vx) < targetSpeed * 0.2) {
+      f.vx = (f.vx >= 0 ? 1 : -1) * targetSpeed * 0.35;
+    }
+    if (Math.abs(f.vy) < targetSpeed * 0.2) {
+      f.vy = (f.vy >= 0 ? 1 : -1) * targetSpeed * 0.35;
+    }
+
+    // 4. Render final DOM coordinates
     f.el.style.left = `${f.x}px`;
     f.el.style.top  = `${f.y}px`;
-  });
+  }
 
   gameState.animFrameId = requestAnimationFrame(gameLoop);
 }
@@ -1400,17 +1510,17 @@ function stopGameLoop() {
 // ─── 18. GAME OVER & RANKING ─────────────────────────────────
 function calculateRank(score, accuracy) {
   if (gameState.theme === 'robotics') {
-    if (score >= 400 && accuracy >= 90) return { rank: '🌌 CYBER GOD 🦾', color: '#ff007f' };
-    if (score >= 250 && accuracy >= 80) return { rank: '⚡ SYSTEM ADMIN 🔧',    color: '#00f2fe' };
-    if (score >= 120 && accuracy >= 60) return { rank: '🔋 ELITE HACKER 💻',      color: '#00ff88' };
-    if (score >= 50)                    return { rank: '⚙️ APPRENTICE 🤖',       color: '#b000ff' };
-    return { rank: '🔌 NEED REBOOT 🔋', color: '#ff003c' };
+    if (score >= 400 && accuracy >= 90) return { rank: 'CYBER GOD', color: '#ff007f' };
+    if (score >= 250 && accuracy >= 80) return { rank: 'SYSTEM ADMIN', color: '#00f2fe' };
+    if (score >= 120 && accuracy >= 60) return { rank: 'ELITE HACKER', color: '#00ff88' };
+    if (score >= 50)                    return { rank: 'APPRENTICE', color: '#b000ff' };
+    return { rank: 'NEED REBOOT', color: '#ff003c' };
   } else {
-    if (score >= 400 && accuracy >= 90) return { rank: '🌟 MATH LEGEND ⭐⭐⭐', color: '#ff9f43' };
-    if (score >= 250 && accuracy >= 80) return { rank: '🏆 SUPERSTAR ⭐⭐',    color: '#2ed573' };
-    if (score >= 120 && accuracy >= 60) return { rank: '🎉 GREAT JOB! ⭐',      color: '#45aaf2' };
-    if (score >= 50)                    return { rank: '🎈 GOOD EFFORT!',       color: '#a55eea' };
-    return { rank: '🌱 KEEP PRACTICING!', color: '#ff6b8a' };
+    if (score >= 400 && accuracy >= 90) return { rank: 'MATH LEGEND', color: '#ff9f43' };
+    if (score >= 250 && accuracy >= 80) return { rank: 'SUPERSTAR', color: '#2ed573' };
+    if (score >= 120 && accuracy >= 60) return { rank: 'GREAT JOB!', color: '#45aaf2' };
+    if (score >= 50)                    return { rank: 'GOOD EFFORT!', color: '#a55eea' };
+    return { rank: 'KEEP PRACTICING!', color: '#ff6b8a' };
   }
 }
 
@@ -1888,7 +1998,7 @@ const themeTranslations = {
     '.card-check-tag': '⭐ LET\'S GO!',
     '.pause-icon': '⏸️ 🍦', '.pause-title': 'TAKING A BREAK! 😊', '.pause-desc': 'Game is resting! 💤 Come back soon!',
     '#resume-btn .play-btn-content': 'KEEP PLAYING!', '#pause-menu-btn span': 'GO HOME',
-    '.gameover-banner': '🎊 ROUND COMPLETE! 🎊', '.gameover-title': 'YOU DID IT! 🎉', '.gameover-stars': '⭐ ⭐ ⭐',
+    '.gameover-banner': 'ROUND COMPLETE', '.gameover-title': 'YOU DID IT!', '.gameover-stars': '',
     '#play-again-btn .play-btn-content span': 'PLAY AGAIN!', '#menu-btn span': 'HOME MENU',
     '.press-space-prompt': 'PRESS <kbd>SPACEBAR</kbd> TO START!',
     '.play-arrow': '',
@@ -1909,9 +2019,9 @@ const themeTranslations = {
     '.mode-div .card-pill': 'DIVIDE · 04', '.mode-div .card-tagline': 'Split signal',
     '.mode-mix .card-pill': 'SURGE MIX · 06', '.mode-mix .card-tagline': 'Chaos mode',
     '.card-check-tag': 'ENGAGE',
-    '.pause-icon': '⏸️ 🔋', '.pause-title': 'SYSTEM PAUSED 🛑', '.pause-desc': 'Awaiting command input... ⏳',
+    '.pause-icon': '', '.pause-title': 'SYSTEM PAUSED', '.pause-desc': 'Awaiting command input...',
     '#resume-btn .play-btn-content': 'RESUME SYSTEM', '#pause-menu-btn span': 'ABORT',
-    '.gameover-banner': '⚠️ SIMULATION ENDED ⚠️', '.gameover-title': 'MISSION LOGGED', '.gameover-stars': '⚡ ⚡ ⚡',
+    '.gameover-banner': 'SIMULATION ENDED', '.gameover-title': 'MISSION LOGGED', '.gameover-stars': '',
     '#play-again-btn .play-btn-content span': 'REBOOT SYS!', '#menu-btn span': 'MAIN MENU',
     '.press-space-prompt': 'PRESS <kbd>SPACEBAR</kbd> TO INITIATE!',
     '.play-arrow': '',

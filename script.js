@@ -1390,6 +1390,9 @@ function gameLoop(timestamp) {
 
   const floaters = gameState.floaters;
   const numFloaters = floaters.length;
+  const targetSpeed = getCurrentSpeed();
+  const minSpeed = targetSpeed * 0.65;
+  const maxSpeed = targetSpeed * 1.6;
 
   // 1. Move each floater and resolve wall boundaries
   for (let i = 0; i < numFloaters; i++) {
@@ -1403,56 +1406,87 @@ function gameLoop(timestamp) {
     else if (f.y >= rh - sz) { f.y = rh - sz;     f.vy = -Math.abs(f.vy); }
   }
 
-  // 2. Orb-to-Orb Elastic Collision & Diversion
+  // 2. Multi-Pass Orb-to-Orb Elastic Collision & Diversion Solver (Resolves 2-3+ multi-clashes)
   const minDist = sz;
   const minDistSq = minDist * minDist;
 
-  for (let i = 0; i < numFloaters; i++) {
-    const a = floaters[i];
-    for (let j = i + 1; j < numFloaters; j++) {
-      const b = floaters[j];
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const distSq = dx * dx + dy * dy;
+  for (let pass = 0; pass < 2; pass++) {
+    for (let i = 0; i < numFloaters; i++) {
+      const a = floaters[i];
+      for (let j = i + 1; j < numFloaters; j++) {
+        const b = floaters[j];
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        let distSq = dx * dx + dy * dy;
 
-      if (distSq < minDistSq && distSq > 0.0001) {
-        const dist = Math.sqrt(distSq);
-        const nx = dx / dist;
-        const ny = dy / dist;
+        // If directly on top of each other, give an arbitrary separation vector
+        if (distSq < 0.0001) {
+          dx = (Math.random() - 0.5) * 2;
+          dy = (Math.random() - 0.5) * 2;
+          distSq = dx * dx + dy * dy || 1;
+        }
 
-        // Separate them to completely prevent overlapping
-        const overlap = (minDist - dist) * 0.5;
-        a.x -= nx * overlap;
-        a.y -= ny * overlap;
-        b.x += nx * overlap;
-        b.y += ny * overlap;
+        if (distSq < minDistSq) {
+          const dist = Math.sqrt(distSq);
+          const nx = dx / dist;
+          const ny = dy / dist;
 
-        // Keep within bounds after separation
-        a.x = Math.max(0, Math.min(rw - sz, a.x));
-        a.y = Math.max(0, Math.min(rh - sz, a.y));
-        b.x = Math.max(0, Math.min(rw - sz, b.x));
-        b.y = Math.max(0, Math.min(rh - sz, b.y));
+          // Separate them completely to prevent overlaps
+          const overlap = (minDist - dist) * 0.55;
+          a.x -= nx * overlap;
+          a.y -= ny * overlap;
+          b.x += nx * overlap;
+          b.y += ny * overlap;
 
-        // Velocity exchange along collision normal (Elastic bounce & track diversion)
-        const rvx = b.vx - a.vx;
-        const rvy = b.vy - a.vy;
-        const velAlongNormal = rvx * nx + rvy * ny;
+          // Keep within bounds after separation
+          a.x = Math.max(0, Math.min(rw - sz, a.x));
+          a.y = Math.max(0, Math.min(rh - sz, a.y));
+          b.x = Math.max(0, Math.min(rw - sz, b.x));
+          b.y = Math.max(0, Math.min(rh - sz, b.y));
 
-        if (velAlongNormal < 0) {
-          const restitution = 0.98; // Bouncy elastic response
-          const impulse = -(1 + restitution) * velAlongNormal * 0.5;
-          a.vx -= impulse * nx;
-          a.vy -= impulse * ny;
-          b.vx += impulse * nx;
-          b.vy += impulse * ny;
+          // Velocity exchange along collision normal (Elastic bounce & track diversion)
+          const rvx = b.vx - a.vx;
+          const rvy = b.vy - a.vy;
+          const velAlongNormal = rvx * nx + rvy * ny;
+
+          if (velAlongNormal < 0) {
+            const restitution = 1.02; // Bouncy elastic response with scattering impulse
+            const impulse = -(1 + restitution) * velAlongNormal * 0.5;
+            a.vx -= impulse * nx;
+            a.vy -= impulse * ny;
+            b.vx += impulse * nx;
+            b.vy += impulse * ny;
+          }
         }
       }
     }
   }
 
-  // 3. Render final DOM coordinates
+  // 3. Anti-Stall & Continuous Momentum Guarantee (Prevents stopping on multi-clashes)
   for (let i = 0; i < numFloaters; i++) {
     const f = floaters[i];
+    let spd = Math.sqrt(f.vx * f.vx + f.vy * f.vy);
+
+    // If speed died out from multi-way collision cancellation, reignite momentum!
+    if (spd < minSpeed || isNaN(spd)) {
+      const angle = Math.random() * Math.PI * 2;
+      f.vx = Math.cos(angle) * targetSpeed;
+      f.vy = Math.sin(angle) * targetSpeed;
+    } else if (spd > maxSpeed) {
+      const scale = maxSpeed / spd;
+      f.vx *= scale;
+      f.vy *= scale;
+    }
+
+    // Ensure minimum velocity on both axes so floaters don't get trapped in 1D
+    if (Math.abs(f.vx) < targetSpeed * 0.2) {
+      f.vx = (f.vx >= 0 ? 1 : -1) * targetSpeed * 0.35;
+    }
+    if (Math.abs(f.vy) < targetSpeed * 0.2) {
+      f.vy = (f.vy >= 0 ? 1 : -1) * targetSpeed * 0.35;
+    }
+
+    // 4. Render final DOM coordinates
     f.el.style.left = `${f.x}px`;
     f.el.style.top  = `${f.y}px`;
   }

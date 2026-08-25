@@ -1886,9 +1886,9 @@ const themeTranslations = {
     '.timer-dial-icon': ''
   },
   robotics: {
-    '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': '🦾 SYSTEM OVERRIDE 🦾', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
+    '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': 'SYSTEM OVERRIDE', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
     '.eyebrow': 'SYSTEM SETUP', '.setup-section-heading h2': 'Choose a training protocol',
-    '.nav-shop-icon': '⚙️', '.nav-help-icon': '⚡',
+    '.nav-shop-icon': '⚙️', '.nav-help-icon': '📋',
     '#how-to-play-btn .nav-label': 'PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL',
     '#close-how-to-play-btn .play-btn-content': 'PROTOCOL ACKNOWLEDGED',
     '#shop-btn .nav-label': 'UPGRADES', '#shop-title': 'SYSTEM UPGRADES',

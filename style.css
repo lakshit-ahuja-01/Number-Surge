@@ -2770,6 +2770,29 @@ body.theme-robotics .speed-meter-label {
   text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
 }
 
+body.theme-robotics .hud-control-btn {
+  background: #121826;
+  border: 1.5px solid #00f2fe;
+  border-radius: 6px;
+  color: #00f2fe;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.25), inset 0 0 8px rgba(0, 242, 254, 0.1);
+}
+body.theme-robotics .hud-control-btn:hover {
+  background: #1e293b;
+  border-color: #00ff88;
+  color: #00ff88;
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.4);
+}
+body.theme-robotics .hud-control-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 5px rgba(0, 242, 254, 0.4);
+}
+body.theme-robotics .hud-control-btn.is-muted {
+  border-color: #ff007f;
+  color: #ff007f;
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+}
+
 body.theme-robotics #equation-dock {
   background: rgba(18, 24, 38, 0.95);
   border: 2px solid #00f2fe;
@@ -2914,10 +2937,34 @@ body.theme-robotics .step-content strong {
   color: #00f2fe;
 }
 
+.step-content code {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  color: #0284c7;
+  font-family: var(--font-hud);
+  font-size: 11.5px;
+  font-weight: 800;
+  vertical-align: baseline;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
 body.theme-robotics .step-content code {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 2px 8px;
+  border-radius: 99px;
   background: #0a0e17;
   border: 1px solid #00f2fe;
   color: #00ff88;
+  font-family: var(--font-hud);
+  font-size: 11.5px;
+  font-weight: 800;
+  vertical-align: baseline;
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
 }
 
 body.theme-robotics #start-screen,

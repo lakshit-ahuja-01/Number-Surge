@@ -1843,6 +1843,18 @@ if (dom.howToPlayModal) {
 
 if (dom.pauseBtn) dom.pauseBtn.addEventListener('click', togglePause);
 if (dom.resumeBtn) dom.resumeBtn.addEventListener('click', togglePause);
+if (dom.soundToggle) {
+  dom.soundToggle.addEventListener('click', () => {
+    gameState.isMuted = !gameState.isMuted;
+    if (dom.soundIcon) {
+      dom.soundIcon.textContent = gameState.isMuted ? '🔇' : '🔊';
+    }
+    dom.soundToggle.classList.toggle('is-muted', gameState.isMuted);
+    if (!gameState.isMuted) {
+      playArcadeSound('click');
+    }
+  });
+}
 if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
   if (dom.pauseModal) dom.pauseModal.classList.remove('active');
   gameState.isPaused = false;
@@ -1864,9 +1876,9 @@ const themeTranslations = {
     '.eyebrow': 'PICK YOUR FAVOURITE', '.setup-section-heading h2': 'Choose your math magic!',
     '.nav-shop-icon': '🛒', '.nav-help-icon': '❓',
     '#how-to-play-btn .nav-label': 'HOW TO PLAY', '#how-to-play-title': 'HOW TO PLAY',
-    '#close-how-to-play-btn .play-btn-content': '🚀 GOT IT, LET\'S PLAY!',
+    '#close-how-to-play-btn .play-btn-content': 'GOT IT, LET\'S PLAY!',
     '#shop-btn .nav-label': 'UPGRADES', '#shop-title': 'SURGE SHOP',
-    '#close-shop-btn .play-btn-content': '🚀 BACK TO GAME',
+    '#close-shop-btn .play-btn-content': 'BACK TO GAME',
     '.skin-classic-icon': '🍓', '.skin-classic-name': 'CLASSIC BUBBLE',
     '.mode-add .card-pill': '🍓 BERRY ADD', '.mode-add .card-tagline': 'Make a tasty total!',
     '.mode-sub .card-pill': '🍋 LEMON SUB', '.mode-sub .card-tagline': 'Take a little away!',
@@ -1874,50 +1886,36 @@ const themeTranslations = {
     '.mode-div .card-pill': '🍬 CANDY DIVIDE', '.mode-div .card-tagline': 'Share the treats!',
     '.mode-mix .card-pill': '🌈 RAINBOW MIX', '.mode-mix .card-tagline': 'A sweet surprise!',
     '.card-check-tag': '⭐ LET\'S GO!',
-    '[data-time="30"] .time-chip-icon': '⚡', '[data-time="30"] .time-chip-label': '⚡ SPEEDY!',
-    '[data-time="60"] .time-chip-icon': '⏰', '[data-time="60"] .time-chip-label': '🌟 CLASSIC!',
-    '[data-time="90"] .time-chip-icon': '⏳', '[data-time="90"] .time-chip-label': '🏃 LONG GO!',
-    '[data-time="120"] .time-chip-icon': '🦸', '[data-time="120"] .time-chip-label': '🦸 HERO!',
-    '[data-diff="0"] .time-chip-icon': '🌱', '[data-diff="0"] .time-chip-label': 'RELAXED',
-    '[data-diff="3"] .time-chip-icon': '🌟', '[data-diff="3"] .time-chip-label': 'CLASSIC',
-    '[data-diff="6"] .time-chip-icon': '🔥', '[data-diff="6"] .time-chip-label': 'FAST!',
     '.pause-icon': '⏸️ 🍦', '.pause-title': 'TAKING A BREAK! 😊', '.pause-desc': 'Game is resting! 💤 Come back soon!',
-    '#resume-btn .play-btn-content': '🚀 KEEP PLAYING!', '#pause-menu-btn span': '🏠 GO HOME',
+    '#resume-btn .play-btn-content': 'KEEP PLAYING!', '#pause-menu-btn span': 'GO HOME',
     '.gameover-banner': '🎊 ROUND COMPLETE! 🎊', '.gameover-title': 'YOU DID IT! 🎉', '.gameover-stars': '⭐ ⭐ ⭐',
-    '#play-again-btn .play-btn-content span': '🚀 PLAY AGAIN!', '#menu-btn span': '🏠 HOME MENU',
-    '.press-space-prompt': '<span class="blink-dot">🎯</span> PRESS <kbd>SPACEBAR</kbd> TO START!',
-    '.play-arrow': '🚀',
-    '.timer-dial-icon': '⏰'
+    '#play-again-btn .play-btn-content span': 'PLAY AGAIN!', '#menu-btn span': 'HOME MENU',
+    '.press-space-prompt': 'PRESS <kbd>SPACEBAR</kbd> TO START!',
+    '.play-arrow': '',
+    '.timer-dial-icon': ''
   },
   robotics: {
-    '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': '🦾 SYSTEM OVERRIDE 🦾', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
+    '.logo-deco-left': '⚙️', '.logo-deco-right': '⚙️', '.logo-subline': 'SYSTEM OVERRIDE', '.logo-emoji-row': '⚡ 0 1 1 0 1 ⚡',
     '.eyebrow': 'SYSTEM SETUP', '.setup-section-heading h2': 'Choose a training protocol',
-    '.nav-shop-icon': '⚙️', '.nav-help-icon': '⚡',
-    '#how-to-play-btn .nav-label': 'PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL 📋',
-    '#close-how-to-play-btn .play-btn-content': '⚡ PROTOCOL ACKNOWLEDGED',
+    '.nav-shop-icon': '⚙️', '.nav-help-icon': '📋',
+    '#how-to-play-btn .nav-label': 'PROTOCOL', '#how-to-play-title': 'SYSTEM PROTOCOL',
+    '#close-how-to-play-btn .play-btn-content': 'PROTOCOL ACKNOWLEDGED',
     '#shop-btn .nav-label': 'UPGRADES', '#shop-title': 'SYSTEM UPGRADES',
-    '#close-shop-btn .play-btn-content': '⚡ RETURN TO CONSOLE',
+    '#close-shop-btn .play-btn-content': 'RETURN TO CONSOLE',
     '.skin-classic-icon': '🤖', '.skin-classic-name': 'CLASSIC CORE',
     '.mode-add .card-pill': 'ADD · 01', '.mode-add .card-tagline': 'System sum',
     '.mode-sub .card-pill': 'SUBTRACT · 02', '.mode-sub .card-tagline': 'Drain core',
     '.mode-mult .card-pill': 'MULTIPLY · 03', '.mode-mult .card-tagline': 'Overclock',
     '.mode-div .card-pill': 'DIVIDE · 04', '.mode-div .card-tagline': 'Split signal',
     '.mode-mix .card-pill': 'SURGE MIX · 06', '.mode-mix .card-tagline': 'Chaos mode',
-    '.card-check-tag': '⚡ ENGAGE',
-    '[data-time="30"] .time-chip-icon': '⏱️', '[data-time="30"] .time-chip-label': 'BLITZ',
-    '[data-time="60"] .time-chip-icon': '⏲️', '[data-time="60"] .time-chip-label': 'STANDARD',
-    '[data-time="90"] .time-chip-icon': '⌛', '[data-time="90"] .time-chip-label': 'EXTENDED',
-    '[data-time="120"] .time-chip-icon': '🔋', '[data-time="120"] .time-chip-label': 'ENDURANCE',
-    '[data-diff="0"] .time-chip-icon': '🟢', '[data-diff="0"] .time-chip-label': 'ROOKIE',
-    '[data-diff="3"] .time-chip-icon': '🟡', '[data-diff="3"] .time-chip-label': 'VETERAN',
-    '[data-diff="6"] .time-chip-icon': '🔴', '[data-diff="6"] .time-chip-label': 'NIGHTMARE',
+    '.card-check-tag': 'ENGAGE',
     '.pause-icon': '⏸️ 🔋', '.pause-title': 'SYSTEM PAUSED 🛑', '.pause-desc': 'Awaiting command input... ⏳',
-    '#resume-btn .play-btn-content': '⚡ RESUME SYSTEM', '#pause-menu-btn span': '🔌 ABORT',
+    '#resume-btn .play-btn-content': 'RESUME SYSTEM', '#pause-menu-btn span': 'ABORT',
     '.gameover-banner': '⚠️ SIMULATION ENDED ⚠️', '.gameover-title': 'MISSION LOGGED', '.gameover-stars': '⚡ ⚡ ⚡',
-    '#play-again-btn .play-btn-content span': '⚡ REBOOT SYS!', '#menu-btn span': '🔌 MAIN MENU',
-    '.press-space-prompt': '<span class="blink-dot">⚠️</span> PRESS <kbd>SPACEBAR</kbd> TO INITIATE!',
-    '.play-arrow': '⚡',
-    '.timer-dial-icon': '⏲️'
+    '#play-again-btn .play-btn-content span': 'REBOOT SYS!', '#menu-btn span': 'MAIN MENU',
+    '.press-space-prompt': 'PRESS <kbd>SPACEBAR</kbd> TO INITIATE!',
+    '.play-arrow': '',
+    '.timer-dial-icon': ''
   }
 };
 

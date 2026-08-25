@@ -592,7 +592,7 @@ function handleWindowResize() {
   if (gameState.phase === 'playing' && dom.river && gameState.floaters.length > 0) {
     const rw = dom.river.clientWidth;
     const rh = dom.river.clientHeight;
-    const sz = CONFIG.ORB_SIZE;
+    const sz = getResponsiveOrbSize();
     if (gameState.lastRiverW && gameState.lastRiverH && (gameState.lastRiverW !== rw || gameState.lastRiverH !== rh) && rw > sz && rh > sz) {
       const scaleX = (rw - sz) / Math.max(1, gameState.lastRiverW - sz);
       const scaleY = (rh - sz) / Math.max(1, gameState.lastRiverH - sz);
@@ -859,7 +859,7 @@ function buildNumberPool(q, diff) {
 function createOrbFloater(value, isPowerUp = false, powerUpType = null) {
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
-  const sz = CONFIG.ORB_SIZE;
+  const sz = getResponsiveOrbSize();
   const m = Math.min(CONFIG.SPAWN_MARGIN, Math.floor(rw / 4), Math.floor(rh / 4));
 
   const x = randInt(m, Math.max(m + 1, rw - sz - m));
@@ -1351,7 +1351,7 @@ function gameLoop(timestamp) {
 
   const rw = dom.river.clientWidth;
   const rh = dom.river.clientHeight;
-  const sz = CONFIG.ORB_SIZE;
+  const sz = getResponsiveOrbSize();
 
   // Auto-redistribute floaters instantly if river dimensions changed (e.g. F11 Fullscreen toggle)
   if (gameState.lastRiverW && gameState.lastRiverH && (gameState.lastRiverW !== rw || gameState.lastRiverH !== rh) && rw > sz && rh > sz) {

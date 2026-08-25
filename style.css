@@ -39,7 +39,7 @@
   --font-body:      'Outfit', 'Fredoka', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Sizing */
-  --orb-size:       68px;
+  --orb-size:       clamp(44px, 12vw, 66px);
   --dock-height:    82px;
   --hud-height:     68px;
 }
@@ -5441,3 +5441,50 @@ body.theme-robotics #time-grid .time-chip[data-time="120"].active .time-chip-val
 
 
 
+
+
+/* ========================================================
+   🫧 RESPONSIVE BUBBLE RESHAPING FOR MOBILE & EMBEDS
+   ======================================================== */
+@media (max-width: 600px), (max-height: 650px) {
+  :root {
+    --orb-size: 50px;
+  }
+  .orb-floater {
+    border-width: 2.5px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 2px 0 rgba(30, 41, 59, 0.3);
+  }
+  .bubble-num {
+    font-size: 21px;
+  }
+  .bubble-shine {
+    top: 5px;
+    right: 8px;
+    width: 10px;
+    height: 5px;
+  }
+  .orb-selected {
+    box-shadow: 0 0 0 4px #2ed573, 0 4px 14px rgba(46, 213, 115, 0.4) !important;
+  }
+  body.theme-robotics .orb-selected {
+    box-shadow: 0 0 0 3px #00f2fe, 0 0 16px rgba(0, 242, 254, 0.6) !important;
+  }
+}
+
+@media (max-width: 400px), (max-height: 520px) {
+  :root {
+    --orb-size: 44px;
+  }
+  .orb-floater {
+    border-width: 2px;
+  }
+  .bubble-num {
+    font-size: 18px;
+  }
+  .bubble-shine {
+    top: 4px;
+    right: 6px;
+    width: 8px;
+    height: 4px;
+  }
+}

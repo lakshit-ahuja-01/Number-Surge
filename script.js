@@ -519,48 +519,45 @@ function renderAmbientParticles(timestamp = 0) {
   if (!ambientCtx || !ambientCanvas) return;
 
   if (gameState.theme === 'robotics') {
-    if (gameState.phase === 'playing') {
-      // MATRIX DIGITAL RAIN (Active Gameplay Arena across full viewport)
-      resizeAmbientCanvas();
+    resizeAmbientCanvas();
 
-      if (!lastMatrixFrame) lastMatrixFrame = timestamp;
-      const elapsed = timestamp - lastMatrixFrame;
-      
-      if (elapsed > 33) {
-        lastMatrixFrame = timestamp;
-        ambientCtx.fillStyle = 'rgba(10, 14, 23, 0.16)';
-        ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+    if (!lastMatrixFrame) lastMatrixFrame = timestamp;
+    const isMenu = gameState.phase !== 'playing';
+    const interval = isMenu ? 55 : 33;
+    const elapsed = timestamp - lastMatrixFrame;
+    
+    if (elapsed > interval) {
+      lastMatrixFrame = timestamp;
+      ambientCtx.fillStyle = isMenu ? 'rgba(10, 14, 23, 0.22)' : 'rgba(10, 14, 23, 0.16)';
+      ambientCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
-        ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
+      ambientCtx.font = `bold ${MATRIX_FONT_SIZE}px monospace`;
 
-        const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
-        for (let i = 0; i < columns; i++) {
-          if (matrixDrops[i] === undefined) {
-            matrixDrops[i] = Math.floor(Math.random() * -30);
-          }
-          const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
-          const x = i * MATRIX_FONT_SIZE;
-          const y = matrixDrops[i] * MATRIX_FONT_SIZE;
+      const columns = Math.ceil(ambientCanvas.width / MATRIX_FONT_SIZE);
+      for (let i = 0; i < columns; i++) {
+        if (isMenu && i % 3 !== 0) continue; // Elegant spaced columns on menu
 
-          if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE * 2) {
-            // Leading glyph is bright glowing white/cyan, body is matrix neon green
-            const isLead = Math.random() > 0.86;
-            ambientCtx.fillStyle = isLead ? '#ffffff' : (i % 4 === 0 ? '#00f2fe' : '#00ff88');
-            ambientCtx.shadowColor = isLead ? '#00f2fe' : '#00ff88';
-            ambientCtx.shadowBlur = isLead ? 6 : 3;
-            ambientCtx.fillText(char, x, y);
-            ambientCtx.shadowBlur = 0;
-          }
-
-          if (y > ambientCanvas.height && Math.random() > 0.975) {
-            matrixDrops[i] = 0;
-          }
-          matrixDrops[i]++;
+        if (matrixDrops[i] === undefined) {
+          matrixDrops[i] = Math.floor(Math.random() * -30);
         }
+        const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+        const x = i * MATRIX_FONT_SIZE;
+        const y = matrixDrops[i] * MATRIX_FONT_SIZE;
+
+        if (y > 0 && y < ambientCanvas.height + MATRIX_FONT_SIZE * 2) {
+          const isLead = Math.random() > 0.9;
+          ambientCtx.fillStyle = isLead ? (isMenu ? 'rgba(255,255,255,0.7)' : '#ffffff') : (i % 4 === 0 ? (isMenu ? 'rgba(0,242,254,0.45)' : '#00f2fe') : (isMenu ? 'rgba(0,255,136,0.35)' : '#00ff88'));
+          ambientCtx.shadowColor = i % 4 === 0 ? '#00f2fe' : '#00ff88';
+          ambientCtx.shadowBlur = isLead ? 4 : (isMenu ? 1 : 3);
+          ambientCtx.fillText(char, x, y);
+          ambientCtx.shadowBlur = 0;
+        }
+
+        if (y > ambientCanvas.height && Math.random() > (isMenu ? 0.985 : 0.975)) {
+          matrixDrops[i] = 0;
+        }
+        matrixDrops[i]++;
       }
-    } else {
-      // On menu / setup screens, clear canvas so home menu remains clean and uncluttered
-      ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
     }
   } else {
     // PASTEL FLOATING BUBBLES (Kids Candy Theme)

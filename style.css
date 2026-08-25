@@ -2324,68 +2324,76 @@ body.theme-robotics #ambient-canvas {
 .gameover-reward-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
   margin-top: 4px;
 }
 
 .arcade-reward-btn {
   position: relative;
-  background: linear-gradient(180deg, #fef08a 0%, #eab308 100%);
-  border: 2.5px solid #ca8a04;
+  height: 48px;
   border-radius: 16px;
-  padding: 10px 8px;
+  padding: 0 12px;
   cursor: pointer;
-  box-shadow: 0 4px 0 #a16207, 0 6px 14px rgba(234, 179, 8, 0.25);
-  transition: all 0.14s ease;
+  transition: all 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  outline: none;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.arcade-reward-btn:hover {
+/* Honey Gold 2X Coins */
+.arcade-reward-btn.btn-double-coins {
+  background: linear-gradient(180deg, #fef08a 0%, #facc15 50%, #eab308 100%);
+  border: 2.5px solid #ca8a04;
+  box-shadow: 0 4px 0 #a16207, 0 6px 16px rgba(234, 179, 8, 0.25);
+  color: #713f12;
+}
+
+.arcade-reward-btn.btn-double-coins:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 0 #a16207, 0 10px 20px rgba(234, 179, 8, 0.35);
 }
 
-.arcade-reward-btn:active {
+.arcade-reward-btn.btn-double-coins:active {
   transform: translateY(2px);
   box-shadow: 0 1px 0 #a16207;
 }
 
+/* Watermelon Pink Revive */
 .arcade-reward-btn.btn-revive {
-  background: linear-gradient(180deg, #fecdd3 0%, #f43f5e 100%);
-  border-color: #be123c;
-  box-shadow: 0 4px 0 #9f1239, 0 6px 14px rgba(244, 63, 94, 0.25);
+  background: linear-gradient(180deg, #fda4af 0%, #fb7185 50%, #f43f5e 100%);
+  border: 2.5px solid #e11d48;
+  box-shadow: 0 4px 0 #be123c, 0 6px 16px rgba(244, 63, 94, 0.25);
+  color: #ffffff;
 }
 
 .arcade-reward-btn.btn-revive:hover {
-  box-shadow: 0 6px 0 #9f1239, 0 10px 20px rgba(244, 63, 94, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #be123c, 0 10px 20px rgba(244, 63, 94, 0.35);
 }
 
-.reward-tag {
-  font-family: var(--font-hud);
-  font-size: 9px;
-  font-weight: 900;
-  padding: 1px 6px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.8);
-  color: #854d0e;
+.arcade-reward-btn.btn-revive:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #be123c;
 }
 
-.btn-revive .reward-tag {
-  color: #9f1239;
-}
-
-.reward-content {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.reward-btn-text {
   font-family: var(--font-hud);
   font-size: 13px;
   font-weight: 900;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.btn-double-coins .reward-btn-text {
+  color: #78350f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.btn-revive .reward-btn-text {
   color: #ffffff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }

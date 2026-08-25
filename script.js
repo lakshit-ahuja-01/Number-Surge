@@ -1964,7 +1964,7 @@ const themeTranslations = {
     '.card-check-tag': '⭐ LET\'S GO!',
     '.pause-icon': '⏸️ 🍦', '.pause-title': 'TAKING A BREAK! 😊', '.pause-desc': 'Game is resting! 💤 Come back soon!',
     '#resume-btn .play-btn-content': 'KEEP PLAYING!', '#pause-menu-btn span': 'GO HOME',
-    '.gameover-banner': '🎊 ROUND COMPLETE! 🎊', '.gameover-title': 'YOU DID IT! 🎉', '.gameover-stars': '⭐ ⭐ ⭐',
+    '.gameover-banner': 'ROUND COMPLETE', '.gameover-title': 'YOU DID IT!', '.gameover-stars': '',
     '#play-again-btn .play-btn-content span': 'PLAY AGAIN!', '#menu-btn span': 'HOME MENU',
     '.press-space-prompt': 'PRESS <kbd>SPACEBAR</kbd> TO START!',
     '.play-arrow': '',

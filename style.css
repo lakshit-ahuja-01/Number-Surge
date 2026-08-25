@@ -5293,13 +5293,13 @@ body.theme-robotics .diff-grid .time-chip[data-diff="0"].active .time-chip-val {
 }
 
 body.theme-robotics .diff-grid .time-chip[data-diff="3"].active {
-  border-color: #ffd200 !important;
-  box-shadow: 0 0 16px rgba(255, 210, 0, 0.5), inset 0 0 10px rgba(255, 210, 0, 0.2) !important;
-  background: rgba(255, 210, 0, 0.12) !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(0, 242, 254, 0.2) !important;
+  background: rgba(0, 242, 254, 0.12) !important;
 }
 body.theme-robotics .diff-grid .time-chip[data-diff="3"].active .time-chip-val {
-  color: #ffd200 !important;
-  text-shadow: 0 0 8px rgba(255, 210, 0, 0.8) !important;
+  color: #00f2fe !important;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.8) !important;
 }
 
 body.theme-robotics .diff-grid .time-chip[data-diff="6"].active {

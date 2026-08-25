@@ -5238,6 +5238,91 @@ body.theme-robotics .step-badge { border-radius: 4px; }
   }
 }
 
+/* ========================================================
+   ⚡ CYBER ROBOTICS THEMED ROUND TIME & DIFFICULTY CHIPS
+   ======================================================== */
+body.theme-robotics .time-chip {
+  background: #121826;
+  border: 1.5px solid #1d283a;
+  color: #94a3b8;
+}
+body.theme-robotics .time-chip:hover {
+  border-color: rgba(0, 242, 254, 0.4);
+  color: #ffffff;
+}
+
+/* Difficulty Chips in Cyber Robotics */
+body.theme-robotics .diff-grid .time-chip[data-diff="0"].active {
+  border-color: #00ff88 !important;
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.5), inset 0 0 10px rgba(0, 255, 136, 0.2) !important;
+  background: rgba(0, 255, 136, 0.12) !important;
+}
+body.theme-robotics .diff-grid .time-chip[data-diff="0"].active .time-chip-val {
+  color: #00ff88 !important;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.8) !important;
+}
+
+body.theme-robotics .diff-grid .time-chip[data-diff="3"].active {
+  border-color: #ffd200 !important;
+  box-shadow: 0 0 16px rgba(255, 210, 0, 0.5), inset 0 0 10px rgba(255, 210, 0, 0.2) !important;
+  background: rgba(255, 210, 0, 0.12) !important;
+}
+body.theme-robotics .diff-grid .time-chip[data-diff="3"].active .time-chip-val {
+  color: #ffd200 !important;
+  text-shadow: 0 0 8px rgba(255, 210, 0, 0.8) !important;
+}
+
+body.theme-robotics .diff-grid .time-chip[data-diff="6"].active {
+  border-color: #ff007f !important;
+  box-shadow: 0 0 16px rgba(255, 0, 127, 0.5), inset 0 0 10px rgba(255, 0, 127, 0.2) !important;
+  background: rgba(255, 0, 127, 0.12) !important;
+}
+body.theme-robotics .diff-grid .time-chip[data-diff="6"].active .time-chip-val {
+  color: #ff007f !important;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.8) !important;
+}
+
+/* Round Time Chips in Cyber Robotics */
+body.theme-robotics #time-grid .time-chip[data-time="30"].active {
+  border-color: #00f2fe !important;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(0, 242, 254, 0.2) !important;
+  background: rgba(0, 242, 254, 0.12) !important;
+}
+body.theme-robotics #time-grid .time-chip[data-time="30"].active .time-chip-val {
+  color: #00f2fe !important;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.8) !important;
+}
+
+body.theme-robotics #time-grid .time-chip[data-time="60"].active {
+  border-color: #00ff88 !important;
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.5), inset 0 0 10px rgba(0, 255, 136, 0.2) !important;
+  background: rgba(0, 255, 136, 0.12) !important;
+}
+body.theme-robotics #time-grid .time-chip[data-time="60"].active .time-chip-val {
+  color: #00ff88 !important;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.8) !important;
+}
+
+body.theme-robotics #time-grid .time-chip[data-time="90"].active {
+  border-color: #c084fc !important;
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.5), inset 0 0 10px rgba(192, 132, 252, 0.2) !important;
+  background: rgba(192, 132, 252, 0.12) !important;
+}
+body.theme-robotics #time-grid .time-chip[data-time="90"].active .time-chip-val {
+  color: #c084fc !important;
+  text-shadow: 0 0 8px rgba(192, 132, 252, 0.8) !important;
+}
+
+body.theme-robotics #time-grid .time-chip[data-time="120"].active {
+  border-color: #ff007f !important;
+  box-shadow: 0 0 16px rgba(255, 0, 127, 0.5), inset 0 0 10px rgba(255, 0, 127, 0.2) !important;
+  background: rgba(255, 0, 127, 0.12) !important;
+}
+body.theme-robotics #time-grid .time-chip[data-time="120"].active .time-chip-val {
+  color: #ff007f !important;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.8) !important;
+}
+
 
 
 

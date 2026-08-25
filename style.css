@@ -4923,36 +4923,9 @@ body:not(.theme-robotics) .press-space-prompt kbd { border: 1px solid #efd7e6; b
   }
 }
 
-/* Cyber Robotics: Holographic Quantum Gyroscope & Sweeping Laser Beam Node */
+/* Cyber Robotics: Clean background without radar graphic */
 body.theme-robotics #start-screen::after {
-  content: '';
-  position: fixed;
-  right: 4%;
-  bottom: 5%;
-  width: 210px;
-  height: 210px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(0, 242, 254, 0.45);
-  background: 
-    conic-gradient(from 0deg at 50% 50%, rgba(0, 242, 254, 0.35) 0deg, rgba(0, 242, 254, 0.05) 55deg, transparent 90deg, transparent 360deg),
-    radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.22) 0%, rgba(255, 0, 127, 0.08) 42%, transparent 70%);
-  box-shadow: 
-    0 0 0 10px rgba(0, 242, 254, 0.04),
-    0 0 0 25px rgba(255, 0, 127, 0.03),
-    0 0 32px rgba(0, 242, 254, 0.25),
-    inset 0 0 22px rgba(0, 242, 254, 0.15);
-  animation: cyberHoloSweep 3.5s linear infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
-@keyframes cyberHoloSweep {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  display: none !important;
 }
 body.theme-robotics .title-top-bar { border-radius: 8px; }
 body.theme-robotics .title-highscore-pill,

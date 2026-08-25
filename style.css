@@ -938,6 +938,9 @@ body.theme-robotics #ambient-canvas {
   background: linear-gradient(180deg, #f8faff 0%, #eff6ff 100%);
   border: 2.5px solid #bfdbfe;
   box-shadow: 0 3px 0 #93c5fd, 0 4px 12px rgba(59, 130, 246, 0.1);
+  min-width: 80px;
+  align-items: center;
+  text-align: center;
 }
 
 .hud-subhead {
@@ -2736,6 +2739,27 @@ body.theme-robotics #arcade-hud {
   border-bottom: 2px solid #00f2fe;
   border-radius: 0;
 }
+
+body.theme-robotics #hud-score-box .hud-tag {
+  color: #00f2fe;
+  text-shadow: 0 0 5px rgba(0, 242, 254, 0.6);
+}
+body.theme-robotics #hud-combo-box {
+  min-width: 80px;
+  align-items: center;
+  text-align: center;
+}
+body.theme-robotics #hud-combo-box .hud-tag {
+  color: #ff007f;
+  text-shadow: 0 0 5px rgba(255, 0, 127, 0.6);
+}
+body.theme-robotics .hud-combo-val {
+  color: #00f2fe;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+  font-family: var(--font-hud);
+  justify-content: center;
+}
+
 body.theme-robotics .hud-dashboard-box {
   background: #121826;
   border: 1px solid #1d283a;

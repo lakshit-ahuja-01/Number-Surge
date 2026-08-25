@@ -1476,17 +1476,17 @@ function stopGameLoop() {
 // ─── 18. GAME OVER & RANKING ─────────────────────────────────
 function calculateRank(score, accuracy) {
   if (gameState.theme === 'robotics') {
-    if (score >= 400 && accuracy >= 90) return { rank: '🌌 CYBER GOD 🦾', color: '#ff007f' };
-    if (score >= 250 && accuracy >= 80) return { rank: '⚡ SYSTEM ADMIN 🔧',    color: '#00f2fe' };
-    if (score >= 120 && accuracy >= 60) return { rank: '🔋 ELITE HACKER 💻',      color: '#00ff88' };
-    if (score >= 50)                    return { rank: '⚙️ APPRENTICE 🤖',       color: '#b000ff' };
-    return { rank: '🔌 NEED REBOOT 🔋', color: '#ff003c' };
+    if (score >= 400 && accuracy >= 90) return { rank: 'CYBER GOD', color: '#ff007f' };
+    if (score >= 250 && accuracy >= 80) return { rank: 'SYSTEM ADMIN', color: '#00f2fe' };
+    if (score >= 120 && accuracy >= 60) return { rank: 'ELITE HACKER', color: '#00ff88' };
+    if (score >= 50)                    return { rank: 'APPRENTICE', color: '#b000ff' };
+    return { rank: 'NEED REBOOT', color: '#ff003c' };
   } else {
-    if (score >= 400 && accuracy >= 90) return { rank: '🌟 MATH LEGEND ⭐⭐⭐', color: '#ff9f43' };
-    if (score >= 250 && accuracy >= 80) return { rank: '🏆 SUPERSTAR ⭐⭐',    color: '#2ed573' };
-    if (score >= 120 && accuracy >= 60) return { rank: '🎉 GREAT JOB! ⭐',      color: '#45aaf2' };
-    if (score >= 50)                    return { rank: '🎈 GOOD EFFORT!',       color: '#a55eea' };
-    return { rank: '🌱 KEEP PRACTICING!', color: '#ff6b8a' };
+    if (score >= 400 && accuracy >= 90) return { rank: 'MATH LEGEND', color: '#ff9f43' };
+    if (score >= 250 && accuracy >= 80) return { rank: 'SUPERSTAR', color: '#2ed573' };
+    if (score >= 120 && accuracy >= 60) return { rank: 'GREAT JOB!', color: '#45aaf2' };
+    if (score >= 50)                    return { rank: 'GOOD EFFORT!', color: '#a55eea' };
+    return { rank: 'KEEP PRACTICING!', color: '#ff6b8a' };
   }
 }
 
@@ -1985,9 +1985,9 @@ const themeTranslations = {
     '.mode-div .card-pill': 'DIVIDE · 04', '.mode-div .card-tagline': 'Split signal',
     '.mode-mix .card-pill': 'SURGE MIX · 06', '.mode-mix .card-tagline': 'Chaos mode',
     '.card-check-tag': 'ENGAGE',
-    '.pause-icon': '⏸️ 🔋', '.pause-title': 'SYSTEM PAUSED 🛑', '.pause-desc': 'Awaiting command input... ⏳',
+    '.pause-icon': '', '.pause-title': 'SYSTEM PAUSED', '.pause-desc': 'Awaiting command input...',
     '#resume-btn .play-btn-content': 'RESUME SYSTEM', '#pause-menu-btn span': 'ABORT',
-    '.gameover-banner': '⚠️ SIMULATION ENDED ⚠️', '.gameover-title': 'MISSION LOGGED', '.gameover-stars': '⚡ ⚡ ⚡',
+    '.gameover-banner': 'SIMULATION ENDED', '.gameover-title': 'MISSION LOGGED', '.gameover-stars': '',
     '#play-again-btn .play-btn-content span': 'REBOOT SYS!', '#menu-btn span': 'MAIN MENU',
     '.press-space-prompt': 'PRESS <kbd>SPACEBAR</kbd> TO INITIATE!',
     '.play-arrow': '',

@@ -3106,6 +3106,20 @@ body.theme-robotics .new-record-pill {
   color: #ffffff !important;
 }
 
+body.theme-robotics .m-icon,
+body.theme-robotics .stat-icon,
+body.theme-robotics .gameover-stars,
+body.theme-robotics .reward-icon {
+  display: none !important;
+}
+body.theme-robotics .mini-stat {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+}
+
 body.theme-robotics .hud-tag {
   background: #1d283a;
   color: #00f2fe;

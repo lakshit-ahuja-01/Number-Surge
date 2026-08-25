@@ -1843,6 +1843,18 @@ if (dom.howToPlayModal) {
 
 if (dom.pauseBtn) dom.pauseBtn.addEventListener('click', togglePause);
 if (dom.resumeBtn) dom.resumeBtn.addEventListener('click', togglePause);
+if (dom.soundToggle) {
+  dom.soundToggle.addEventListener('click', () => {
+    gameState.isMuted = !gameState.isMuted;
+    if (dom.soundIcon) {
+      dom.soundIcon.textContent = gameState.isMuted ? '🔇' : '🔊';
+    }
+    dom.soundToggle.classList.toggle('is-muted', gameState.isMuted);
+    if (!gameState.isMuted) {
+      playArcadeSound('click');
+    }
+  });
+}
 if (dom.pauseMenuBtn) dom.pauseMenuBtn.addEventListener('click', () => {
   if (dom.pauseModal) dom.pauseModal.classList.remove('active');
   gameState.isPaused = false;
